@@ -64,9 +64,9 @@ FlowRouter.route('/master', {
     }
 })
 
-FlowRouter.route('/master/users', {
+FlowRouter.route('/master-users', {
     name: 'usersHome',
-    template: 'masterContainer',
+    template: 'userHome',
     action(){
         if(!Meteor.userId()){
             FlowRouter.go('login', {});
