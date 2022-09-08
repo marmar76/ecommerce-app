@@ -9,10 +9,14 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.15.4",
+    "@popperjs/core": "^2.11.6",
     "bootstrap": "^5.2.0",
+    "feather-icons": "^4.29.0",
     "jquery": "^3.6.1",
     "meteor-node-stubs": "^1.2.3",
     "moment": "^2.29.4",
+    "perfect-scrollbar": "^1.5.5",
+    "progressbar.js": "^1.1.0",
     "sweetalert2": "^11.4.31"
   },
   "meteor": {

@@ -5,6 +5,16 @@ import Swal from 'sweetalert2';
 import '../../../imports/ui/stylesheets/global/googleapis.css'
 import '../../../imports/ui/stylesheets/global/owl.carousel.min.css'
 import '../../../imports/ui/stylesheets/global/bootstrap.min.css'
+
+// // import './vendors/feather/feather.css'
+// import '../../ui/assets/master/vendors/mdi/css/materialdesignicons.min.css'
+// import '../../ui/assets/master/vendors/ti-icons/css/themify-icons.css'
+// import '../../ui/assets/master/vendors/typicons/typicons.css'
+// // import './vendors/simple-line-icons/css/simple-line-icons.css'
+// import '../../ui/assets/master/vendors/css/vendor.bundle.base.css'
+// import '../../ui/assets/master/js/select.dataTables.min.css'
+// import '../../ui/assets/master/css/vertical-layout-light/style.css'
+
 import './routes.js';
 
 
