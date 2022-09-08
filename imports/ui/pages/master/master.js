@@ -10,11 +10,11 @@ import {
 import './master.html';
 import './users.html';
 
-// import './vendors/feather/feather.css'
+// import '../../assets/master/vendors/feather/feather.css'
 import '../../assets/master/vendors/mdi/css/materialdesignicons.min.css'
 import '../../assets/master/vendors/ti-icons/css/themify-icons.css'
 import '../../assets/master/vendors/typicons/typicons.css'
-// import './vendors/simple-line-icons/css/simple-line-icons.css'
+// import '../../assets/master/vendors/simple-line-icons/css/simple-line-icons.css'
 import '../../assets/master/vendors/css/vendor.bundle.base.css'
 import '../../assets/master/js/select.dataTables.min.css'
 import '../../assets/master/css/vertical-layout-light/style.css'
@@ -31,6 +31,38 @@ import '../../assets/master/js/Chart.roundedBarCharts.js'
 // import './js/template.js'
 import '../../assets/master/js/dashboard.js'
 
+const navbar = [
+  {
+      type: 1,
+      href: '/master',
+      icon: 'mdi mdi-grid-large menu-icon',
+      title: 'Dashboard',
+  },
+  {
+      type: 0,
+      title: 'User Management'
+  },
+  {
+      type: 2,
+      title: 'User',
+      icon: 'menu-icon mdi mdi-account',
+      href: 'master-users',
+      child: [
+          {
+              href: '/master-users',
+              title: 'List User'
+          },
+          {
+              href: '/master-users-create',
+              title: 'Create User'
+          },
+          // {
+          //     href: 'pages/ui-features/typography.html',
+          //     title: 'Berhasil'
+          // },
+      ]
+  }
+]
 
 function autoText(e) {
   var $field = $(e.currentTarget).closest('.form-group');
@@ -123,7 +155,7 @@ function initPage() {
   // const currentRoute = FlowRouter.current()
   var current = FlowRouter.current().path.split('/')//.split("/").slice(-1)[0].replace(/^\/|\/$/g, '');
   current.splice(0, 1)
-  console.log(current);
+  // console.log(current);
   // $('.nav li a', sidebar).each(function () {
   //   var $this = $(this);
   //   let $thisArray = []
@@ -243,13 +275,59 @@ function initPage() {
   // });
 }
 
+Template.navbarLeft.onCreated(function () {
+})
+Template.navbarLeft.onRendered(function () {
+  const route = FlowRouter.current()
+  console.log(route);
+});
+Template.navbarLeft.helpers({
+  navbar(){
+    const route = FlowRouter.current().path
+    const thisNavbar = navbar.map(function (x) {
+      if(x.type == 2){
+        let valid = false
+        for (const i of x.child) {
+          if(i.href == route){
+            i.active = true
+            valid = true
+          }
+          else{
+            i.active = false
+          }
+        }
+        x.active = valid
+      }
+      else if(x.type == 1){
+        x.active = x.href == route
+      }
+      return x
+    })
+    // console.log(thisNavbar);
+    return thisNavbar
+  },
+  equals(a, b){
+    return a == b
+  }
+});
+Template.navbarLeft.events({
+});
 Template.masterContainer.onCreated(function () {
 })
 Template.masterContainer.onRendered(function () {
+  toggleBanner(false)
 });
 Template.masterContainer.helpers({
 });
 Template.masterContainer.events({
+  'click #bannerClose'(e, t){
+    toggleBanner(false)
+    // var date = new Date();
+    // date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
+    // $.cookie('staradmin2-free-banner', "true", {
+    //   expires: date
+    // });
+  },
 });
 
 Template.contentExample.onCreated(function () {
@@ -257,7 +335,7 @@ Template.contentExample.onCreated(function () {
   // console.log(FlowRouter.current());
 })
 Template.contentExample.onRendered(function () {
-  initNav("nav-dashboard");
+  // initNav("nav-dashboard");
   initPage()
 
 });
@@ -270,14 +348,6 @@ Template.contentExample.helpers({
 
 
 Template.contentExample.events({
-  'click #bannerClose'(e, t){
-    toggleBanner(false)
-    // var date = new Date();
-    // date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
-    // $.cookie('staradmin2-free-banner', "true", {
-    //   expires: date
-    // });
-  },
   'click #test'(e, t){
     console.log("click");
     // toggleBanner(true)
@@ -289,6 +359,6 @@ Template.usersHome.onCreated(function () {
 })
 
 Template.usersHome.onRendered(function () {  
-  initNav("master-users-nav");
+  // initNav("master-users-nav");
   initPage()
 })

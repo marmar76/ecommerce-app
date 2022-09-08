@@ -949,7 +949,7 @@
     <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row">
         <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
             <div class="me-3">
-                <button class="navbar-toggler navbar-toggler align-self-center" id="test" type="button"
+                <button class="navbar-toggler navbar-toggler align-self-center fs-4" id="test" type="button"
                     data-bs-toggle="minimize">
                     <span class="icon-menu"></span>
                 </button>
@@ -1337,32 +1337,37 @@
 <template name="navbarLeft">
     <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
-            <li class="nav-item" id="nav-dashboard">
-                <a class="nav-link" href="/master">
-                    <i class="mdi mdi-grid-large menu-icon"></i>
-                    <span class="menu-title">Dashboard</span>
+            {{#each i in navbar}}
+            {{#if equals i.type 1}}
+            <li class="nav-item {{#if i.active}}active{{/if}}">
+                <a class="nav-link" href="{{i.href}}">
+                    <i class="{{i.icon}}"></i>
+                    <span class="menu-title fs-5">{{i.title}}</span>
                 </a>
             </li>
-            <li class="nav-item nav-category">User Management</li>
-            <li class="nav-item active" id="master-users-nav">
-                <a class="nav-link" data-bs-toggle="collapse" href="#master-users" aria-expanded="false"
-                    aria-controls="master-users">
-                    <i class="menu-icon mdi mdi-account"></i>
-                    <span class="menu-title">User</span>
+            {{/if}}
+            {{#if equals i.type 0}}
+            <li class="fs-6 nav-item nav-category">{{i.title}}</li>
+            {{/if}}
+            {{#if equals i.type 2}}
+            <li class="nav-item {{#if i.active}}active{{/if}}">
+                <a class="nav-link" data-bs-toggle="collapse" href="#{{i.href}}" aria-expanded="{{#if i.active}}true{{else}}false{{/if}}"
+                    aria-controls="{{i.href}}">
+                    <i class="{{i.icon}}"></i>
+                    <span class="menu-title fs-5">User</span>
                     <i class="menu-arrow"></i>
                 </a>
-                <div class="collapse" id="master-users">
+                <div class="collapse {{#if i.active}}show{{/if}}" id="{{i.href}}">
                     <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"> <a class="nav-link"
-                                href="/master-users">List User</a></li>
-                        <li class="nav-item"> <a class="nav-link"
-                                href="pages/ui-features/dropdowns.html">Dropdowns</a></li>
-                        <li class="nav-item"> <a class="nav-link"
-                                href="pages/ui-features/typography.html">Typography</a></li>
+                        {{#each j in i.child}}
+                        <li class="nav-item"> <a class="fs-6 nav-link {{#if j.active}}active fw-bolder{{/if}}" href="{{j.href}}">{{j.title}}</a></li>
+                        {{/each}}
                     </ul>
                 </div>
             </li>
-            <li class="nav-item nav-category">Forms and Datas</li>
+            {{/if}}
+            {{/each}}
+            <!-- <li class="nav-item nav-category">Forms and Datas</li>
             <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="collapse" href="#form-elements" aria-expanded="false"
                     aria-controls="form-elements">
@@ -1438,7 +1443,7 @@
                     <i class="menu-icon mdi mdi-file-document"></i>
                     <span class="menu-title">Documentation</span>
                 </a>
-            </li>
+            </li> -->
         </ul>
     </nav>
 </template>

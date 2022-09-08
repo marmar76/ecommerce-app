@@ -114,3 +114,16 @@ FlowRouter.route('/promotions/create', {
       this.render('promotionCreatePage');
     },
 })
+
+FlowRouter.route('/master-users-create', {
+    name: 'userCreatePage',
+    template: 'userCreatePage',
+    action(){
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {});
+        }
+        this.render('masterContainer', 'userCreatePage')
+        
+    },
+    
+})
