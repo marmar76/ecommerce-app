@@ -8,6 +8,7 @@ import {
   FlowRouter
 } from 'meteor/ostrio:flow-router-extra';
 import './master.html';
+import './users.html';
 
 // import './vendors/feather/feather.css'
 import '../../assets/master/vendors/mdi/css/materialdesignicons.min.css'
@@ -59,6 +60,18 @@ function toggleBanner(show) {
   }
 }
 
+function initNav(param) {  
+  $(".nav-item").each(function () {  
+    $(this).removeClass("active");
+  })
+  const elem = $("#"+param)
+  elem.addClass("active");
+  // console.log(elem.('.sub-menu').length);
+  if (elem.children('.sub-menu').length) {
+    elem.closest('.collapse').addClass('show');
+    elem.addClass('active');
+  }
+}
 function initPage() {  
   var body = $('body');
   var contentWrapper = $('.content-wrapper');
@@ -111,21 +124,33 @@ function initPage() {
   var current = FlowRouter.current().path.split('/')//.split("/").slice(-1)[0].replace(/^\/|\/$/g, '');
   current.splice(0, 1)
   console.log(current);
-  $('.nav li a', sidebar).each(function () {
-    var $this = $(this);
-    const $thisArray = $this[0].href.split('/')
-    $thisArray.splice(0, 3)
+  // $('.nav li a', sidebar).each(function () {
+  //   var $this = $(this);
+  //   let $thisArray = []
+  //   if($this[0].href.includes('#') || true){
+  //     $thisArray = $this[0].href.split('#')[1]
+  //     console.log($thisArray == current[0], 'his');
+  //     if($thisArray == current[0]){
+  //       activate($this)
+  //     }
+  //   } 
+  //   else{
+  //     $thisArray = $this[0].href.split('/')
+  //     $thisArray.splice(0, 3)
+  //     if(JSON.stringify($thisArray) == JSON.stringify(current)){
+  //       activate($this)
+  //     }
+  //     else{
+  //       disable($this)
+  //     }
+
+  //   }
+    // console.log($this[0].href);
     // console.log($thisArray);
     // console.log($this[0].pathname, $this[0].pathname == current);
     // console.log($thisArray == current);
-    if(JSON.stringify($thisArray) == JSON.stringify(current)){
-      activate($this)
-    }
-    else{
-      disable($this)
-    }
     // addActiveClass($this, $this[0].pathname == current);
-  })
+  // })
 
   // $('.horizontal-menu .nav li a').each(function () {
   //   var $this = $(this);
@@ -222,6 +247,8 @@ Template.masterContainer.onCreated(function () {
 })
 Template.masterContainer.onRendered(function () {
 });
+Template.masterContainer.helpers({
+});
 Template.masterContainer.events({
 });
 
@@ -230,7 +257,14 @@ Template.contentExample.onCreated(function () {
   // console.log(FlowRouter.current());
 })
 Template.contentExample.onRendered(function () {
+  initNav("nav-dashboard");
   initPage()
+
+});
+Template.contentExample.helpers({
+  navmain(nav){
+    return nav == "master"
+  }
 });
 // focus input when clicking on search icon
 
@@ -255,5 +289,6 @@ Template.usersHome.onCreated(function () {
 })
 
 Template.usersHome.onRendered(function () {  
+  initNav("master-users-nav");
   initPage()
 })

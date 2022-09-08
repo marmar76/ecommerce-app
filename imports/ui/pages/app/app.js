@@ -47,6 +47,9 @@ Template.mainContainer.events({
       FlowRouter.go('login', {})
     }, 200);
   },
+  'click .test'(e, t){
+    successAlert();
+  }
 });
 
 Template.mainContainer.helpers({

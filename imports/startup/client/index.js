@@ -26,6 +26,7 @@ function basicStyle(message, type) {
         timer: 2000,
         showConfirmButton: false,
         width: '300px',
+        height: '100px',
         customClass: {
             header: 'align-items-unset padding-0',
             content: 'align-items-unset padding-0',
@@ -39,6 +40,17 @@ function basicStyle(message, type) {
         style.background = '#ce2029'
         style.title = '<div style="color: white">Error</div>'
     }
+    // Swal.fire({
+    //     position: 'top-end',
+    //     // icon: 'success',
+    //     width: '300px',
+    //     heightAuto: true,
+    //     backdrop: false,
+    //     title: 'Your work has been saved',
+    //     showConfirmButton: false,
+    //     color: '#716add',
+    //     timer: 1500
+    // })
     return style;
 }
 
@@ -61,18 +73,21 @@ successAlert = function (message) {
         message = 'Berhasil!';
     }
     Swal.fire(basicStyle(message, 'success'));
+    // basicStyle(message, 'success')
 }
 failAlert = function (message) {
     if (typeof message === 'object' && message !== null) {
         message = message.reason;
     }
     Swal.fire(basicStyle(message, 'fail'));
+    // basicStyle(message, 'fail')
 }
 successAlertBack = function (message) {
     if (typeof message === 'undefined') {
         message = 'Berhasil!';
     }
     Swal.fire(basicStyle(message, 'success'));
+    // basicStyle(message, 'success')
     history.back();
 }
 
