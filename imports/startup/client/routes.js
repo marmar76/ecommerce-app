@@ -1,6 +1,10 @@
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 import '../../ui/pages/login/login'
+import '../../ui/pages/items/items'
+import '../../ui/pages/categories/categories'
+import '../../ui/pages/subCategories/subCategories'
+import '../../ui/pages/promotions/promotions'
 import '../../ui/pages/app/app'
 import '../../ui/pages/forbidden/forbidden'
 
@@ -49,7 +53,6 @@ FlowRouter.route('/register', {
         this.render('register')
     }
 })
-
 FlowRouter.route('/master', {
     name: 'masterContainer',
     template: 'masterContainer',
@@ -72,4 +75,42 @@ FlowRouter.route('/master/users', {
         
     },
     
+})
+//=====================================================
+//=====================================================
+FlowRouter.route('/items/create', {
+    name: 'itemCreatePage',
+    template: 'itemCreatePage',
+    action() {
+      this.render('itemCreatePage');
+    },
+})
+//=====================================================
+//                  CATEGORY
+//=====================================================
+FlowRouter.route('/categories/create', {
+    name: 'categoryCreatePage',
+    template: 'categoryCreatePage',
+    action() {
+      this.render('categoryCreatePage');
+    },
+})
+
+FlowRouter.route('/subcategories/create', {
+    name: 'subcategoryCreatePage',
+    template: 'subcategoryCreatePage',
+    action() {
+      this.render('subcategoryCreatePage');
+    },
+})
+
+//=====================================================
+//                  PROMOTION     
+//=====================================================
+FlowRouter.route('/promotions/create', {
+    name: 'promotionCreatePage',
+    template: 'promotionCreatePage',
+    action() {
+      this.render('promotionCreatePage');
+    },
 })

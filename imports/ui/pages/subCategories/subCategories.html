@@ -1,0 +1,25 @@
+<template name="subcategoryCreatePage">
+    <div class="page page-user-create">
+      <h1 class="page-title">Add new Sub Category</h1>
+      <div class="form-group">
+        <label for="">Category</label>
+        <select name="select-roles" id="categories" class="form-control">
+          {{#each categories}}
+          <option value={{_id}}>{{name}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="">Name</label>
+        <input type="text" class="form-control" id="subCategoryName" required>
+      </div>
+      <div class="form-group">
+        <label for="">Description</label>
+        <input type="text" class="form-control" id="subcategoriesDescription" required>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-primary" type="button" id="submit">Submit</button>
+      </div>
+    </div>
+</template>
+
