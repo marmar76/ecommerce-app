@@ -1355,8 +1355,59 @@
                     aria-controls="{{i.href}}">
                     <i class="{{i.icon}}"></i>
                     <span class="menu-title fs-5">User</span>
-                    <i class="menu-arrow"></i>
-                </a>
+                    <i class="menu-arrow"></i> 
+                </a> 
+                <div class="collapse {{#if i.active}}show{{/if}}" id="{{i.href}}">
+                    <ul class="nav flex-column sub-menu">
+                        {{#each j in i.child}}
+                        <li class="nav-item"> <a class="fs-6 nav-link {{#if j.active}}active fw-bolder{{/if}}" href="{{j.href}}">{{j.title}}</a></li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </li>
+            {{/if}}
+            {{#if equals i.type 3}}
+            <li class="nav-item {{#if i.active}}active{{/if}}">
+                <a class="nav-link" data-bs-toggle="collapse" href="#{{i.href}}" aria-expanded="{{#if i.active}}true{{else}}false{{/if}}"
+                    aria-controls="{{i.href}}">
+                    <i class="{{i.icon}}"></i>
+                    <span class="menu-title fs-5">{{i.title}}</span>
+                    <i class="menu-arrow"></i> 
+                </a> 
+                <div class="collapse {{#if i.active}}show{{/if}}" id="{{i.href}}">
+                    <ul class="nav flex-column sub-menu">
+                        {{#each j in i.child}}
+                        <li class="nav-item"> <a class="fs-6 nav-link {{#if j.active}}active fw-bolder{{/if}}" href="{{j.href}}">{{j.title}}</a></li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </li>
+            {{/if}}
+            {{#if equals i.type 4}}
+            <li class="nav-item {{#if i.active}}active{{/if}}">
+                <a class="nav-link" data-bs-toggle="collapse" href="#{{i.href}}" aria-expanded="{{#if i.active}}true{{else}}false{{/if}}"
+                    aria-controls="{{i.href}}">
+                    <i class="{{i.icon}}"></i>
+                    <span class="menu-title fs-5">{{i.title}}</span>
+                    <i class="menu-arrow"></i> 
+                </a> 
+                <div class="collapse {{#if i.active}}show{{/if}}" id="{{i.href}}">
+                    <ul class="nav flex-column sub-menu">
+                        {{#each j in i.child}}
+                        <li class="nav-item"> <a class="fs-6 nav-link {{#if j.active}}active fw-bolder{{/if}}" href="{{j.href}}">{{j.title}}</a></li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </li>
+            {{/if}}
+            {{#if equals i.type 5}}
+            <li class="nav-item {{#if i.active}}active{{/if}}">
+                <a class="nav-link" data-bs-toggle="collapse" href="#{{i.href}}" aria-expanded="{{#if i.active}}true{{else}}false{{/if}}"
+                    aria-controls="{{i.href}}">
+                    <i class="{{i.icon}}"></i>
+                    <span class="menu-title fs-5">{{i.title}}</span>
+                    <i class="menu-arrow"></i> 
+                </a> 
                 <div class="collapse {{#if i.active}}show{{/if}}" id="{{i.href}}">
                     <ul class="nav flex-column sub-menu">
                         {{#each j in i.child}}

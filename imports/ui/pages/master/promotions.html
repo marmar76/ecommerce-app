@@ -1,0 +1,81 @@
+<template name="promotionsHome">
+    <div class="">
+        <div class="row">
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-row">
+                            <h4 class="card-title">List Promotions</h4>
+                        </div>
+                        <div class="d-flex flex-row-reverse">
+                            <a href="/master-promotions-create"><button class="btn btn-primary">+ Add Promotion</button></a>
+                        </div>
+                        <p class="card-description">
+
+                        </p>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Promotion Name</th>
+                                        <th>Starting Date</th>
+                                        <th>Expired Date</th>
+                                        <th>Description</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each promotions}}
+                                        <tr>
+                                            <td class="py-1"> {{name}} </td>
+                                            <td> Herman Beck </td>
+                                            <td>  </td>
+                                            <td>$ 77.99</td>
+                                            <td><button name="delete">delete</button></td>
+                                        </tr> 
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</template>
+<template name="promotionsCreatePage">
+    <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Create New Promotion</h4>
+                    <p class="card-description">
+                        
+                    </p>
+                    <div class="mb-3 form-group">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="promotionsName" placeholder="promotion name" required>
+                    </div> 
+                    <div class="mb-3 form-group">
+                        <div class="d-flex">
+                            <div class="form-group flex-fill pe-2">
+                                <label for="">Starting Date</label>
+                                <input type="date" class="form-control" id="start">
+                            </div>
+                            <div class="form-group flex-fill">
+                                <label for="">Expired Date</label>
+                                <input type="date" class="form-control" id="end">
+                            </div>
+                        </div>  
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <input type="text" class="form-control" id="promotionsDescription" required>
+                    </div>  
+                    <button id="submit" type="submit" class="btn btn-primary me-2">Submit</button> 
+                </div>
+            </div>
+        </div>
+    </div>  
+</template>

@@ -1,0 +1,35 @@
+<template name="subCategoriesHome">
+
+</template>
+<template name="subCategoriesCreatePage">
+  <div class="row">
+      <div class="col-12 grid-margin stretch-card">
+          <div class="card">
+              <div class="card-body">
+                  <h4 class="card-title">Create New Sub Category</h4>
+                  <p class="card-description">
+                      
+                  </p>
+                  <div class="mb-3 form-group">
+                      <label for="Category" class="form-label">Category</label>
+                      <select name="select-roles" id="categories" class="form-control">
+                        {{#each categories}}
+                        <option value={{_id}}>{{name}}</option>
+                        {{/each}}
+                      </select>
+                  </div>
+                  <div class="mb-3">
+                      <label for="name" class="form-label">Name</label>
+                      <input type="text" class="form-control" id="subCategoryName" required>
+                  </div>
+                  <div class="mb-3">
+                      <label for="description" class="form-label">Description</label>
+                      <input type="text" class="form-control" id="subcategoriesDescription" required>
+                  </div> 
+                  <button id="submit" type="submit" class="btn btn-primary me-2">Submit</button> 
+              </div>
+          </div>
+      </div>
+  </div> 
+</template>
+

@@ -11,5 +11,9 @@ Meteor.methods({
         check(param.startDate, Date)
         check(param.expiredDate, Date)
         return Promotions.insert(param)
-    }
+    },
+    'getAllPromotion'(){
+        const promotion = Promotions.find().fetch();
+        return promotion;
+    },
 })

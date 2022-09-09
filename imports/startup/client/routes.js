@@ -76,45 +76,6 @@ FlowRouter.route('/master-users', {
     },
     
 })
-//=====================================================
-//=====================================================
-FlowRouter.route('/items/create', {
-    name: 'itemCreatePage',
-    template: 'itemCreatePage',
-    action() {
-      this.render('itemCreatePage');
-    },
-})
-//=====================================================
-//                  CATEGORY
-//=====================================================
-FlowRouter.route('/categories/create', {
-    name: 'categoryCreatePage',
-    template: 'categoryCreatePage',
-    action() {
-      this.render('categoryCreatePage');
-    },
-})
-
-FlowRouter.route('/subcategories/create', {
-    name: 'subcategoryCreatePage',
-    template: 'subcategoryCreatePage',
-    action() {
-      this.render('subcategoryCreatePage');
-    },
-})
-
-//=====================================================
-//                  PROMOTION     
-//=====================================================
-FlowRouter.route('/promotions/create', {
-    name: 'promotionCreatePage',
-    template: 'promotionCreatePage',
-    action() {
-      this.render('promotionCreatePage');
-    },
-})
-
 FlowRouter.route('/master-users-create', {
     name: 'userCreatePage',
     template: 'userCreatePage',
@@ -127,3 +88,64 @@ FlowRouter.route('/master-users-create', {
     },
     
 })
+
+//=====================================================
+//                  ITEM
+//=====================================================
+FlowRouter.route('/master-items', {
+    name: 'itemsHome',
+    template: 'itemsHome',
+    action(){
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {});
+        }
+        this.render('masterContainer', 'itemsHome')
+        
+    },
+    
+})
+FlowRouter.route('/master-items-create', {
+    name: 'itemsCreatePage',
+    template: 'itemsCreatePage',
+    action() {
+      this.render('masterContainer','itemsCreatePage');
+    },
+})
+//=====================================================
+//                  CATEGORY
+//=====================================================
+FlowRouter.route('/master-categories-create', {
+    name: 'categoriesCreatePage',
+    template: 'categoriesCreatePage',
+    action() {
+      this.render('masterContainer', 'categoriesCreatePage');
+    },
+})
+
+FlowRouter.route('/master-subcategories-create', {
+    name: 'subCategoriesCreatePage',
+    template: 'subCategoriesCreatePage',
+    action() {
+      this.render('masterContainer', 'subCategoriesCreatePage');
+    },
+})
+
+//=====================================================
+//                  PROMOTION     
+//=====================================================
+FlowRouter.route('/master-promotions', {
+    name: 'promotionsHome',
+    template: 'promotionsHome',
+    action() {
+      this.render('masterContainer', 'promotionsHome');
+    },
+})
+FlowRouter.route('/master-promotions-create', {
+    name: 'promotionsCreatePage',
+    template: 'promotionsCreatePage',
+    action() {
+      this.render('masterContainer', 'promotionsCreatePage');
+    },
+})
+
+

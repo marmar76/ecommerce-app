@@ -7,8 +7,13 @@ import {
 import {
   FlowRouter
 } from 'meteor/ostrio:flow-router-extra';
+
 import './master.html';
-import './users.html';
+import './users.html';    
+import './items.html';    
+import './promotions.html';    
+import './subCategories.html';    
+import './categories.html';    
 
 // import '../../assets/master/vendors/feather/feather.css'
 import '../../assets/master/vendors/mdi/css/materialdesignicons.min.css'
@@ -29,8 +34,7 @@ import '../../assets/master/js/todolist.js'
 import '../../assets/master/js/jquery.cookie.js'
 import '../../assets/master/js/Chart.roundedBarCharts.js'
 // import './js/template.js'
-import '../../assets/master/js/dashboard.js'
-
+import '../../assets/master/js/dashboard.js' 
 const navbar = [
   {
       type: 1,
@@ -61,7 +65,60 @@ const navbar = [
           //     title: 'Berhasil'
           // },
       ]
-  }
+  },
+  {
+      type: 3,
+      title: 'Item',
+      icon: 'menu-icon mdi mdi-account',
+      href: 'master-items',
+      child: [
+          {
+              href: '/master-items',
+              title: 'List Item'
+          },
+          {
+              href: '/master-items-create',
+              title: 'Create Item'
+          }
+      ]
+  },
+  {
+      type: 4,
+      title: 'Category',
+      icon: 'menu-icon mdi mdi-account',
+      href: 'master-categories',
+      child: [
+          {
+              href: '/master-categories',
+              title: 'List categories'
+          },
+          {
+              href: '/master-categories-create',
+              title: 'Create categories'
+          },
+          {
+              href: '/master-subcategories-create',
+              title: 'Create sub-categories'
+          },
+      ]
+  },
+  
+  {
+      type: 5,
+      title: 'Promotion',
+      icon: 'menu-icon mdi mdi-account',
+      href: 'master-promotions',
+      child: [
+          {
+              href: '/master-promotions',
+              title: 'List Promotion'
+          },
+          {
+              href: '/master-promotions-create',
+              title: 'Create Promotion'
+          }
+      ]
+  },
 ]
 
 function autoText(e) {
@@ -354,6 +411,9 @@ Template.contentExample.events({
   }
 });
 
+//===============================================
+//                    USER
+//===============================================
 Template.usersHome.onCreated(function () {  
   document.title = "Mastah User"
 })
@@ -361,4 +421,215 @@ Template.usersHome.onCreated(function () {
 Template.usersHome.onRendered(function () {  
   // initNav("master-users-nav");
   initPage()
+})
+
+Template.userCreatePage.onCreated(function () {
+  
+})
+
+
+Template.userCreatePage.events({
+  'click #submit'(e, t){ 
+    const user_username = $(username).val();
+    const user_email = $(email).val();
+    const user_password = $(password).val();
+    const user_name = $(nameuser).val();
+    const user_address = $(address).val();
+    const user_gender = $('input[name="gender"]:checked').val() == "true" ? true : false; 
+    const user_dob =new Date ($(dob).val());
+    console.log(user_gender);
+    const profile = {name: user_name, address: user_address, gender: user_gender, dob: user_dob};
+    const data = {username: user_username, email: user_email, password: user_password, profile: profile};
+    console.log(profile);
+    console.log(data);
+    Meteor.call('registerAdmin', data, function (err,res) {
+      if(err){
+        failAlert(err);
+      }
+      else{
+        successAlertBack();
+      } 
+    });
+  }
+});
+
+//===============================================
+//                    ITEM
+//===============================================
+Template.itemsCreatePage.onCreated(function () {  
+  const self=this;
+  this.item = new ReactiveVar();
+})
+
+Template.itemsCreatePage.helpers({
+
+
+})
+
+Template.itemsCreatePage.events({  
+  'click #submit'(e,t){
+      const name = $(itemsName).val();
+      const price = +$(itemsPrice).val();
+      const description = $(itemsDescription).val();
+      const status = true;
+      const data = { name, price,description,status}; 
+      if(name.length === 0){
+        failAlert("Nama tidak boleh kosong!")
+      }
+      else if(price < 1 || price.length === 0){
+        failAlert("Price tidak boleh kosong!")
+      }
+      else{
+        Meteor.call('createItem', data, function (error, res) {  
+          console.log(error);
+          console.log(res);
+          if(error){
+            failAlert(error);
+          }
+          else{
+            successAlertBack();
+          }
+        }) 
+      }
+
+  }
+})
+
+//===============================================
+//                    CATEGORY
+//===============================================
+Template.categoriesCreatePage.onCreated(function () {  
+  const self=this;
+  this.category = new ReactiveVar();
+})
+
+Template.categoriesCreatePage.helpers({
+
+})
+
+Template.categoriesCreatePage.events({  
+  'click #submit'(e,t){
+      const name = $(categoryName).val();  
+      const status = true;
+      const data = { name, status}; 
+      if(name.length === 0){
+        failAlert("Nama tidak boleh kosong!")
+      } 
+      else{
+        Meteor.call('createCategory', data, function (error, res) {  
+          console.log(error);
+          console.log(res);
+          if(error){
+            failAlert(error);
+          }
+          else{
+            successAlertBack();
+          }
+        }) 
+      }
+
+  }
+})
+
+Template.subCategoriesCreatePage.onCreated(function () {  
+  const self=this;
+  this.subCategory = new ReactiveVar();
+  Meteor.call('getAllCategory', function (err,res) {
+      self.subCategory.set(res);
+  });
+})
+
+Template.subCategoriesCreatePage.helpers({
+  categories(){
+      return Template.instance().subCategory.get();
+  }
+
+})
+
+Template.subCategoriesCreatePage.events({  
+  'click #submit'(e,t){
+      const getCategory = t.subCategory.get();
+      const name = $(subCategoryName).val();  
+      const categoryId = $(categories).val();
+      const status = true;
+      const category = getCategory.find((x)=>{
+          return x._id == categoryId
+      });
+      const categoryName = category.name;
+      const data = { name, status, categoryId, categoryName}; 
+      if(name.length === 0){
+        failAlert("Nama tidak boleh kosong!")
+      } 
+      else{
+        Meteor.call('createSubCategory', data, function (error, res) {  
+          console.log(error);
+          console.log(res);
+          if(error){
+            failAlert(error);
+          }
+          else{
+            successAlertBack();
+          }
+        }) 
+      }
+
+  }
+})
+//===============================================
+//                    PROMOTION
+//===============================================
+Template.promotionsHome.onCreated(function () {  
+  const self=this;
+  this.promotion = new ReactiveVar();
+  Meteor.call('getAllPromotion', function (err,res) {
+    self.promotion.set(res);
+  });  
+})
+
+Template.promotionsHome.helpers({
+  promotions(){
+      return Template.instance().promotion.get(); 
+  }
+
+})
+
+Template.promotionsCreatePage.onCreated(function () {  
+  const self=this;
+  this.promotion = new ReactiveVar(); 
+})
+
+Template.promotionsCreatePage.helpers({ 
+})
+
+Template.promotionsCreatePage.events({  
+  'click #submit'(e,t){
+      const name = $(promotionsName).val(); 
+      const description = $(promotionsDescription).val();
+      const status = true;
+      const startDate = new Date($("#start").val());
+      const expiredDate = new Date($("#end").val());
+      const data = { name, startDate, expiredDate, description, status}; 
+      if(name.length === 0){
+        failAlert("Nama tidak boleh kosong!")
+      }
+      else if (!(startDate < expiredDate)) {
+          failAlert("Tanggal Start harus kurang dari tanggal Expired")
+      }
+      else if(description.length == 0){
+          failAlert("Description tidak boleh kosong")
+      }
+      else{
+        Meteor.call('createPromotion', data, function (error, res) {  
+          console.log(error);
+          console.log(res);
+          if(error){
+            failAlert(error);
+          }
+          else{
+            successAlertBack();
+          }
+        }) 
+      }
+
+  }
 })
