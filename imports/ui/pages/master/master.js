@@ -17,7 +17,7 @@ import '../../assets/master/vendors/typicons/typicons.css'
 // import '../../assets/master/vendors/simple-line-icons/css/simple-line-icons.css'
 import '../../assets/master/vendors/css/vendor.bundle.base.css'
 import '../../assets/master/js/select.dataTables.min.css'
-import '../../assets/master/css/vertical-layout-light/style.css'
+import '../../assets/master/css/vertical-layout-light/style.css' 
 
 import '../../assets/master/vendors/js/vendor.bundle.base.js'
 import '../../assets/master/vendors/chart.js/Chart.min.js'
