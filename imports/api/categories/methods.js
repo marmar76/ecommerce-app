@@ -17,7 +17,17 @@ Meteor.methods({
 
     'getAllCategory'(){
         const category = Categories.find().fetch();
-        return category;
-    }
+        return category.map(function (x) {
+            x.subcategory = SubCategories.find({
+                categoryId:x._id
+            }).fetch();    
+            return x;
+        })
+        
+    },
+    // 'getAllSubCategory'(id){
+    //     const subcategory = SubCategories.find(function (x) {x.categoryId == id  }).fetch();
+    //     return subcategory;
+    // }
 
 })

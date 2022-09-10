@@ -456,13 +456,115 @@ Template.userCreatePage.events({
 //===============================================
 //                    ITEM
 //===============================================
+//ini codingan untuk client side
+// Template.itemsHome.onCreated(function () {  
+//   const self=this;
+//   this.item = new ReactiveVar();
+//   this.category = new ReactiveVar();
+//   this.subcategory = new ReactiveVar(); 
+//   this.now = new ReactiveVar(1);
+//   Meteor.call('getAllCategory', function (err,res) {
+//     self.category.set(res);
+//     console.log(res);
+// });
+// })
+
+// Template.itemsHome.helpers({
+//   categories(){
+//     return Template.instance().category.get();
+//   },
+//   now(){
+//     return Template.instance().now.get();
+//   },
+//   subcategories(){ 
+//     const category = Template.instance().category.get();
+//     if(category){
+//       const now = +Template.instance().now.get();
+//       console.log(category[now].subcategory);
+//       return category[now].subcategory
+//     }
+//     return [];
+//   }
+// })
+// Template.itemsHome.events({
+//   'click .tes'(e,t){
+//     const click = $(e.target).val();
+//     t.now.set(click)
+
+//   }
+// });
+
+Template.itemsHome.onCreated(function () {  
+  const self=this;
+  this.item = new ReactiveVar();
+  this.category = new ReactiveVar();
+  this.subcategory = new ReactiveVar(); 
+  this.now = new ReactiveVar(1);
+  Meteor.call('getAllCategory', function (err,res) {
+    self.category.set(res);
+    console.log(res);
+});
+})
+
+Template.itemsHome.helpers({
+  categories(){
+    return Template.instance().category.get();
+  },
+  now(){
+    return Template.instance().now.get();
+  },
+  subcategories(){ 
+    const category = Template.instance().category.get();
+    if(category){
+      const now = +Template.instance().now.get();
+      console.log(category[now].subcategory);
+      return category[now].subcategory
+    }
+    return [];
+  }
+})
+Template.itemsHome.events({
+  'click .tes'(e,t){
+    const click = $(e.target).val();
+    t.now.set(click)
+
+  }
+});
+
 Template.itemsCreatePage.onCreated(function () {  
   const self=this;
   this.item = new ReactiveVar();
+  this.category = new ReactiveVar();
+  this.subcategory = new ReactiveVar(); 
+  this.now = new ReactiveVar(1);
+  Meteor.call('getAllCategory', function (err,res) {
+    self.category.set(res);
+    console.log(res);
+  });
 })
+Template.itemsCreatePage.onRendered(function () {
+   const click = $('.selectedCategory').val();
+  console.log(click);
+  Template.instance().now.set(click)
+
+});
 
 Template.itemsCreatePage.helpers({
-
+  categories(){
+    return Template.instance().category.get();
+  },
+  now(){
+    return Template.instance().now.get();
+  },
+  subcategories(){ 
+    const category = Template.instance().category.get();
+    if(category){
+      const now = +Template.instance().now.get();
+      console.log(category[now].subcategory);
+      return category[now].subcategory
+    }
+    return [];
+  }
 
 })
 
@@ -471,6 +573,11 @@ Template.itemsCreatePage.events({
       const name = $(itemsName).val();
       const price = +$(itemsPrice).val();
       const description = $(itemsDescription).val();
+      const subcategoryId = $(subcategories).val();
+      // const subcategoryNama =
+      const categoryId = $(idcategory).val();
+      // const categoryNama = 
+      console.log(categoryId);
       const status = true;
       const data = { name, price,description,status}; 
       if(name.length === 0){
@@ -491,6 +598,12 @@ Template.itemsCreatePage.events({
           }
         }) 
       }
+
+  },
+  'change .selectedCategory'(e,t){
+    const click = $(e.target).val();
+    console.log(click);
+    t.now.set(click)
 
   }
 })
