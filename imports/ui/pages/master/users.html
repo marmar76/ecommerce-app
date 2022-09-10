@@ -10,6 +10,33 @@
                         <div class="d-flex flex-row-reverse">
                             <a href="/master-users-create"><button class="btn btn-primary">+ Add User</button></a>
                         </div>
+                        <div class="mt-3 d-flex w-100">
+                            <div class="w-100 mx-2">
+                                <label for=""></label>
+                                <input type="text" class="form-control filtering" id="search" placeholder="Search User">
+                            </div>
+                        </div>
+                        <div class="2-50 mx-2 mt-3">
+                            <label for="">Order By</label>
+                            <select class="form-control filtering" name="" id="sort">
+                                <option value="1">Name Ascending</option>
+                                <option value="2">Name Descending</option>
+                                <option value="3">Join Date Ascending</option>
+                                <option value="4">Join Date Descending</option>
+                            </select>
+                        </div>
+                        <div class="form-group mt-3 d-flex mx-1">
+                            <div class="mx-1">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input filtering" type="checkbox" id="is-active" checked>
+                                    <label class="form-check-label" for="is-active">Active</label>
+                                  </div>
+                            </div>
+                            <div class="mx-1">
+                                
+                            </div>
+
+                        </div>
                         <p class="card-description">
 
                         </p>
@@ -17,140 +44,22 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>User</th>
-                                        <th>First name</th>
-                                        <th>Progress</th>
-                                        <th> Amount</th>
-                                        <th>Deadline</th>
+                                        <th>Username</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Join Date</th>
+                                        <!-- <th>Deadline</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {{#each users}}
                                     <tr>
-                                        <td class="py-1">
-                                            <img src="../../images/faces/face1.jpg" alt="image" />
-                                        </td>
-                                        <td> Herman Beck </td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-success" role="progressbar"
-                                                    style="width: 25%" aria-valuenow="25" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td>$ 77.99</td>
-                                        <td>May 15, 2015</td>
+                                        <td>{{username}}</td>
+                                        <td>{{name}}</td>
+                                        <td>{{emails}}</td>
+                                        <td>{{formatDateIDN createdAt}}</td>
                                     </tr>
-                                    <tr>
-                                        <td class="py-1">
-                                            <img src="../../images/faces/face2.jpg" alt="image" />
-                                        </td>
-                                        <td>Messsy Adam</td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-danger" role="progressbar"
-                                                    style="width: 75%" aria-valuenow="75" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td>$245.30</td>
-                                        <td>July 1, 2015</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-1">
-                                            <img src="../../images/faces/face3.jpg" alt="image" />
-                                        </td>
-                                        <td>John Richards</td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-warning" role="progressbar"
-                                                    style="width: 90%" aria-valuenow="90" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td>$138.00</td>
-                                        <td>Apr 12, 2015</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-1">
-                                            <img src="../../images/faces/face4.jpg" alt="image" />
-                                        </td>
-                                        <td> Peter Meggik </td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-primary" role="progressbar"
-                                                    style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            $ 77.99
-                                        </td>
-                                        <td>
-                                            May 15, 2015
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-1">
-                                            <img src="../../images/faces/face5.jpg" alt="image" />
-                                        </td>
-                                        <td>
-                                            Edward
-                                        </td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-danger" role="progressbar"
-                                                    style="width: 35%" aria-valuenow="35" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            $ 160.25
-                                        </td>
-                                        <td>
-                                            May 03, 2015
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-1">
-                                            <img src="../../images/faces/face6.jpg" alt="image" />
-                                        </td>
-                                        <td>
-                                            John Doe
-                                        </td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-info" role="progressbar" style="width: 65%"
-                                                    aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            $ 123.21
-                                        </td>
-                                        <td>
-                                            April 05, 2015
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-1">
-                                            <img src="../../images/faces/face7.jpg" alt="image" />
-                                        </td>
-                                        <td>
-                                            Henry Tom
-                                        </td>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-warning" role="progressbar"
-                                                    style="width: 20%" aria-valuenow="20" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            $ 150.00
-                                        </td>
-                                        <td>
-                                            June 16, 2015
-                                        </td>
-                                    </tr>
+                                    {{/each}}
                                 </tbody>
                             </table>
                         </div>
@@ -194,13 +103,13 @@
                     <label for="username" class="form-label">Gender</label>
                     <div class="d-flex">
                         <div class="form-check me-2">
-                            <input class="form-check-input" type="radio" name="gender" id="laki" value="true" checked>
+                            <input class="form-check-input" type="radio" name="gender" id="laki" value="m" checked>
                             <label class="form-check-label" for="gender">
                                 Laki
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gender" id="perempuan" value="false">
+                            <input class="form-check-input" type="radio" name="gender" id="perempuan" value="f">
                             <label class="form-check-label" for="gender" >
                                 Perempuan
                             </label>
