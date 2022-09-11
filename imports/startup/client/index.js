@@ -17,6 +17,9 @@ import '../../../imports/ui/stylesheets/global/bootstrap.min.css'
 
 import './routes.js';
 
+isValidDate = function(d) {
+    return d instanceof Date && !isNaN(d);
+}
 
 function basicStyle(message, type) {
     let style = {
