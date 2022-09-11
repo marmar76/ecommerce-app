@@ -496,15 +496,31 @@ Template.userCreatePage.events({
 
 Template.itemsHome.onCreated(function () {  
   const self=this;
+  self.filtering = new ReactiveVar(
+    undefined
+  )
   this.item = new ReactiveVar();
   this.category = new ReactiveVar();
   this.subcategory = new ReactiveVar(); 
   this.now = new ReactiveVar(1);
   Meteor.call('getAllCategory', function (err,res) {
-    self.category.set(res);
-    console.log(res);
+    self.category.set(res); 
+  }); 
+  Meteor.call('getAllSubCategory', function (err,res) {
+    self.subcategory.set(res); 
+  }); 
+  Meteor.call('getAllItem', self.filtering.get(), function (err,res) { 
+    self.item.set(res);  
+  })
+    
+  });
+
+Template.itemsHome.onRendered(function () {
+  const click = $('.selectedCategory').val();
+  console.log(click);
+  Template.instance().now.set(click)
+
 });
-})
 
 Template.itemsHome.helpers({
   categories(){
@@ -513,22 +529,57 @@ Template.itemsHome.helpers({
   now(){
     return Template.instance().now.get();
   },
-  subcategories(){ 
+  subcategories(){  
     const category = Template.instance().category.get();
     if(category){
-      const now = +Template.instance().now.get();
-      console.log(category[now].subcategory);
+      const now = +Template.instance().now.get(); 
       return category[now].subcategory
     }
     return [];
+  },
+  items(){
+    const items = Template.instance().item.get();
+    if(items){
+      return items;
+    }
   }
 })
 Template.itemsHome.events({
-  'click .tes'(e,t){
+  'change .selectedCategory'(e,t){
     const click = $(e.target).val();
-    t.now.set(click)
-
-  }
+    console.log(click);
+    t.now.set(click) 
+  },
+  'change .filtering'(e,t){
+    const filter = $('#filter').val();
+    // const sort = $('#sort').val();
+    const filtercategory = $('#filteridcategory').val();
+    const filtersubcategory = $('#filtersubcategory').val();
+    console.log(filtercategory);
+    console.log(filtersubcategory);
+    t.filtering.set({
+      filter, filtercategory, filtersubcategory
+    })
+    Meteor.call('getAllItem', {
+      filter, filtercategory, filtersubcategory
+    }, function (err,res) {
+      t.item.set(res);
+    })
+  },
+  'input .filtering'(e,t){
+    const filter = $('#filter').val();
+    // const sort = $('#sort').val();
+    const filtercategory = $('#filtercategory').val();
+    const filtersubcategory = $('#filtersubcategory').val();
+    t.filtering.set({
+      filter, filtercategory, filtersubcategory
+    })
+    Meteor.call('getAllItem', {
+      filter, filtercategory, filtersubcategory
+    }, function (err,res) {
+      t.item.set(res);
+    })
+  },
 });
 
 Template.itemsCreatePage.onCreated(function () {  
@@ -538,12 +589,15 @@ Template.itemsCreatePage.onCreated(function () {
   this.subcategory = new ReactiveVar(); 
   this.now = new ReactiveVar(1);
   Meteor.call('getAllCategory', function (err,res) {
-    self.category.set(res);
+    self.category.set(res); 
+  });
+  Meteor.call('getAllSubCategory', function (err,res) {
+    self.subcategory.set(res);
     console.log(res);
   });
 })
 Template.itemsCreatePage.onRendered(function () {
-   const click = $('.selectedCategory').val();
+  const click = $('.selectedCategory').val();
   console.log(click);
   Template.instance().now.set(click)
 
@@ -564,8 +618,7 @@ Template.itemsCreatePage.helpers({
       return category[now].subcategory
     }
     return [];
-  }
-
+  },
 })
 
 Template.itemsCreatePage.events({  
@@ -573,13 +626,22 @@ Template.itemsCreatePage.events({
       const name = $(itemsName).val();
       const price = +$(itemsPrice).val();
       const description = $(itemsDescription).val();
+      const weight = +$(itemsWeight).val();
+      const stock = +$(itemsStock).val();
+      const condition = $(itemsCondition).val();
       const subcategoryId = $(subcategories).val();
-      // const subcategoryNama =
-      const categoryId = $(idcategory).val();
-      // const categoryNama = 
-      console.log(categoryId);
+      const categoryId = $(idcategory).val(); 
+      const getcategories =  Template.instance().category.get()
+      let categoryName;
+      for (let i = 0; i < getcategories.length; i++) {
+          if(getcategories[i]._id == categoryId){
+            categoryName = getcategories[i].name ;
+          }
+          
+      } ; 
       const status = true;
-      const data = { name, price,description,status}; 
+      const data = { name, price,description, weight, stock, condition, subcategoryId, categoryId, categoryName,status}; 
+      console.log(data);
       if(name.length === 0){
         failAlert("Nama tidak boleh kosong!")
       }

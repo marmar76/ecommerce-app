@@ -25,9 +25,12 @@ Meteor.methods({
         })
         
     },
-    // 'getAllSubCategory'(id){
-    //     const subcategory = SubCategories.find(function (x) {x.categoryId == id  }).fetch();
-    //     return subcategory;
+    'getAllSubCategory'(){
+        const subcategory = SubCategories.find().fetch();
+        return subcategory;
+    },
+    // 'getDetailSubCategory'(id){
+
     // }
 
 })
