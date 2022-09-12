@@ -1,0 +1,31 @@
+[{
+  "_id": "MpMyGWCMEuHGD4ybu",
+  "name": "Hp",
+  "status": true,
+  "categoryId": "kSjX9ZFP36YQyvNnh",
+  "categoryName": "Electronic"
+},{
+  "_id": "tZJMRoikc2TrpiNzu",
+  "name": "Chaney Flowers",
+  "status": true,
+  "categoryId": "4EWpaXBTAGgTFqugL",
+  "categoryName": "Makanan"
+},{
+  "_id": "C42DaFw8wSYrtabAv",
+  "name": "vga",
+  "status": true,
+  "categoryId": "kSjX9ZFP36YQyvNnh",
+  "categoryName": "Electronic"
+},{
+  "_id": "ZCRhnoiacnbcLEQSo",
+  "name": "cpu",
+  "status": true,
+  "categoryId": "kSjX9ZFP36YQyvNnh",
+  "categoryName": "Electronic"
+},{
+  "_id": "ZuwEmARq3FYd7NC9E",
+  "name": "living room",
+  "status": true,
+  "categoryId": "Q99ykRnj6qmyZZgBt",
+  "categoryName": "Furniture"
+}]
