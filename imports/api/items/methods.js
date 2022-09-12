@@ -30,13 +30,15 @@ Meteor.methods({
         //     sort.typeName = -1
         // }
             thisFilter.status = true
-            if(+(filtering.filtercategory) != -1){
+            if((filtering.filtercategory) && (+filtering.filtercategory) != -1){
                 thisFilter.categoryId = filtering.filtercategory.toString();
+                if((filtering.filtersubcategory)  && (+filtering.filtersubcategory) != -1){
+                    thisFilter.subcategoryId = filtering.filtersubcategory.toString();
+                }
             }
-            if(+(filtering.filtersubcategory) != -1){
-                thisFilter.subcategoryId = filtering.filtersubcategory.toString();
-            }
+            
         }
+        console.log(thisFilter);
         const item = Items.find(thisFilter, {
         sort: sort
         }).fetch();
@@ -46,5 +48,15 @@ Meteor.methods({
             })
         }
         return item;
+    },
+    'getOneItem'(id){
+        check(id,String);
+        return Items.findOne({_id: id});
+    }, 
+    'deleteItem'(id){
+        check(id,String)
+        return Items.update({_id: id}, {$set: {
+            status: false
+        }})
     }
 })

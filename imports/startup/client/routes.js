@@ -111,6 +111,22 @@ FlowRouter.route('/master-items-create', {
       this.render('masterContainer','itemsCreatePage');
     },
 })
+
+FlowRouter.route('/master-items/:_id/details', {
+    name: 'itemsDetailPage',
+    template: 'itemsDetailPage',
+    action() {
+      this.render('masterContainer','itemsDetailPage');
+    },
+})
+
+FlowRouter.route('/master-items/:_id/edit', {
+    name: 'itemsEditPage',
+    template: 'itemsEditPage',
+    action() {
+      this.render('masterContainer','itemsEditPage');
+    },
+})
 //=====================================================
 //                  CATEGORY
 //=====================================================

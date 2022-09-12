@@ -67,7 +67,7 @@ const navbar = [
       ]
   },
   {
-      type: 2,
+      type: 3,
       title: 'Item',
       icon: 'menu-icon mdi mdi-account',
       href: 'master-items',
@@ -83,7 +83,7 @@ const navbar = [
       ]
   },
   {
-      type: 2,
+      type: 4,
       title: 'Category',
       icon: 'menu-icon mdi mdi-account',
       href: 'master-categories',
@@ -102,8 +102,9 @@ const navbar = [
           },
       ]
   },
+  
   {
-      type: 2,
+      type: 5,
       title: 'Promotion',
       icon: 'menu-icon mdi mdi-account',
       href: 'master-promotions',
@@ -415,96 +416,11 @@ Template.contentExample.events({
 //===============================================
 Template.usersHome.onCreated(function () {  
   document.title = "Mastah User"
-  Meteor.subscribe('users.all', function () {  
-    console.log("Subscribe Users");
-  })
-  this.filtering = new ReactiveVar({
-      search: '',
-      sort: '1',
-      status: true
-  })
 })
 
 Template.usersHome.onRendered(function () {  
   // initNav("master-users-nav");
-  // initPage()
-
-})
-Template.usersHome.helpers({
-  users(){
-    const filtering = Template.instance().filtering.get()
-    const $or = [
-      {
-        name: {$regex: filtering.search.toLowerCase(), $options: 'i'} 
-      },
-      {
-        username: {$regex: filtering.search.toLowerCase(), $options: 'i'} 
-      },
-      // {
-      //   email: {$regex: filtering.search.toLowerCase(), $options: 'i'}
-      // }
-    ]
-    const sort = function () {  
-      const thisSort = filtering.sort
-      if(thisSort == 1){
-        return {name: 1}
-      }
-      else if(thisSort == 2){
-        return {name: -1}
-      }
-      else if(thisSort == 3){
-        return {createdAt: 1}
-      }
-      else if(thisSort == 4){
-        return {createdAt: -1}
-      }
-    }
-    // console.log(sort);
-    const users = Meteor.users.find({status: filtering.status, $or}, {
-      sort: sort()
-    }).fetch()
-    // console.log(users);
-    return users.map(function (x) {
-      if(x.emails && x.emails.length != 0){
-        x.emails = x.emails[0].address
-      }
-      return x
-    })
-  }
-
-})
-Template.usersHome.events({
-  'change .filtering'(e, t) {
-    const search = $('#search').val();
-    const sort = $('#sort').val();
-    const status = $('#is-active').is(':checked');
-    console.log({
-      search,
-      sort,
-      status
-    });
-    t.filtering.set({
-      search,
-      sort,
-      status
-    })
-  },
-  'input .filtering'(e, t) {
-    const search = $('#search').val();
-    const sort = $('#sort').val();
-    const status = $('#is-active').is(':checked');
-    console.log({
-      search,
-      sort,
-      status
-    });
-    t.filtering.set({
-      search,
-      sort,
-      status
-    })
-  },
-
+  initPage()
 })
 
 Template.userCreatePage.onCreated(function () {
@@ -519,26 +435,21 @@ Template.userCreatePage.events({
     const user_password = $(password).val();
     const user_name = $(nameuser).val();
     const user_address = $(address).val();
-    const user_gender = $('input[name="gender"]:checked').val(); 
-    const user_dob = new Date ($(dob).val());
-    // console.log(user_gender);
-    if(!user_username || !user_email || !user_password || !user_name || !user_address || !user_gender || !isValidDate(user_dob)){
-      failAlert("Please fill the blank")
-    }
-    else{
-      const profile = {name: user_name, address: user_address, gender: user_gender, dob: user_dob};
-      const data = {username: user_username, email: user_email, password: user_password};
-      // console.log(profile);
-      // console.log(data);
-      Meteor.call('registerAdmin', data, profile, function (err,res) {
-        if(err){
-          failAlert(err);
-        }
-        else{
-          successAlertBack();
-        } 
-      });
-    }
+    const user_gender = $('input[name="gender"]:checked').val() == "true" ? true : false; 
+    const user_dob =new Date ($(dob).val());
+    console.log(user_gender);
+    const profile = {name: user_name, address: user_address, gender: user_gender, dob: user_dob};
+    const data = {username: user_username, email: user_email, password: user_password, profile: profile};
+    console.log(profile);
+    console.log(data);
+    Meteor.call('registerAdmin', data, function (err,res) {
+      if(err){
+        failAlert(err);
+      }
+      else{
+        successAlertBack();
+      } 
+    });
   }
 });
 
@@ -613,7 +524,17 @@ Template.itemsHome.onRendered(function () {
 
 Template.itemsHome.helpers({
   categories(){
-    return Template.instance().category.get();
+    const category = Template.instance().category.get();
+    if(category){ 
+      for (let i = 0; i < category.length; i++) {  
+          if(category[i].subcategory.length < 1)
+          {
+            category.splice(i,1);
+          } 
+      }
+      // console.log(category);
+      return category;
+    }
   },
   now(){
     return Template.instance().now.get();
@@ -636,14 +557,22 @@ Template.itemsHome.helpers({
 Template.itemsHome.events({
   'change .selectedCategory'(e,t){
     const click = $(e.target).val();
-    console.log(click);
+    // console.log(click);
     t.now.set(click) 
   },
   'change .filtering'(e,t){
     const filter = $('#filter').val();
+    const category = Template.instance().category.get();
     // const sort = $('#sort').val();
-    const filtercategory = $('#filteridcategory').val();
+    const categoryIndex = $('#filtercategory').val();
+    console.log(categoryIndex);
     const filtersubcategory = $('#filtersubcategory').val();
+    let filtercategory;
+    for (let i = 0; i < category.length; i++) {
+      if(i == categoryIndex){ 
+        filtercategory = category[i]._id ;
+      }
+    }
     console.log(filtercategory);
     console.log(filtersubcategory);
     t.filtering.set({
@@ -672,8 +601,7 @@ Template.itemsHome.events({
 });
 
 Template.itemsCreatePage.onCreated(function () {  
-  const self=this;
-  this.item = new ReactiveVar();
+  const self=this; 
   this.category = new ReactiveVar();
   this.subcategory = new ReactiveVar(); 
   this.now = new ReactiveVar(1);
@@ -694,7 +622,17 @@ Template.itemsCreatePage.onRendered(function () {
 
 Template.itemsCreatePage.helpers({
   categories(){
-    return Template.instance().category.get();
+    const category = Template.instance().category.get();
+    if(category){ 
+      for (let i = 0; i < category.length; i++) {  
+          if(category[i].subcategory.length < 1)
+          {
+            category.splice(i,1);
+          } 
+      }
+      // console.log(category);
+      return category;
+    }
   },
   now(){
     return Template.instance().now.get();
@@ -703,11 +641,11 @@ Template.itemsCreatePage.helpers({
     const category = Template.instance().category.get();
     if(category){
       const now = +Template.instance().now.get();
-      console.log(category[now].subcategory);
+      // console.log(category[now].subcategory);
       return category[now].subcategory
     }
     return [];
-  },
+  },  
 })
 
 Template.itemsCreatePage.events({  
@@ -719,23 +657,32 @@ Template.itemsCreatePage.events({
       const stock = +$(itemsStock).val();
       const condition = $(itemsCondition).val();
       const subcategoryId = $(subcategories).val();
-      const categoryId = $(idcategory).val(); 
-      const getcategories =  Template.instance().category.get()
-      let categoryName;
-      for (let i = 0; i < getcategories.length; i++) {
-          if(getcategories[i]._id == categoryId){
-            categoryName = getcategories[i].name ;
-          }
-          
-      } ; 
+      const oneSubCategory =  Template.instance().subcategory.get().filter(function (x){
+        return x._id== subcategoryId
+      });   
+      const categoryId = oneSubCategory[0].categoryId;
+      const categoryName = oneSubCategory[0].categoryName;
+      const subcategoryName = oneSubCategory[0].name; 
       const status = true;
-      const data = { name, price,description, weight, stock, condition, subcategoryId, categoryId, categoryName,status}; 
+      const data = { name, price,description, weight, stock, condition, subcategoryId, subcategoryName, categoryId, categoryName,status}; 
       console.log(data);
       if(name.length === 0){
         failAlert("Nama tidak boleh kosong!")
       }
       else if(price < 1 || price.length === 0){
         failAlert("Price tidak boleh kosong!")
+      }
+      else if (stock < 1 || stock.length == 0)
+      {
+        failAlert("Stock tidak boleh kosong!")
+      }
+      else if (weight < 1 || weight.length == 0)
+      {
+        failAlert("weight tidak boleh kosong!")
+      }
+      else if (description.length == 0)
+      {
+        failAlert("description tidak boleh kosong!")
       }
       else{
         Meteor.call('createItem', data, function (error, res) {  
@@ -758,6 +705,100 @@ Template.itemsCreatePage.events({
 
   }
 })
+
+Template.itemsDetailPage.onCreated(function () {  
+  const self=this;
+  this.item = new ReactiveVar();
+  const paramId = FlowRouter.current().params._id 
+  Meteor.call('getOneItem', paramId, function (err,res) {
+    self.item.set(res);
+  })
+})
+
+Template.itemsDetailPage.helpers({
+  items(){
+    const items = Template.instance().item.get();
+    if(items){
+      return items;
+    }
+  }
+})
+
+Template.itemsDetailPage.events({
+
+})
+
+Template.itemsEditPage.onCreated(function () {  
+  const self=this;
+  const paramId = FlowRouter.current().params._id
+  this.item = new ReactiveVar();
+  this.category = new ReactiveVar();
+  this.subcategory = new ReactiveVar();  
+  this.now = new ReactiveVar(1);
+  Meteor.call('getAllCategory', function (err,res) {
+    self.category.set(res); 
+  });
+  Meteor.call('getAllSubCategory', function (err,res) {
+    self.subcategory.set(res); 
+  });
+  Meteor.call('getOneItem', paramId, function (err,res) {
+    self.item.set(res);
+  })  
+})
+
+Template.itemsEditPage.onRendered(function () {
+  const click = $('.selectedCategory').val();
+  console.log(click);
+  Template.instance().now.set(click)
+
+});
+
+Template.itemsEditPage.helpers({
+  items(){
+    const items = Template.instance().item.get();
+    if(items){
+      return items;
+    }
+  },
+  categories(){
+    const category = Template.instance().category.get();
+    if(category){ 
+      for (let i = 0; i < category.length; i++) {  
+          if(category[i].subcategory.length < 1)
+          {
+            category.splice(i,1);
+          } 
+      }
+      // console.log(category);
+      return category;
+    }
+  },
+  now(){
+    return Template.instance().now.get();
+  },
+  subcategories(){ 
+    // const item = Template.instance().item.get();
+    const category = Template.instance().category.get();
+    if(category){
+      const now = +Template.instance().now.get(); 
+      return category[now].subcategory
+    }
+    return [];
+  },  
+  equals(a,b){
+    return a == b;
+  }
+})
+
+Template.itemsEditPage.events({
+  'change .selectedCategory'(e,t){
+    const click = $(e.target).val();
+    console.log(click);
+    t.now.set(click)
+
+  }
+})
+
 
 //===============================================
 //                    CATEGORY
