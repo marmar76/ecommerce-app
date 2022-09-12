@@ -112,7 +112,7 @@ FlowRouter.route('/master-items-create', {
     },
 })
 
-FlowRouter.route('/master-items/:_id/details', {
+FlowRouter.route('/master-items-:_id-details', {
     name: 'itemsDetailPage',
     template: 'itemsDetailPage',
     action() {
@@ -120,13 +120,13 @@ FlowRouter.route('/master-items/:_id/details', {
     },
 })
 
-FlowRouter.route('/master-items/:_id/edit', {
-    name: 'itemsEditPage',
-    template: 'itemsEditPage',
-    action() {
-      this.render('masterContainer','itemsEditPage');
-    },
-})
+// FlowRouter.route('/master-items/:_id/edit', {
+//     name: 'itemsEditPage',
+//     template: 'itemsEditPage',
+//     action() {
+//       this.render('masterContainer','itemsEditPage');
+//     },
+// })
 //=====================================================
 //                  CATEGORY
 //=====================================================
