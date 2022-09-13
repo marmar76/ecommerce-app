@@ -617,6 +617,40 @@ Template.userCreatePage.events({
   }
 });
 
+Template.userDetailPage.onCreated(function () {  
+  const self=this;
+  this.user = new ReactiveVar(); 
+  const paramId = FlowRouter.current().params._id 
+  Meteor.call('getOneUser', paramId, function (err,res) {
+    self.user.set(res);
+  })
+})
+
+Template.userDetailPage.helpers({
+  user(){
+    const user = Template.instance().user.get();
+    if(user){
+      return user;
+    } 
+  },
+  equals(a, b){
+    return a == b;
+  }
+})
+
+Template.userDetailPage.events({
+  'click #banned'(e,t){
+    const param = FlowRouter.current().params._id;
+    Meteor.call('bannedUser', param, function (err,res) {
+      if(err){
+        failAlert(err);
+      }else{
+        successAlertBack();
+      }
+    });
+  }
+})
+
 //===============================================
 //                    ITEM
 //===============================================
@@ -660,9 +694,10 @@ Template.userCreatePage.events({
 
 Template.itemsHome.onCreated(function () {  
   const self=this;
-  self.filtering = new ReactiveVar(
-    undefined
-  )
+  self.filtering = new ReactiveVar({
+      filter: '',
+      sort: 1,
+    })
   this.item = new ReactiveVar();
   this.category = new ReactiveVar();
   this.subcategory = new ReactiveVar(); 
@@ -764,7 +799,7 @@ Template.itemsHome.events({
     }, function (err,res) {
       t.item.set(res);
     })
-  },
+  }, 
 });
 
 Template.itemsCreatePage.onCreated(function () {  
@@ -929,7 +964,18 @@ Template.itemsDetailPage.events({
   },
   'click .edit'(e, t){
     t.editing.set(true)
+  },
+  'click #delete'(e,t){
+    const param = FlowRouter.current().params._id;
+    Meteor.call('deleteItem', param, function (err,res) {
+      if(err){
+        failAlert(err);
+      }else{
+        successAlertBack();
+      }
+    });
   }
+  
 })
 
 // Template.itemsEditPage.onCreated(function () {  
@@ -997,6 +1043,64 @@ Template.itemsDetailPage.events({
 //===============================================
 //                    CATEGORY
 //===============================================
+Template.categoriesHome.onCreated(function () {  
+  const self=this;
+  self.category = new ReactiveVar();
+  self.subcategory = new ReactiveVar([]);
+  Meteor.call('getAllCategory',function (err,res) { 
+    self.category.set(res);
+    self.subcategory.set(res[0].subcategory);
+  });
+})
+
+Template.categoriesHome.onRendered(function () {   
+  
+})
+
+Template.categoriesHome.helpers({
+  categories(){
+    return Template.instance().category.get();
+  },
+  equals(a, b){
+    return a==b;
+  },
+  subcategory(){  
+    return Template.instance().subcategory.get();
+  }
+})
+
+Template.categoriesHome.events({  
+  'click #submit'(e,t){
+      const name = $(categoryName).val();  
+      const status = true;
+      const data = { name, status}; 
+      if(name.length === 0){
+        failAlert("Nama tidak boleh kosong!")
+      } 
+      else{
+        Meteor.call('createCategory', data, function (error, res) {  
+          console.log(error);
+          console.log(res);
+          if(error){
+            failAlert(error);
+          }
+          else{
+            successAlertBack();
+          }
+        }) 
+      }
+
+  },
+  'click .category_filter'(e,t){
+    const id = $(e.target).val(); 
+    for (const key of t.category.curValue) { 
+      if(key._id == id){ 
+        t.subcategory.set(key.subcategory);
+      }
+    }  
+  },
+})
+
 Template.categoriesCreatePage.onCreated(function () {  
   const self=this;
   this.category = new ReactiveVar();
@@ -1079,8 +1183,12 @@ Template.subCategoriesCreatePage.events({
 //===============================================
 Template.promotionsHome.onCreated(function () {  
   const self=this;
+  self.filtering = new ReactiveVar({
+    filter: '',
+    sort: 1,
+  })
   this.promotion = new ReactiveVar();
-  Meteor.call('getAllPromotion', function (err,res) {
+  Meteor.call('getAllPromotion',self.filtering.get() , function (err,res) {
     self.promotion.set(res);
   });  
 })
@@ -1092,12 +1200,61 @@ Template.promotionsHome.helpers({
 
 })
 
+Template.promotionsHome.events({
+  'change .filtering'(e,t){
+    const filter = $('#filter').val();  
+    const sort = $('#sort').val();
+    const filterstartdate = new Date ($('#startDate').val()); 
+    const filterexpireddate = new Date($('#expiredDate').val());  
+    const dateOption = $('#dateoption').val();; 
+    t.filtering.set({
+      filter, 
+      sort, 
+      filterstartdate: isValidDate(filterstartdate) ? filterstartdate : false,
+      filterexpireddate: isValidDate(filterexpireddate) ? filterexpireddate : false,
+      dateOption, 
+    })
+    Meteor.call('getAllPromotion', {
+      filter,
+      sort,
+      filterstartdate: isValidDate(filterstartdate) ? filterstartdate : false,
+      filterexpireddate: isValidDate(filterexpireddate) ? filterexpireddate : false,
+      dateOption, 
+    }, function (err,res) {
+      t.promotion.set(res);
+    })
+  },
+  'input .filtering'(e,t){
+    const filter = $('#filter').val(); 
+    const sort = $('#sort').val();
+    const filterstartdate = $('#startDate').val();
+    const filterexpireddate = $('#expiredDate').val();
+    const dateOption = "startDate";
+    t.filtering.set({
+      filter, 
+      sort,
+      filterstartdate: isValidDate(filterstartdate) ? filterstartdate : false,
+      filterexpireddate: isValidDate(filterexpireddate) ? filterexpireddate : false,
+      dateOption
+    })
+    Meteor.call('getAllPromotion', {
+      filter, 
+      sort,
+      filterstartdate: isValidDate(filterstartdate) ? filterstartdate : false, 
+      filterexpireddate: isValidDate(filterexpireddate) ? filterexpireddate : false,
+      dateOption
+    }, function (err,res) {
+      t.promotion.set(res);
+    })
+  }, 
+})
+
 Template.promotionsCreatePage.onCreated(function () {  
   const self=this;
   this.promotion = new ReactiveVar(); 
 })
 
-Template.promotionsCreatePage.helpers({ 
+Template.promotionsCreatePage.helpers({
 })
 
 Template.promotionsCreatePage.events({  
@@ -1130,5 +1287,86 @@ Template.promotionsCreatePage.events({
         }) 
       }
 
+  }
+})
+
+Template.promotionsDetailPage.onCreated(function () {  
+  const self=this;
+  this.promotion = new ReactiveVar(); 
+  const paramId = FlowRouter.current().params._id 
+  Meteor.call('getOnePromotion', paramId, function (err,res) {
+    self.promotion.set(res);
+  })
+})
+
+Template.promotionsDetailPage.helpers({
+  promotions(){
+    const promotion = Template.instance().promotion.get();
+    if(promotion){
+      return promotion;
+    }
+  }
+})
+
+Template.promotionsDetailPage.events({  
+  'click #delete'(e,t){
+    const param = FlowRouter.current().params._id;
+    Meteor.call('deletePromotion', param, function (err,res) {
+      if(err){
+        failAlert(err);
+      }else{
+        successAlertBack();
+      }
+    });
+  }
+})
+
+Template.promotionEditPage.onCreated(function () {  
+  const self=this;
+  this.promotion = new ReactiveVar(); 
+  const paramId = FlowRouter.current().params._id 
+  Meteor.call('getOnePromotion', paramId, function (err,res) {
+    self.promotion.set(res);
+  })
+})
+
+Template.promotionEditPage.helpers({
+  promotions(){
+    const promotion = Template.instance().promotion.get();
+    if(promotion){
+      return promotion;
+    }
+  },
+  formatHTML(context) {
+    return moment(context).format("YYYY-MM-DD");
+  }
+})
+
+Template.promotionEditPage.events({  
+  'click #edit'(e,t){
+    const param = FlowRouter.current().params._id;
+    const name = $('#promotionsName').val(); 
+    const description = $('#promotionsDescription').val(); 
+    const startDate = new Date($("#start").val());
+    const expiredDate = new Date($("#end").val());
+    const data = { name, startDate, expiredDate, description}; 
+    if(name.length === 0){
+      failAlert("Nama tidak boleh kosong!")
+    }
+    else if (!(startDate < expiredDate)) {
+        failAlert("Tanggal Start harus kurang dari tanggal Expired")
+    }
+    else if(description.length == 0){
+        failAlert("Description tidak boleh kosong")
+    }
+    else{
+      Meteor.call('editPromotion', data, param, function (err,res) {
+        if(err){
+          failAlert(err);
+        }else{
+          successAlertBack();
+        }
+      });
+    }
   }
 })

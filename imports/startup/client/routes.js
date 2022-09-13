@@ -88,6 +88,18 @@ FlowRouter.route('/master-users-create', {
     },
     
 })
+FlowRouter.route('/master-users-:_id-details', {
+    name: 'userDetailPage',
+    template: 'userDetailPage',
+    action(){
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {});
+        }
+        this.render('masterContainer', 'userDetailPage')
+        
+    },
+    
+})
 
 //=====================================================
 //                  ITEM
@@ -130,6 +142,14 @@ FlowRouter.route('/master-items-:_id-details', {
 //=====================================================
 //                  CATEGORY
 //=====================================================
+FlowRouter.route('/master-categories', {
+    name: 'categoriesHome',
+    template: 'categoriesHome',
+    action() {
+      this.render('masterContainer', 'categoriesHome');
+    },
+})
+
 FlowRouter.route('/master-categories-create', {
     name: 'categoriesCreatePage',
     template: 'categoriesCreatePage',
@@ -156,6 +176,7 @@ FlowRouter.route('/master-promotions', {
       this.render('masterContainer', 'promotionsHome');
     },
 })
+
 FlowRouter.route('/master-promotions-create', {
     name: 'promotionsCreatePage',
     template: 'promotionsCreatePage',
@@ -164,4 +185,18 @@ FlowRouter.route('/master-promotions-create', {
     },
 })
 
+FlowRouter.route('/master-promotions-:_id-details', {
+    name: 'promotionsDetailPage',
+    template: 'promotionsDetailPage',
+    action() {
+      this.render('masterContainer', 'promotionsDetailPage');
+    },
+})
 
+FlowRouter.route('/master-promotions-:_id-edit', {
+    name: 'promotionEditPage',
+    template: 'promotionEditPage',
+    action() {
+      this.render('masterContainer', 'promotionEditPage');
+    },
+})

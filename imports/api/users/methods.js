@@ -40,5 +40,15 @@ Meteor.methods({
                 $set: profile
             });
         }
+    },
+    'getOneUser'(id){
+        check(id,String);
+        return Meteor.users.findOne({_id: id});
+    },
+    'bannedUser'(id){
+        check(id,String);
+        return Meteor.users.update({_id: id},{$set: {
+            status: false
+        }})
     }
 })

@@ -25,6 +25,10 @@ Meteor.methods({
         })
         
     },
+    'getOneCategory'(id){
+        check(id,String);
+        return category.findOne({_id: id});
+    },
     'getAllSubCategory'(){
         const subcategory = SubCategories.find().fetch();
         return subcategory;

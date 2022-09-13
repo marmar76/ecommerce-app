@@ -48,6 +48,7 @@
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Join Date</th>
+                                        <th>Action</th>
                                         <!-- <th>Deadline</th> -->
                                     </tr>
                                 </thead>
@@ -58,6 +59,7 @@
                                         <td>{{name}}</td>
                                         <td>{{emails}}</td>
                                         <td>{{formatDateIDN createdAt}}</td>
+                                        <td><a href="/master-users-{{_id}}-details"><button class="btn btn-primary">Details</button></a></td>
                                     </tr>
                                     {{/each}}
                                 </tbody>
@@ -92,8 +94,7 @@
                         <label for="password" class="form-label">Password</label>
                         <div class="d-flex">
                             <input type="password" class="form-control" id="password"
-                                placeholder="Password">
-                            <button class="btn btn-primary ms-3">Generate Strong Password</button> 
+                                placeholder="Password"> 
                         </div>
                     </div>
                     <div class="mb-3">
@@ -136,5 +137,58 @@
                 </div>
             </div>
         </div>
+    </div>
+</template>
+
+
+<template name="userDetailPage">
+    <div class="row">
+      <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h1 class="page-title">User Details</h1> 
+            <div class="user-info">
+              <table class="table caption-top">
+                <tbody>
+                  <tr>
+                    <th>Name</th>
+                    <td>{{ user.name }}</td>
+                  </tr>
+                  <tr>
+                    <th>Username</th>
+                    <td>{{ user.username }}</td>
+                  </tr>
+                  <tr>
+                    <th>emails</th>
+                    <td> 
+                        {{#each user.emails}}
+                        {{ address }}
+                        {{/each}} 
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Address</th>
+                    <td>{{ user.address }}</td>
+                  </tr>
+                  <tr>
+                    <th>Gender</th>
+                    <td>
+                        {{#if equals user.gender 'f'}}
+                            Female
+                        {{else}}
+                            Male
+                        {{/if}}
+                    </td>
+                  </tr> 
+                </tbody>
+              </table>
+            </div>
+            <div class="form-actions form-group">
+              <button style="float: right;" class="btn btn-danger" id="banned">Banned User</button>
+              <div style="clear: both;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 </template>

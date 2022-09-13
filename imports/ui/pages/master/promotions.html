@@ -1,49 +1,75 @@
 <template name="promotionsHome">
+    sorting bug kapital lebih kecil dari nonkapital
     <div class="">
         <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex flex-row">
-                            <h4 class="card-title">List Promotions</h4>
+                  <div class="card-body">
+                    <div class="d-flex flex-row"> 
+                      <h4 class="card-title">List Items</h4> 
+                    </div>
+                    <div class="d-flex flex-row-reverse">
+                        <a href="/master-promotions-create"><button class="btn btn-primary">+ Add Promotion</button></a>
+                    </div>
+                        <div class="form-group">
+                        <input class="form-control filtering" id="filter" type="text" placeholder="Search Promotion">
                         </div>
-                        <div class="d-flex flex-row-reverse">
-                            <a href="/master-promotions-create"><button class="btn btn-primary">+ Add Promotion</button></a>
+                        <div class="form-group"> 
+                          <label for="">Start Date</label>
+                          <input type="date" class="form-control filtering" id="startDate">
+                        </div>
+                        <div class="form-group"> 
+                          <label for="">Expired Date</label>
+                          <input type="date" class="form-control filtering" id="expiredDate">
+                        </div>
+                        <label for="">Date Filter</label>
+                        <select name="dateoption" id="dateoption" class="form-control filtering">
+                          <option value="startDate">Start Date</option>
+                          <option value="expiredDate">Expired Date</option> 
+                        </select>
+                        <label for="">Sort</label>
+                        <div class="mb-3 form-group">
+                            <select class="form-control filtering" id="sort">
+                              <option value="1">Sort Name A-Z</option>
+                              <option value="2">Sort Name Z-A</option>
+                              <option value="3">Sort Start Date Ascending</option>
+                              <option value="4">Sort Start Date Descending</option>
+                              <option value="5">Sort Expired Date Ascending</option>
+                              <option value="6">Sort Expired Date Descending</option>
+                            </select>
                         </div>
                         <p class="card-description">
-
+    
                         </p>
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Promotion Name</th>
-                                        <th>Starting Date</th>
-                                        <th>Expired Date</th>
-                                        <th>Description</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{#each promotions}}
-                                        <tr>
-                                            <td class="py-1"> {{name}} </td>
-                                            <td> Herman Beck </td>
-                                            <td>  </td>
-                                            <td>$ 77.99</td>
-                                            <td><button name="delete">delete</button></td>
-                                        </tr> 
-                                    {{/each}}
-                                </tbody>
-                            </table>
-                        </div>
+                        <table class="table table-striped">
+                          <thead>
+                              <tr>
+                                  <th>Name</th>
+                                  <th>Description</th>  
+                                  <th>Start Date</th>
+                                  <th>Expired Date</th>
+                                  <th>Action</th> 
+                              </tr>
+                          </thead>
+                          <tbody>
+                              {{#each promotions}}
+                              <tr>
+                                  <td>{{name}}</td>
+                                  <td>{{description}}</td> 
+                                  <td>{{formatDateIDN startDate}}</td> 
+                                  <td>{{formatDateIDN expiredDate}}</td>
+                                  <td><a href="/master-promotions-{{_id}}-details"><button class="btn btn-primary">Details</button></a></td>
+                              </tr>
+                              {{/each}}
+                          </tbody>
+                      </table> 
                     </div>
                 </div>
-            </div>
-
-        </div>
-    </div>
+            </div> 
+          </div>
+      </div>
 </template>
+
 <template name="promotionsCreatePage">
     <div class="row">
         <div class="col-12 grid-margin stretch-card">
@@ -69,11 +95,92 @@
                             </div>
                         </div>  
                     </div>
+                    
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
                         <input type="text" class="form-control" id="promotionsDescription" required>
                     </div>  
                     <button id="submit" type="submit" class="btn btn-primary me-2">Submit</button> 
+                </div>
+            </div>
+        </div>
+    </div>  
+</template>
+
+<template name="promotionsDetailPage">
+    <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                  <h1 class="page-title">Promotion Details</h1>
+                  <section class="section-page-shoulders">
+                    <div class="btn-group">
+                      <a class="btn btn-warning" href="/master-promotions-{{ promotions._id }}-edit">Edit</a>
+                    </div>
+                  </section>
+    
+                  <div class="user-info">
+                    <table class="table caption-top"> 
+                      <tbody>
+                        <tr>
+                          <th>Name</th>
+                          <td>{{ promotions.name }}</td>
+                        </tr>
+                        <tr>
+                          <th>Description</th>
+                          <td>{{ promotions.description }}</td>
+                        </tr> 
+                        <tr>
+                          <th>Start Date</th>
+                          <td>{{formatDateIDN promotions.startDate }}</td>
+                        </tr> 
+                        <tr>
+                          <th>Expired Date</th>
+                          <td>{{formatDateIDN promotions.expiredDate }}</td>
+                        </tr> 
+                      </tbody> 
+                    </table>
+                  </div>
+                  <div class="form-actions form-group"> 
+                    <button style="float: right;" class="btn btn-danger" id="delete">Delete Promotion</button>
+                    <div style="clear: both;"></div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+</template>
+
+<template name="promotionEditPage">
+    <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Edit Promotion</h4>
+                    <p class="card-description">
+                        
+                    </p>
+                    <div class="mb-3 form-group">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="promotionsName" placeholder="promotion name" value={{promotions.name}} required>
+                    </div> 
+                    <div class="mb-3 form-group">
+                        <div class="d-flex">
+                            <div class="form-group flex-fill pe-2">
+                                <label for="">Starting Date</label>
+                                <input type="date" class="form-control" id="start" value={{formatHTML promotions.startDate}} >
+                            </div>
+                            <div class="form-group flex-fill">
+                                <label for="">Expired Date</label>
+                                <input type="date" class="form-control" id="end" value={{formatHTML promotions.expiredDate}}>
+                            </div>
+                        </div>  
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <input type="text" class="form-control" id="promotionsDescription" value={{promotions.description}} required>
+                    </div>  
+                    <button id="edit" type="edit" class="btn btn-primary me-2">Save</button> 
                 </div>
             </div>
         </div>
