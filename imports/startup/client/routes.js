@@ -9,6 +9,7 @@ import '../../ui/pages/app/app'
 import '../../ui/pages/forbidden/forbidden'
 
 import '../../ui/pages/master/master'
+import '../../ui/pages/test/test'
 // FlowRouter.route('*', {
 //     action() {
 //       // Show 404 error page
@@ -198,5 +199,12 @@ FlowRouter.route('/master-promotions-:_id-edit', {
     template: 'promotionEditPage',
     action() {
       this.render('masterContainer', 'promotionEditPage');
+    },
+})
+FlowRouter.route('/test', {
+    name: 'test',
+    template: 'test',
+    action() {
+      this.render('test');
     },
 })
