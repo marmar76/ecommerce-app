@@ -9,7 +9,7 @@ import '../../ui/pages/app/app'
 import '../../ui/pages/forbidden/forbidden'
 
 import '../../ui/pages/master/master'
-import '../../ui/pages/test/test'
+import '../../ui/pages/test/test' 
 // FlowRouter.route('*', {
 //     action() {
 //       // Show 404 error page
@@ -130,6 +130,13 @@ FlowRouter.route('/master-items-:_id-details', {
     template: 'itemsDetailPage',
     action() {
       this.render('masterContainer','itemsDetailPage');
+    },
+})
+FlowRouter.route('/items-:_id', {
+    name: 'itemsClientDetailPage',
+    template: 'itemsClientDetailPage',
+    action() {
+      this.render('itemsClientDetailPage');
     },
 })
 

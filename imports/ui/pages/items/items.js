@@ -5,7 +5,7 @@ import { FlowRouter, Router, RouterHelpers } from 'meteor/ostrio:flow-router-ext
 
 import './items.html'; 
 
-Template.itemCreatePage.onCreated(function () {  
+Template.itemsClientDetailPage.onCreated(function () {  
     const self=this;
     this.item = new ReactiveVar();
 })
@@ -42,4 +42,22 @@ Template.itemCreatePage.events({
         }
 
     }
+})
+Template.itemsClientDetailPage.onCreated(function () {  
+    const self = this;
+    const paramId = FlowRouter.getParam('_id'); 
+    this.item = new ReactiveVar(); 
+    Meteor.call('getOneItem', paramId, function (err,res) { 
+      self.item.set(res);  
+    })
+})
+
+Template.itemsClientDetailPage.helpers({
+  item(){
+    return Template.instance().item.get()
+  }
+})
+
+Template.itemsClientDetailPage.events({  
+     
 })
