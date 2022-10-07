@@ -17,10 +17,15 @@ const SEED_PASSWORD = 'takina';
 
 Meteor.startup(() => {
   if (!Accounts.findUserByUsername(SEED_USERNAME)) {
-    Accounts.createUser({
+    const userId = Accounts.createUser({
       username: SEED_USERNAME,
       password: SEED_PASSWORD,
     });
+    Meteor.users.update({
+      _id: userId
+    }, {
+      $set: {isAdmin: true}
+    })
   }
 
   const user = Accounts.findUserByUsername(SEED_USERNAME);

@@ -30,8 +30,19 @@ Template.login.events({
       }
       else{
         if(Meteor.userId()){
-          successAlert("Welcome "+ Meteor.user().username)
-          FlowRouter.go('mainContainer', {});
+          Meteor.call('getOneUser', Meteor.userId(), function (err, res) {  
+            // console.log(res);
+            const thisUser = res
+            successAlert("Welcome "+ thisUser.username)
+            if(thisUser.isAdmin){
+              FlowRouter.go('masterContainer', {});
+            }
+            else{
+              FlowRouter.go('mainContainer', {});
+  
+            }
+
+          })
         }
       }
     });

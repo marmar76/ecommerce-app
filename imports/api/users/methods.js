@@ -10,11 +10,18 @@ Meteor.methods({
         check(username, String)
         check(email, String)
         check(password, String)
-        return Accounts.createUser({
+        const userId = Accounts.createUser({
             username,
             email,
             password
         })
+        if(userId){
+            return Meteor.users.update({
+                "_id": userId
+            }, {
+                $set: {isAdmin: false}
+            });
+        }
     },
     async 'registerAdmin'(data, profile) {
         check(data, Object)
@@ -31,6 +38,7 @@ Meteor.methods({
         profile.status = true
         profile.createdAt = new Date()
         profile.createtBy = Meteor.userId()
+        profile.isAdmin = true
         // Pa$$w0rd!
         const userId = Accounts.createUser(data)
         if(userId){
