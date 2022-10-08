@@ -12,6 +12,7 @@ import '../../ui/pages/master/master'
 import '../../ui/pages/test/test' 
 import '../../ui/pages/shop/layouts/layouts' 
 import '../../ui/pages/shop/homepage/homepage' 
+import '../../ui/pages/shop/userSettings/userSettings' 
 // FlowRouter.route('*', {
 //     action() {
 //       // Show 404 error page
@@ -28,6 +29,19 @@ FlowRouter.route('/', {
     template: 'homepage',
     action() {
         this.render('layouts', 'homepage')
+        // if(Meteor.userId()){
+        //     this.render('mainContainer');
+        // }
+        // else{
+        //     FlowRouter.go('login', {});
+        // }
+    },
+});
+FlowRouter.route('/user/settings', {
+    name: 'userSettings',
+    template: 'userSettings',
+    action() {
+        this.render('layouts', 'userSettings')
         // if(Meteor.userId()){
         //     this.render('mainContainer');
         // }

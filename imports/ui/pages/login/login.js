@@ -38,10 +38,8 @@ Template.login.events({
               FlowRouter.go('masterContainer', {});
             }
             else{
-              FlowRouter.go('mainContainer', {});
-  
+              FlowRouter.go('homepage', {});
             }
-
           })
         }
       }
