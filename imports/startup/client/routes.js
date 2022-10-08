@@ -10,6 +10,8 @@ import '../../ui/pages/forbidden/forbidden'
 
 import '../../ui/pages/master/master'
 import '../../ui/pages/test/test' 
+import '../../ui/pages/shop/layouts/layouts' 
+import '../../ui/pages/shop/homepage/homepage' 
 // FlowRouter.route('*', {
 //     action() {
 //       // Show 404 error page
@@ -22,15 +24,16 @@ FlowRouter.route('*', {
     },
 });
 FlowRouter.route('/', {
-    name: 'mainContainer',
-    template: 'mainContainer',
+    name: 'homepage',
+    template: 'homepage',
     action() {
-        if(Meteor.userId()){
-            this.render('mainContainer');
-        }
-        else{
-            FlowRouter.go('login', {});
-        }
+        this.render('layouts', 'homepage')
+        // if(Meteor.userId()){
+        //     this.render('mainContainer');
+        // }
+        // else{
+        //     FlowRouter.go('login', {});
+        // }
     },
 });
 FlowRouter.route('/login', {
