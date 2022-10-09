@@ -5,7 +5,7 @@ import { Mongo } from 'meteor/mongo';
 export const Items = new Mongo.Collection( 'items' );
 export const SpecificationComparison = [
     {
-        subcategoryId: 'qeRpQANaRTyv3RKBj',
+        subcategoryId: 'EWMLYaW5qH4XFwFj6',
         name: "Graphics Card",
         list: [
             {

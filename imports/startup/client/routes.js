@@ -12,6 +12,8 @@ import '../../ui/pages/master/master'
 import '../../ui/pages/test/test' 
 import '../../ui/pages/shop/layouts/layouts' 
 import '../../ui/pages/shop/homepage/homepage' 
+import '../../ui/pages/shop/productPage/productPage' 
+import '../../ui/pages/shop/cart/cart' 
 import '../../ui/pages/shop/userSettings/userSettings' 
 // FlowRouter.route('*', {
 //     action() {
@@ -230,5 +232,24 @@ FlowRouter.route('/test', {
     template: 'test',
     action() {
       this.render('test');
+    },
+})
+
+//=====================================================
+//                  Client side     
+//=====================================================
+FlowRouter.route('/productPage/:_id', {
+    name: 'productPage',
+    template: 'productPage',
+    action() {
+      this.render('layouts','productPage');
+    },
+})
+//id dari cart adalah id user
+FlowRouter.route('/cart/:_id', {
+    name: 'cart',
+    template: 'cart',
+    action() {
+      this.render('layouts','cart');
     },
 })

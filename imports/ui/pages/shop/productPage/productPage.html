@@ -1,0 +1,79 @@
+<template name="productPage">
+    <div class="d-flex flex-wrap bg-dark p-5">
+        <div class="d-flex justify-content-around p-4">
+            <div class="card" style="width: 25rem; height:20rem">
+                <div class="card-body">
+                  <h5 class="card-title">ini gambar</h5>
+                   
+                </div>
+              </div>
+        </div>
+        <div class="d-flex justify-content-around p-4">
+            <div class="card" style="width: 35rem;">
+                <div class="card-body">
+                    <h1>{{item.name}} - {{jenis.name}}</h1><br>
+                    <p class="fw-bold fs-1" style="color :black">{{jenis.price}}</p><br> 
+                    <p class="fw-bold fs-3" style="color :black">Pilih Jenis</p><br>
+                    {{#each item.models}}
+                        <button type="button" class="btn btn-outline-dark btnJenis" value="{{itemId}}">{{name}}</button>
+                    {{/each}}
+                    <br><br><br>
+                    <p class="fw-bold fs-3" style="color :black">Detail</p><br>
+                    <div class=" d-flex flex-wrap  ">  
+                        <p class="fs-6 p-1" style="color :black">Weight:</p><br> 
+                        <p class="fw-bold fs-6 p-1" style="color :black">{{item.weight}} Kg</p><br>  
+                    </div>
+                    <div class=" d-flex flex-wrap  ">  
+                        <p class="fs-6 p-1" style="color :black">Category:</p><br> 
+                        <p class="fw-bold fs-6 p-1" style="color :black">{{item.categoryName}}</p><br>  
+                    </div>
+                    <p class="fw-bold fs-6" style="color :black">Item Description</p><br>
+                    <p class="fw-bold fs-6" style="color :black">{{item.description}}</p><br> 
+                  
+                    <div class="accordion" id="accordionPanelsStayOpenExample">
+                        <div class="accordion-item">
+                        <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                            Specification
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                            <div class="accordion-body">
+                                <ul>
+                                {{#each jenis.specification}}
+                                    <li>
+                                        <div class=" d-flex flex-wrap  ">  
+                                            <p class="fw-bold fs-6 p-1" style="color :black">{{label}}</p><br>  
+                                            <p class="fs-6 p-1" style="color :black">{{value}}</p><br> 
+                                        </div>
+                                    </li>
+                                {{/each}}
+                                </ul>
+                            </div>
+                        </div>
+                        </div> 
+                    </div>
+                </div>
+              </div>
+        </div>
+        <div class="d-flex justify-content-around p-4">
+            <div class="card" style="width: 20rem; height:20rem">
+                <div class="card-body">
+                    <p class="fw-bold fs-2" style="color :black">Atur Jumlah</p><br>
+                    <input type="number" name="" id="quantity" min=1 value=1><br>
+                    <div class="container d-flex flex-wrap p-2"> 
+                        <p class="fs-6 p-1" style="color :black">Stock:</p><br> 
+                        <p class="fw-bold fs-6 p-1" style="color :black">{{jenis.stock}}</p>
+                    </div> 
+                    <div class="container d-flex flex-wrap p-2"> 
+                        <p class="fs-6 p-1" style="color :black">Subtotal</p><br> 
+                        <p class="fw-bold fs-6 p-1" style="color :black">Rp. {{subtotal}}</p><br> 
+                    </div>
+                    <br> 
+                    <button type="button" class="btn btn-primary" value="{{jenis.itemId}}" id="cart"> Add to Cart </button>
+                    <button type="button" class="btn btn-outline-primary" value="{{jenis.itemId}}" id="buy">Buy Now</button>
+                </div>
+              </div>
+        </div>
+    </div>
+</template>

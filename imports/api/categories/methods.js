@@ -33,6 +33,10 @@ Meteor.methods({
         const subcategory = SubCategories.find().fetch();
         return subcategory;
     },
+    'getOneSubCategory'(id){
+        check(id,String);
+        return SubCategories.findOne({_id: id});
+    },
     // 'getDetailSubCategory'(id){
 
     // }

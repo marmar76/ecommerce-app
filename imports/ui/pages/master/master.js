@@ -898,6 +898,8 @@ Template.itemsCreatePage.events({
     // const price = +$(itemsPrice).val();
     // const weight = +$(itemsWeight).val();
     let valid = models.length > 0
+    console.log(models);
+    console.log("lenght" + models.length);
     const thisModels = models.filter((p) => p.status).map(function (x) {
       if (valid) {
         const name = $('#model-name-' + x.id).val();
@@ -913,6 +915,7 @@ Template.itemsCreatePage.events({
               if (specValid && valid) {
                 // console.log(`#${y.slug}-${x.id}`);
                 const thisValue = $(`#${y.slug}-${x.id}`).val();
+                console.log(thisValue);
                 if (!thisValue) {
                   failAlert("something wrong with specification input on " + y.label + " at item number " + (x.id + 1))
                   specValid = false
@@ -921,14 +924,36 @@ Template.itemsCreatePage.events({
                   // console.log("specmap")
                   // console.log(`#${y.slug}-${x.id}`, thisValue);
                   // y.type = undefined
-                  y.value = thisValue
                   // console.log(y);
+                  y.value = thisValue
+                  console.log(y);
                   return y
                 }
               }
             })
-            console.trace(specification);
-            // x.specification = specifications
+            // console.log(canCompare.list.length);
+            // const specification = canCompare.list;
+            // for (const y of specification) {
+            //     if (specValid && valid) { 
+            //     const thisValue = $(`#${y.slug}-${x.id}`).val();
+            //     console.log(thisValue);
+            //     if (!thisValue) {
+            //       failAlert("something wrong with specification input on " + y.label + " at item number " + (x.id + 1))
+            //       specValid = false
+            //       valid = false
+            //     } else {
+            //       // console.log("specmap")
+            //       // console.log(`#${y.slug}-${x.id}`, thisValue);
+            //       // y.type = undefined
+            //       y.value = thisValue
+            //       console.log(y);
+            //       // console.log(y);
+            //       return y
+            //     }
+            //   }
+            // }
+            console.log(specification);
+            x.specification = specification
             // console.log("spec")
             return {
               name,
@@ -946,6 +971,7 @@ Template.itemsCreatePage.events({
       }
       // console.log("models")
     })
+    console.log(thisModels);
     if (valid) {
       if (!name || !category || !subcategory || !weight || !description) {
         failAlert("something missing with this item")

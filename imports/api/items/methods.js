@@ -83,7 +83,26 @@ Meteor.methods({
     },
     'getOneItem'(id){
         check(id,String);
-        return Items.findOne({_id: id});
+        const thisItem = Items.findOne({_id: id});
+        const thisCategory = Categories.findOne({_id: thisItem.category})
+        const thisSubcategory = SubCategories.findOne({_id: thisItem.subcategory})
+        thisItem.categoryName = thisCategory.name
+        thisItem.subcategoryName = thisSubcategory.name
+        return thisItem
+    }, 
+    'getOneJenis'(id, idJenis){
+        check(id,String);
+        check(idJenis,String);
+        const thisItem = Items.findOne({_id: id});
+        const thisModel = thisItem.models
+        let oneModel 
+        for (const i of thisModel) {
+            if(i.itemId == idJenis) {
+                oneModel = i  
+                // console.log(oneModel);
+            }
+        } 
+        return oneModel
     }, 
     'deleteItem'(id){
         check(id,String)

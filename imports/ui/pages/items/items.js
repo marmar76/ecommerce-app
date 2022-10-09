@@ -59,5 +59,5 @@ Template.itemsClientDetailPage.helpers({
 })
 
 Template.itemsClientDetailPage.events({  
-     
+  
 })
