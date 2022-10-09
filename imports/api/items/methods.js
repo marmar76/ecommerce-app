@@ -1,61 +1,82 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Items } from './items';
+import { Categories, SubCategories } from '../categories/categories';
 
 Meteor.methods({
-    'createItem'(item){
-        check(item.name, String)
-        check(item.price, Number)
-        check(item.description, String)
-        check(item.weight, Number)
-        check(item.stock, Number)
-        check(item.condition, String)
-        check(item.subcategoryId, String)
-        check(item.categoryId, String)
-        check(item.categoryName, String)
-        check(item.status, Boolean)
+    'createItem'(item, models){
+        // check(item.name, String)
+        // check(item.price, Number)
+        // check(item.description, String)
+        // check(item.weight, Number)
+        // check(item.stock, Number)
+        // check(item.condition, String)
+        // check(item.subcategoryId, String)
+        // check(item.categoryId, String)
+        // check(item.categoryName, String)
+        // check(item.status, Boolean)
         item.createdAt = new Date()
-        return Items.insert(item)
+        item.createdBy = Meteor.userId()
+        item.status = true
+        const id = Items.insert(item)
+        Items.update({_id: id}, {$set: {
+            models: models.map(function (x, i) {  
+                x.itemId = id + "-" + i
+                return x
+            })
+        }})
     },
     'getAllItem'(filtering){
         const thisFilter = {}
         const sort = {}
         if (filtering) {
-        if ((+filtering.sort) === 1) {
-            sort.price = 1
-        } else if ((+filtering.sort) === 2) {
-            sort.price = -1
-        } 
-        if(filtering.hargaAwal || filtering.hargaAkhir)
-        {
-            thisFilter.price = {}
-        }
-        if(filtering.hargaAwal){
-            thisFilter.price.$gte = filtering.hargaAwal
-        }
-        if(filtering.hargaAkhir){
-            thisFilter.price.$lte = filtering.hargaAkhir
-        } 
+        // if ((+filtering.sort) === 1) {
+        //     sort.price = 1
+        // } else if ((+filtering.sort) === 2) {
+        //     sort.price = -1
+        // } 
+        // if(filtering.hargaAwal || filtering.hargaAkhir)
+        // {
+        //     thisFilter.price = {}
+        // }
+        // if(filtering.hargaAwal){
+        //     thisFilter.price.$gte = filtering.hargaAwal
+        // }
+        // if(filtering.hargaAkhir){
+        //     thisFilter.price.$lte = filtering.hargaAkhir
+        // } 
         // if(filtering.dateFrom){
         //     thisFilter.createdAt = {$gte: filtering.dateFrom}
         // } 
             thisFilter.status = true
             if((filtering.filtercategory) && (+filtering.filtercategory) != -1){
-                thisFilter.categoryId = filtering.filtercategory.toString();
+                thisFilter.category = filtering.filtercategory.toString();
                 if((filtering.filtersubcategory)  && (+filtering.filtersubcategory) != -1){
-                    thisFilter.subcategoryId = filtering.filtersubcategory.toString();
+                    thisFilter.subcategory = filtering.filtersubcategory.toString();
                 }
             }
             
         }
         console.log(thisFilter);
         const item = Items.find(thisFilter, {
-        sort: sort
+            sort: sort
         }).fetch();
+        const categories = Categories.find().fetch()
+        const subcategories = SubCategories.find().fetch()
         // console.log(item);
         if (filtering) {
             return item.filter(function (x) {
                 return x.name.toLowerCase().includes(filtering.filter.toLowerCase());
+            }).map(function (y) {  
+                const thisCategory = categories.find((x) => y.category == x._id)
+                const thisSubcategory = subcategories.find((x) => y.subcategory == x._id)
+                y.categoryName = thisCategory.name
+                y.subcategoryName = thisSubcategory.name
+                const lowestPrice = y.models.sort(function (a, b) {  
+                    return a.price - b.price
+                })
+                y.price = lowestPrice[0].price
+                return y
             })
         }
         return item;

@@ -61,30 +61,44 @@
             <table class="table table-striped">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Price</th>
-                  <th>Condition</th>
-                  <th>Stock</th>
-                  <th>Weight</th>
-                  <th>Category</th>
-                  <th>Sub Category</th>
-                  <th>Description</th>
-                  <th>Action</th>
+                  <th class="fs-5">Name</th>
+                  <th class="fs-5">Price</th>
+                  <!-- <th>Condi5ion</th> -->
+                  <!-- <th>Stock5/th> -->
+                  <th class="fs-5">Weight</th>
+                  <th class="fs-5">Category</th>
+                  <th class="fs-5">Sub Category</th>
+                  <th class="fs-5">Description</th>
+                  <th class="fs-5">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {{#each items}}
                 <tr>
-                  <td>{{name}}</td>
-                  <td>{{price}}</td>
-                  <td>{{condition}}</td>
-                  <td>{{stock}}</td>
-                  <td>{{weight}}</td>
-                  <td>{{categoryName}}</td>
-                  <td>{{subcategoryName}}</td>
-                  <td>{{description}}</td>
-                  <td><a href="/master-items-{{_id}}-details"><button class="btn btn-primary">Details</button></a></td>
+                  <td class="fs-5">{{name}}</td>
+                  <td class="fs-5">{{price}}</td>
+                  <!-- <td>{{con5ition}}</td> -->
+                  <!-- <td>{{sto5k}}</td> -->
+                  <td class="fs-5">{{weight}}</td>
+                  <td class="fs-5">{{categoryName}}</td>
+                  <td class="fs-5">{{subcategoryName}}</td>
+                  <td class="fs-5">{{description}}</td>
+                  <td class="fs-5"><a href="/master-items-{{_id}}-details"><button class="btn btn-primary">Details</button></a></td>
                 </tr>
+                <tr>
+                  <th class="fs-5" colspan="1">Items model</th>
+                  <th class="fs-5 text-center" colspan="2">Stock</th>
+                  <th class="fs-5" colspan="1"></th>
+                  <th class="fs-5" colspan="3">Price</th>
+                </tr>
+                  {{#each models}}
+                  <tr>
+                    <td class="fs-5">{{name}}</td>
+                    <td class="fs-5 text-center" colspan="2">{{stock}}</td>
+                    <td class="fs-5" colspan="1"></td>
+                    <td class="fs-5" colspan="4">{{price}}</td>
+                  </tr>
+                  {{/each}}
                 {{/each}}
               </tbody>
             </table>
@@ -95,6 +109,7 @@
     </div>
   </div>
 </template>
+
 <template name="itemsCreatePage">
   <div class="row">
     <div class="col-12 grid-margin stretch-card">
@@ -103,46 +118,96 @@
           <h4 class="page-title">Add new item</h4>
           <div class="mb-3 form-group">
             <label for="">Name</label>
-            <input type="text" class="form-control" id="itemsName" required placeholder="item's Name">
+            <input type="text" class="form-control" id="itemsName" required placeholder="item Name">
           </div>
-          <div class="mb-3 form-group">
+          <!-- <div class="mb-3 form-group">
             <label for="">Price</label>
             <input type="text" class="form-control" id="itemsPrice" required placeholder="item's Price">
-          </div>
+          </div> -->
           <div class="mb-3 form-group">
             <label for="Category" class="form-label">Category</label>
             <select name="select-roles" id="categories" class="selectedCategory form-control">
+              <option value="0">Select Category</option>
               {{#each categories}}
-              <option value="{{@index}}">{{name}}</option>
+              <option value="{{_id}}">{{name}}</option>
               {{/each}}
             </select>
           </div>
+          {{#if subcategories}}
           <div class="mb-3 form-group">
-            <label for="Category" class="form-label">Sub Category</label>
-            <select name="select-roles" id="subcategories" class="form-control">
-              {{#each subcategories}}
-              <option value={{_id}}>{{name}}</option>
-              {{/each}}
-            </select>
+              <label for="Category" class="form-label">Sub Category</label>
+              <select name="select-roles" id="subcategories" class="form-control">
+                <option value="0">Select SubCategory</option>
+                {{#each subcategories}}
+                <option value={{_id}}>{{name}}</option>
+                {{/each}}
+              </select>
+            </div>
+            {{/if}}
+            <div class="mb-3 form-group">
+              <label for="">Weight</label>
+              <input type="number" class="form-control" id="weight" required placeholder="item's Weight (Kg)">
+            </div>
+          <div class="mb-3 form-group">
+            <label for="">Description</label>
+            <textarea name="" id="itemsDescription" class="form-control" cols="30" rows="10"></textarea>
+            <!-- <input type="text" class="form-control" id="itemsDescription" required placeholder="item's Description"> -->
+          </div>
+          <hr>
+          <h3>Item models</h3>
+          <!-- <div class="mb-3 form-group">
+            <label for="">Name Model</label>
+            <input type="text" class="form-control" id="model-name" required placeholder="Model Name">
+          </div>
+          <div class="mb-3 form-group">
+            <label for="">Price</label>
+            <input type="number" class="form-control" id="model-price" required placeholder="Price">
           </div>
           <div class="mb-3 form-group">
             <label for="">Stock</label>
-            <input type="number" class="form-control" id="itemsStock" required placeholder="item's Stock">
-          </div>
-          <div class="mb-3 form-group">
-            <label for="">Weight</label>
-            <input type="number" class="form-control" id="itemsWeight" required placeholder="item's Weight (Kg)">
-          </div>
-          <div class="mb-3 form-group">
-            <label for="">Condition</label>
-            <select name="select-roles" id="itemsCondition" class="selectedCategory form-control">
-              <option value="new">Brand New</option>
-              <option value="used">Used</option>
-            </select>
-          </div>
-          <div class="mb-3 form-group">
-            <label for="">Description</label>
-            <input type="text" class="form-control" id="itemsDescription" required placeholder="item's Description">
+            <input type="number" class="form-control" id="model-stock" required placeholder="Stock">
+          </div> -->
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <!-- <th scope="col">#</th> -->
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Stock</th>
+                <!-- <th scope="col">Weight</th> -->
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each i in models}}
+                {{#if i.status}}
+                    <tr>
+                      <!-- <th scope="row">{{id}}</th> -->
+                      <td><input type="text" class="form-control" id="model-name-{{i.id}}" required placeholder="Model Name"></td>
+                      <td><input type="number" class="form-control" id="model-price-{{i.id}}" required placeholder="Price"></td>
+                      <td><input type="number" class="form-control" id="model-stock-{{i.id}}" required placeholder="Stock"></td>
+                      <td><button class="btn btn-danger model-delete" value="{{i.id}}">Delete</button></td>
+                    </tr>
+                    {{#if comparison}}
+                      <tr>
+                        <td colspan="4"><h2>{{comparison.name}} Specification</h2></td>
+                      </tr>
+                      {{#each j in comparison.list}}
+                        <tr>
+                          <td scope="col">{{j.label}}</td>
+                          <td colspan="3"><input type="{{j.type}}" class="form-control" id="{{j.slug}}-{{i.id}}" required placeholder="{{j.label}}"></td>
+                        </tr>
+                      {{/each}}
+                      <td>
+                        <td colspan="4"><hr></td>
+                      </td>
+                    {{/if}}
+                  {{/if}}
+              {{/each}}
+            </tbody>
+          </table>
+          <div class="d-flex justify-content-end mt-2">
+            <button class="btn btn-primary" id="model-more">+ add more models</button>
           </div>
           <button id="submit" type="submit" class="btn btn-primary me-2">Submit</button>
           <!-- <button class="btn btn-light">Cancel</button> -->
