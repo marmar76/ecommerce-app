@@ -21,6 +21,7 @@ Template.checkout.onCreated(function () {
         if(err){
             console.log(err);
         }else{
+            console.log(res);
             self.cart.set(res)
         }
     })
@@ -80,7 +81,16 @@ Template.checkout.helpers({
         if(promotions){
             return promotions
         }
-    }
+    },
+    address(){
+        const user = Template.instance().user.get()
+        if(user)
+        {
+            //ini nanti indexnya bisa diganti kalau ganti alamat lain
+            
+            return user.address[0]
+        }
+    },
 })
 
 Template.checkout.events({
@@ -88,10 +98,12 @@ Template.checkout.events({
         const code = $('#voucherCode').val(); 
         const promotions = Template.instance().promotion.get()
         let status = false
+        let id
         for (const i of promotions) {
             if(i.code == code){
                 status = true 
-                t.discount.set(i.discount)
+                id = i._id
+                t.discount.set(i.discount) 
             }
         }
         const discount = Template.instance().discount.get()
@@ -99,10 +111,54 @@ Template.checkout.events({
         if(status){
             console.log("voucher terpakai");
             $('.voucherDisabled').attr('disabled', 'disabled');
+            Meteor.call('getOnePromotion', id, function (err, res) {
+                if(err){
+                    console.log(err);
+                }else{
+                    t.promotion.set(res)
+                }
+            })
         }else{
-            console.log("voucher e gaono bos");
+            console.log("voucher e gaono bos"); 
             t.discount.set(0)
         }
+    },
+    'click #btnCheckOut'(e, t){
+        const user = Template.instance().user.get()
+        const cart = Template.instance().cart.get()
+        const ongkir = Template.instance().ongkir.get()
+        const discount = Template.instance().discount.get()
+        const promotion = Template.instance().promotion.get()
+        let grandtotal = cart.grandtotal
+        let disc = discount * grandtotal / 100
+        grandtotal += ongkir - disc
+
+        console.log(user._id);
+        console.log(user.username);
+        console.log(cart.items);
+        console.log(+grandtotal);
+        console.log(+discount);
+        console.log(promotion._id);
+        console.log(promotion.code);
+        console.log(user._id);
+
+        const data = {
+            userId: user._id,
+            userUsername: user.username,
+            items: cart.items,
+            totalPurchase: +grandtotal,
+            discount: +discount,
+            promotionId: promotion._id,
+            promotionCode: promotion.code,
+            createdBy: user._id,
+        }
+        Meteor.call('createInvoice', data, function (err, res) {  
+            if(err){
+                console.log(err);
+            }else{
+                console.log(res);
+            }
+        })
     },
 
 })
