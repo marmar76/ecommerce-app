@@ -1,0 +1,63 @@
+<template name="checkout"> 
+    <style>
+        .card{ 
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            border-radius: 5px;
+        }
+    </style>
+    <center>
+        <div class="kontener w-75 d-flex justify-content-around gap-5 ">
+            <div class="container w-75"> 
+                <h3 class="text-start fw-bold">Check Out</h3> <br>
+                <hr><br>
+                {{#each carts.items}}
+                    <div class="card mb-3">
+                        <div class="row g-0">
+                        <div class="col-md-4">
+                            ini gambar
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body"> 
+                                <h3 class="text-start ">{{name}}</h3> <br>
+                                <h4 class="mb-2 text-start fw-bold">Rp. {{price}}</h4>
+                                <h4 class="mb-2 text-start fw-bold">{{quantity}} pcs</h4>
+                                <h4 class="mb-2 text-start fw-bold">Subtotal: Rp. {{subtotal}}</h4>
+                            </div>
+                        </div>
+                        </div> 
+                    </div>
+                {{/each}}  
+            </div>
+            <div class="container" style="width: 40%;">
+                <div class="card" style="width: 100%;">
+                    <div class="card-body text-start">
+                        <label for="" class="text-start">Voucher Code</label><br><br>
+                        <input type="text" style="width: 100%;" id="voucherCode" class="voucherDisabled"  name="code" placeholder="Insert Voucher Code"><br><br>
+                        <button class="btn btn-success w-100 voucherDisabled" type="submit" id="btnVoucher">Apply</button>
+                    </div>
+                </div>
+                <br>
+                <div class="card" style="width: 100%;">
+                    <div class="card-body text-start">
+                        <label for="" class="text-start">Data Penerima</label><br><br>
+                         
+                        <button class="btn btn-success w-100 voucherDisabled" type="submit" id="btnChangeAddress">Change Address</button>
+                    </div>
+                </div>
+                <br>
+                <div class="card" style="width: 100%;">
+                    <div class="card-body">
+                        <h3 class="text-start fw-bold">Order Summary</h3> <br>
+                        <h4 class="card-subtitle mb-2 text-start">Total Price ({{totalItem}} product) Rp.{{carts.grandtotal}}</h4>
+                        <h4 class="card-subtitle mb-2 text-start">Shipment Fee {{ongkir}}</h4>
+                        <h4 class="card-subtitle mb-2 text-start">Discount {{discount}}%</h4>
+                        <hr> 
+                        <h4 class="text-start fw-bold">Grand Total {{totalPurchase}}</h4> <br> 
+                        <button class="btn btn-success w-100" type="submit" id="btnCheckOut">Check Out</button>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </center> 
+    
+</template>

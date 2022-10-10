@@ -1433,12 +1433,16 @@ Template.promotionsCreatePage.helpers({})
 Template.promotionsCreatePage.events({
   'click #submit'(e, t) {
     const name = $(promotionsName).val();
+    const code = $(promotionsCode).val();
+    const discount = +$(promotionsDiscount).val();
     const description = $(promotionsDescription).val();
     const status = true;
-    const startDate = new Date($("#start").val());
-    const expiredDate = new Date($("#end").val());
+    const startDate = moment($("#start").val(), 'YYYY-MM-DD').toDate();
+    const expiredDate = moment($("#end").val(), 'YYYY-MM-DD').toDate(); 
     const data = {
       name,
+      code,
+      discount,
       startDate,
       expiredDate,
       description,
@@ -1446,7 +1450,9 @@ Template.promotionsCreatePage.events({
     };
     if (name.length === 0) {
       failAlert("Nama tidak boleh kosong!")
-    } else if (!(startDate < expiredDate)) {
+    } else if (code.length === 0) {
+      failAlert("Code tidak boleh kosong!")
+    }else if (!(startDate < expiredDate)) {
       failAlert("Tanggal Start harus kurang dari tanggal Expired")
     } else if (description.length == 0) {
       failAlert("Description tidak boleh kosong")
@@ -1521,18 +1527,24 @@ Template.promotionEditPage.events({
   'click #edit'(e, t) {
     const param = FlowRouter.current().params._id;
     const name = $('#promotionsName').val();
+    const code = $('#promotionsCode').val();
+    const discount = +$('#promotionsDiscount').val();
     const description = $('#promotionsDescription').val();
-    const startDate = new Date($("#start").val());
-    const expiredDate = new Date($("#end").val());
+    const startDate = moment($("#start").val(), 'YYYY-MM-DD').toDate();
+    const expiredDate = moment($("#end").val(), 'YYYY-MM-DD').toDate(); 
     const data = {
       name,
+      code,
+      discount, 
       startDate,
       expiredDate,
       description
     };
     if (name.length === 0) {
       failAlert("Nama tidak boleh kosong!")
-    } else if (!(startDate < expiredDate)) {
+    } else if (code.length === 0) {
+      failAlert("Code tidak boleh kosong!")
+    }else if (!(startDate < expiredDate)) {
       failAlert("Tanggal Start harus kurang dari tanggal Expired")
     } else if (description.length == 0) {
       failAlert("Description tidak boleh kosong")

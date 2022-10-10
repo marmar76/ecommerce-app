@@ -14,6 +14,7 @@ import '../../ui/pages/shop/layouts/layouts'
 import '../../ui/pages/shop/homepage/homepage' 
 import '../../ui/pages/shop/productPage/productPage' 
 import '../../ui/pages/shop/cart/cart' 
+import '../../ui/pages/shop/checkout/checkout' 
 import '../../ui/pages/shop/userSettings/userSettings' 
 // FlowRouter.route('*', {
 //     action() {
@@ -251,5 +252,12 @@ FlowRouter.route('/cart/:_id', {
     template: 'cart',
     action() {
       this.render('layouts','cart');
+    },
+})
+FlowRouter.route('/checkout/:_id', {
+    name: 'checkout',
+    template: 'checkout',
+    action() {
+      this.render('layouts','checkout');
     },
 })

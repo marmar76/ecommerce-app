@@ -6,6 +6,8 @@ import { Promotions } from './promotions';
 Meteor.methods({
     'createPromotion'(promotion){
         check(promotion.name, String)
+        check(promotion.code, String)
+        check(promotion.discount, Number)
         check(promotion.description, String)
         check(promotion.status, Boolean)
         check(promotion.startDate, Date)
@@ -66,6 +68,8 @@ Meteor.methods({
         check(id, String)
         check(promotion, Object)
         check(promotion.name, String)
+        check(promotion.code, String)
+        check(promotion.discount, Number)
         check(promotion.description, String) 
         check(promotion.startDate, Date)
         check(promotion.expiredDate, Date)
@@ -77,5 +81,18 @@ Meteor.methods({
         return Promotions.update({_id:id},{ $set:{
             status: false
         }});
-    }
+    },
+    
+  'getTodayPromotion'(currentDt){
+    check(currentDt, Date) 
+    const promotions = Promotions.find({
+      startDate: {
+        $lte: currentDt
+      },
+      expiredDate: {
+        $gte: currentDt
+      }
+    }).fetch(); 
+    return promotions;
+  },
 })
