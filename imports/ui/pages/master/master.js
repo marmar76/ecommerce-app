@@ -931,35 +931,14 @@ Template.itemsCreatePage.events({
                 }
               }
             })
-            // console.log(canCompare.list.length);
-            // const specification = canCompare.list;
-            // for (const y of specification) {
-            //     if (specValid && valid) { 
-            //     const thisValue = $(`#${y.slug}-${x.id}`).val();
-            //     console.log(thisValue);
-            //     if (!thisValue) {
-            //       failAlert("something wrong with specification input on " + y.label + " at item number " + (x.id + 1))
-            //       specValid = false
-            //       valid = false
-            //     } else {
-            //       // console.log("specmap")
-            //       // console.log(`#${y.slug}-${x.id}`, thisValue);
-            //       // y.type = undefined
-            //       y.value = thisValue
-            //       console.log(y);
-            //       // console.log(y);
-            //       return y
-            //     }
-            //   }
-            // }
-            console.log(specification);
-            x.specification = specification
+            // console.log(specification);
+            // x.specification = specifications
             // console.log("spec")
             return {
               name,
               price,
               stock,
-              specification
+              specification: JSON.parse(JSON.stringify(specification))
             }
           }
           return {
@@ -983,18 +962,18 @@ Template.itemsCreatePage.events({
           weight,
           description
         }
-        console.log(data);
-        console.log(thisModels);
-        // Meteor.call('createItem', data, thisModels, function (error, res) {  
-        //   console.log(error);
-        //   console.log(res);
-        //   if(error){
-        //     failAlert(error);
-        //   }
-        //   else{
-        //     successAlertBack();
-        //   }
-        // }) 
+        // console.log(data);
+        // console.log(thisModels);
+        Meteor.call('createItem', data, thisModels, function (error, res) {  
+          console.log(error);
+          console.log(res);
+          if(error){
+            failAlert(error);
+          }
+          else{
+            successAlertBack();
+          }
+        }) 
       }
     }
     // const stock = +$(itemsStock).val();
