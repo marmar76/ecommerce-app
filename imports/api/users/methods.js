@@ -53,6 +53,20 @@ Meteor.methods({
         check(id,String);
         return Meteor.users.findOne({_id: id});
     },
+    async 'getMyself'(){
+        // check(id,String);
+        const user = Meteor.users.findOne({_id: Meteor.userId()});
+        const profilePictureLink = await getFireImage('user/picture', user.profilePicture)
+        user.profilePicture = profilePictureLink
+        return user
+    },
+    'updateMyself'(data){
+        return Meteor.users.update({
+            _id: Meteor.userId()
+        }, {
+            $set: data
+        })
+    },
     'bannedUser'(id){
         check(id,String);
         return Meteor.users.update({_id: id},{$set: {

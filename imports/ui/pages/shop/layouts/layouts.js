@@ -2,9 +2,24 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import moment from 'moment';
 import Swal from 'sweetalert2';
+import { ImagePlaceholder } from '../../../../api/users/users';
 import './layouts.html'; 
 Template.layouts.onCreated(function () {  
-//   const self=this;
+  const self=this;
+  self.thisUser = new ReactiveVar()
+  this.fotoProfile = new ReactiveVar(ImagePlaceholder)
+  this.thisUser = new ReactiveVar()
+
+  Meteor.call('getMyself', async function (err, res) {  
+      self.thisUser.set(res)
+      // self.fotoProfile.set(res.profilePicture ? res.profilePicture : ImagePlaceholder)
+      if(res.profilePicture){
+          self.fotoProfile.set(res.profilePicture)
+      }
+      else{
+          // self.fotoProfile
+      }
+  })
 //   self.filtering = new ReactiveVar({
 //       filter: '',
 //       sort: 1,
@@ -27,8 +42,10 @@ Template.layouts.helpers({
         return Meteor.userId()
     },
     thisUser(){
-        console.log(Meteor.user());
-        return Meteor.user()
+      return Template.instance().thisUser.get()
+    },
+    fotoProfile(){
+      return Template.instance().fotoProfile.get()
     },
   categories(){
     const category = Template.instance().category.get();
@@ -62,6 +79,18 @@ Template.layouts.helpers({
 }) 
 
 Template.layouts.events({
+  'click .trigger-button'(e, t){
+    Meteor.call('getMyself', async function (err, res) {  
+      t.thisUser.set(res)
+      // self.fotoProfile.set(res.profilePicture ? res.profilePicture : ImagePlaceholder)
+      if(res.profilePicture){
+        t.fotoProfile.set(res.profilePicture)
+      }
+      else{
+          // self.fotoProfile
+      }
+  })
+  },
     'click #btn-logout'(e, t){
         Swal.fire({
             title: 'Do you want to logout now?',

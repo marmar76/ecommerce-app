@@ -1,275 +1,86 @@
 <template name="userSettings">
-    <div class="d-flex p-1 w-100 pe-5">
-        <div class=" d-flex flex-wrap filter w-25 h-50 card p-3 ms-5">
-            <div class="ms-3 d-flex align-items-center">
-              <img src="../img/placeholder/chisato.jpg" class="rounded-circle me-2" style="width: 60px; height: 60px; object-fit: cover;" alt="">
-              <span class="text-dark fs-2 fw-bold">{{thisUser.username}}</span>
-            </div>
-            <hr>
-            <ul class="ms-2 fs-4" style="list-style-type: none;">
-              <li><a href="#" style="text-decoration: none;">Biodata Diri</a></li>
-              <li><a href="#" style="text-decoration: none;">Daftar Alamat</a></li>
-              <!-- <li>Daftar Alamat</li> -->
-            </ul>
-        </div>
-        <div class="item flex-grow-1 px-4 w-100">
-            <div class="d-flex justify-content-between bd-highlight mb-3">
-              <div class="p-2 bd-highlight">Product</div>
-              <div class="p-2 bd-highlight"></div>
-              <div class="p-2 bd-highlight d-flex gap-3">
-                <h4 class="mt-auto">Sort</h4>
-                <div class="form-group">
-                  
-                  <select class="form-control filtering" id="sort"> 
-                    <option value="1">Highest Price</option>
-                    <option value="2">Lowest Price</option>  
-                  </select>
-                </div>
-              </div> 
-            </div>
-            <div class="d-flex flex-wrap p-2 gap-3">
-                <a href="/items-{{_id}}" style="text-decoration:none;">
-                    <div class="card" style="width: 18rem;">
-                      <input type="hidden" >
-                        <img src="https://images.tokopedia.net/img/cache/200-square/VqbcmM/2021/12/2/3a07f3f1-c950-4851-bf07-d958575bc13c.jpg" class="card-img-top" alt="">
-                        <div class="card-body">
-                        <p class="card-text text-dark lh-base fs-6" >Razer Deathadder Essential Gaming</p>
-                        <p class="card-text text-dark fw-bolder fs-4">Rp219.000</p>
-                        <p class="card-text mt-3"><span class=" text-light bg-danger fs-6 p-2">12%</span><span class="text-dark fs-6 text-decoration-line-through fw-bold ms-2">RP 249.000</span></p>
-                        <p class="card-text mt-3"><span class="fs-5"><i class="fa fa-star text-warning" aria-hidden="true"></i></span><span class="fs-5 text-dark fw-bold ms-2">5.0 | Terjual 2</span></p>
-                        </div>
-                    </div>
-                  </a>
-                <a href="/items-{{_id}}" style="text-decoration:none;">
-                    <div class="card" style="width: 18rem;">
-                      <input type="hidden" >
-                        <img src="https://images.tokopedia.net/img/cache/200-square/VqbcmM/2021/12/2/3a07f3f1-c950-4851-bf07-d958575bc13c.jpg" class="card-img-top" alt="">
-                        <div class="card-body">
-                        <p class="card-text text-dark lh-base fs-6" >Razer Deathadder Essential Gaming</p>
-                        <p class="card-text text-dark fw-bolder fs-4">Rp219.000</p>
-                        <p class="card-text mt-3"><span class=" text-light bg-danger fs-6 p-2">12%</span><span class="text-dark fs-6 text-decoration-line-through fw-bold ms-2">RP 249.000</span></p>
-                        <p class="card-text mt-3"><span class="fs-5"><i class="fa fa-star text-warning" aria-hidden="true"></i></span><span class="fs-5 text-dark fw-bold ms-2">5.0 | Terjual 2</span></p>
-                        </div>
-                    </div>
-                  </a>
-                <a href="/items-{{_id}}" style="text-decoration:none;">
-                    <div class="card" style="width: 18rem;">
-                      <input type="hidden" >
-                        <img src="https://images.tokopedia.net/img/cache/200-square/VqbcmM/2021/12/2/3a07f3f1-c950-4851-bf07-d958575bc13c.jpg" class="card-img-top" alt="">
-                        <div class="card-body">
-                        <p class="card-text text-dark lh-base fs-6" >Razer Deathadder Essential Gaming</p>
-                        <p class="card-text text-dark fw-bolder fs-4">Rp219.000</p>
-                        <p class="card-text mt-3"><span class=" text-light bg-danger fs-6 p-2">12%</span><span class="text-dark fs-6 text-decoration-line-through fw-bold ms-2">RP 249.000</span></p>
-                        <p class="card-text mt-3"><span class="fs-5"><i class="fa fa-star text-warning" aria-hidden="true"></i></span><span class="fs-5 text-dark fw-bold ms-2">5.0 | Terjual 2</span></p>
-                        </div>
-                    </div>
-                  </a>
-                <a href="/items-{{_id}}" style="text-decoration:none;">
-                    <div class="card" style="width: 18rem;">
-                      <input type="hidden" >
-                        <img src="https://images.tokopedia.net/img/cache/200-square/VqbcmM/2021/12/2/3a07f3f1-c950-4851-bf07-d958575bc13c.jpg" class="card-img-top" alt="">
-                        <div class="card-body">
-                        <p class="card-text text-dark lh-base fs-6" >Razer Deathadder Essential Gaming</p>
-                        <p class="card-text text-dark fw-bolder fs-4">Rp219.000</p>
-                        <p class="card-text mt-3"><span class=" text-light bg-danger fs-6 p-2">12%</span><span class="text-dark fs-6 text-decoration-line-through fw-bold ms-2">RP 249.000</span></p>
-                        <p class="card-text mt-3"><span class="fs-5"><i class="fa fa-star text-warning" aria-hidden="true"></i></span><span class="fs-5 text-dark fw-bold ms-2">5.0 | Terjual 2</span></p>
-                        </div>
-                    </div>
-                  </a>
-                <a href="/items-{{_id}}" style="text-decoration:none;">
-                    <div class="card" style="width: 18rem;">
-                      <input type="hidden" >
-                        <img src="https://images.tokopedia.net/img/cache/200-square/VqbcmM/2021/12/2/3a07f3f1-c950-4851-bf07-d958575bc13c.jpg" class="card-img-top" alt="">
-                        <div class="card-body">
-                        <p class="card-text text-dark lh-base fs-6" >Razer Deathadder Essential Gaming</p>
-                        <p class="card-text text-dark fw-bolder fs-4">Rp219.000</p>
-                        <p class="card-text mt-3"><span class=" text-light bg-danger fs-6 p-2">12%</span><span class="text-dark fs-6 text-decoration-line-through fw-bold ms-2">RP 249.000</span></p>
-                        <p class="card-text mt-3"><span class="fs-5"><i class="fa fa-star text-warning" aria-hidden="true"></i></span><span class="fs-5 text-dark fw-bold ms-2">5.0 | Terjual 2</span></p>
-                        </div>
-                    </div>
-                  </a>
-                <a href="/items-{{_id}}" style="text-decoration:none;">
-                    <div class="card" style="width: 18rem;">
-                      <input type="hidden" >
-                        <img src="https://images.tokopedia.net/img/cache/200-square/VqbcmM/2021/12/2/3a07f3f1-c950-4851-bf07-d958575bc13c.jpg" class="card-img-top" alt="">
-                        <div class="card-body">
-                        <p class="card-text text-dark lh-base fs-6" >Razer Deathadder Essential Gaming</p>
-                        <p class="card-text text-dark fw-bolder fs-4">Rp219.000</p>
-                        <p class="card-text mt-3"><span class=" text-light bg-danger fs-6 p-2">12%</span><span class="text-dark fs-6 text-decoration-line-through fw-bold ms-2">RP 249.000</span></p>
-                        <p class="card-text mt-3"><span class="fs-5"><i class="fa fa-star text-warning" aria-hidden="true"></i></span><span class="fs-5 text-dark fw-bold ms-2">5.0 | Terjual 2</span></p>
-                        </div>
-                    </div>
-                  </a>
-                <a href="/items-{{_id}}" style="text-decoration:none;">
-                    <div class="card" style="width: 18rem;">
-                      <input type="hidden" >
-                        <img src="https://images.tokopedia.net/img/cache/200-square/VqbcmM/2021/12/2/3a07f3f1-c950-4851-bf07-d958575bc13c.jpg" class="card-img-top" alt="">
-                        <div class="card-body">
-                        <p class="card-text text-dark lh-base fs-6" >Razer Deathadder Essential Gaming</p>
-                        <p class="card-text text-dark fw-bolder fs-4">Rp219.000</p>
-                        <p class="card-text mt-3"><span class=" text-light bg-danger fs-6 p-2">12%</span><span class="text-dark fs-6 text-decoration-line-through fw-bold ms-2">RP 249.000</span></p>
-                        <p class="card-text mt-3"><span class="fs-5"><i class="fa fa-star text-warning" aria-hidden="true"></i></span><span class="fs-5 text-dark fw-bold ms-2">5.0 | Terjual 2</span></p>
-                        </div>
-                    </div>
-                  </a>
-                <a href="/items-{{_id}}" style="text-decoration:none;">
-                    <div class="card" style="width: 18rem;">
-                      <input type="hidden" >
-                        <img src="https://images.tokopedia.net/img/cache/200-square/VqbcmM/2021/12/2/3a07f3f1-c950-4851-bf07-d958575bc13c.jpg" class="card-img-top" alt="">
-                        <div class="card-body">
-                        <p class="card-text text-dark lh-base fs-6" >Razer Deathadder Essential Gaming</p>
-                        <p class="card-text text-dark fw-bolder fs-4">Rp219.000</p>
-                        <p class="card-text mt-3"><span class=" text-light bg-danger fs-6 p-2">12%</span><span class="text-dark fs-6 text-decoration-line-through fw-bold ms-2">RP 249.000</span></p>
-                        <p class="card-text mt-3"><span class="fs-5"><i class="fa fa-star text-warning" aria-hidden="true"></i></span><span class="fs-5 text-dark fw-bold ms-2">5.0 | Terjual 2</span></p>
-                        </div>
-                    </div>
-                  </a>
-                <a href="/items-{{_id}}" style="text-decoration:none;">
-                    <div class="card" style="width: 18rem;">
-                      <input type="hidden" >
-                        <img src="https://images.tokopedia.net/img/cache/200-square/VqbcmM/2021/12/2/3a07f3f1-c950-4851-bf07-d958575bc13c.jpg" class="card-img-top" alt="">
-                        <div class="card-body">
-                        <p class="card-text text-dark lh-base fs-6" >Razer Deathadder Essential Gaming</p>
-                        <p class="card-text text-dark fw-bolder fs-4">Rp219.000</p>
-                        <p class="card-text mt-3"><span class=" text-light bg-danger fs-6 p-2">12%</span><span class="text-dark fs-6 text-decoration-line-through fw-bold ms-2">RP 249.000</span></p>
-                        <p class="card-text mt-3"><span class="fs-5"><i class="fa fa-star text-warning" aria-hidden="true"></i></span><span class="fs-5 text-dark fw-bold ms-2">5.0 | Terjual 2</span></p>
-                        </div>
-                    </div>
-                  </a>
-                <a href="/items-{{_id}}" style="text-decoration:none;">
-                    <div class="card" style="width: 18rem;">
-                      <input type="hidden" >
-                        <img src="https://images.tokopedia.net/img/cache/200-square/VqbcmM/2021/12/2/3a07f3f1-c950-4851-bf07-d958575bc13c.jpg" class="card-img-top" alt="">
-                        <div class="card-body">
-                        <p class="card-text text-dark lh-base fs-6" >Razer Deathadder Essential Gaming</p>
-                        <p class="card-text text-dark fw-bolder fs-4">Rp219.000</p>
-                        <p class="card-text mt-3"><span class=" text-light bg-danger fs-6 p-2">12%</span><span class="text-dark fs-6 text-decoration-line-through fw-bold ms-2">RP 249.000</span></p>
-                        <p class="card-text mt-3"><span class="fs-5"><i class="fa fa-star text-warning" aria-hidden="true"></i></span><span class="fs-5 text-dark fw-bold ms-2">5.0 | Terjual 2</span></p>
-                        </div>
-                    </div>
-                  </a>
-                <a href="/items-{{_id}}" style="text-decoration:none;">
-                    <div class="card" style="width: 18rem;">
-                      <input type="hidden" >
-                        <img src="https://images.tokopedia.net/img/cache/200-square/VqbcmM/2021/12/2/3a07f3f1-c950-4851-bf07-d958575bc13c.jpg" class="card-img-top" alt="">
-                        <div class="card-body">
-                        <p class="card-text text-dark lh-base fs-6" >Razer Deathadder Essential Gaming</p>
-                        <p class="card-text text-dark fw-bolder fs-4">Rp219.000</p>
-                        <p class="card-text mt-3"><span class=" text-light bg-danger fs-6 p-2">12%</span><span class="text-dark fs-6 text-decoration-line-through fw-bold ms-2">RP 249.000</span></p>
-                        <p class="card-text mt-3"><span class="fs-5"><i class="fa fa-star text-warning" aria-hidden="true"></i></span><span class="fs-5 text-dark fw-bold ms-2">5.0 | Terjual 2</span></p>
-                        </div>
-                    </div>
-                  </a>
-                <a href="/items-{{_id}}" style="text-decoration:none;">
-                    <div class="card" style="width: 18rem;">
-                      <input type="hidden" >
-                        <img src="https://images.tokopedia.net/img/cache/200-square/VqbcmM/2021/12/2/3a07f3f1-c950-4851-bf07-d958575bc13c.jpg" class="card-img-top" alt="">
-                        <div class="card-body">
-                        <p class="card-text text-dark lh-base fs-6" >Razer Deathadder Essential Gaming</p>
-                        <p class="card-text text-dark fw-bolder fs-4">Rp219.000</p>
-                        <p class="card-text mt-3"><span class=" text-light bg-danger fs-6 p-2">12%</span><span class="text-dark fs-6 text-decoration-line-through fw-bold ms-2">RP 249.000</span></p>
-                        <p class="card-text mt-3"><span class="fs-5"><i class="fa fa-star text-warning" aria-hidden="true"></i></span><span class="fs-5 text-dark fw-bold ms-2">5.0 | Terjual 2</span></p>
-                        </div>
-                    </div>
-                  </a>
-                <a href="/items-{{_id}}" style="text-decoration:none;">
-                    <div class="card" style="width: 18rem;">
-                      <input type="hidden" >
-                        <img src="https://images.tokopedia.net/img/cache/200-square/VqbcmM/2021/12/2/3a07f3f1-c950-4851-bf07-d958575bc13c.jpg" class="card-img-top" alt="">
-                        <div class="card-body">
-                        <p class="card-text text-dark lh-base fs-6" >Razer Deathadder Essential Gaming</p>
-                        <p class="card-text text-dark fw-bolder fs-4">Rp219.000</p>
-                        <p class="card-text mt-3"><span class=" text-light bg-danger fs-6 p-2">12%</span><span class="text-dark fs-6 text-decoration-line-through fw-bold ms-2">RP 249.000</span></p>
-                        <p class="card-text mt-3"><span class="fs-5"><i class="fa fa-star text-warning" aria-hidden="true"></i></span><span class="fs-5 text-dark fw-bold ms-2">5.0 | Terjual 2</span></p>
-                        </div>
-                    </div>
-                  </a>
-                <a href="/items-{{_id}}" style="text-decoration:none;">
-                    <div class="card" style="width: 18rem;">
-                      <input type="hidden" >
-                        <img src="https://images.tokopedia.net/img/cache/200-square/VqbcmM/2021/12/2/3a07f3f1-c950-4851-bf07-d958575bc13c.jpg" class="card-img-top" alt="">
-                        <div class="card-body">
-                        <p class="card-text text-dark lh-base fs-6" >Razer Deathadder Essential Gaming</p>
-                        <p class="card-text text-dark fw-bolder fs-4">Rp219.000</p>
-                        <p class="card-text mt-3"><span class=" text-light bg-danger fs-6 p-2">12%</span><span class="text-dark fs-6 text-decoration-line-through fw-bold ms-2">RP 249.000</span></p>
-                        <p class="card-text mt-3"><span class="fs-5"><i class="fa fa-star text-warning" aria-hidden="true"></i></span><span class="fs-5 text-dark fw-bold ms-2">5.0 | Terjual 2</span></p>
-                        </div>
-                    </div>
-                  </a>
-                <a href="/items-{{_id}}" style="text-decoration:none;">
-                    <div class="card" style="width: 18rem;">
-                      <input type="hidden" >
-                        <img src="https://images.tokopedia.net/img/cache/200-square/VqbcmM/2021/12/2/3a07f3f1-c950-4851-bf07-d958575bc13c.jpg" class="card-img-top" alt="">
-                        <div class="card-body">
-                        <p class="card-text text-dark lh-base fs-6" >Razer Deathadder Essential Gaming</p>
-                        <p class="card-text text-dark fw-bolder fs-4">Rp219.000</p>
-                        <p class="card-text mt-3"><span class=" text-light bg-danger fs-6 p-2">12%</span><span class="text-dark fs-6 text-decoration-line-through fw-bold ms-2">RP 249.000</span></p>
-                        <p class="card-text mt-3"><span class="fs-5"><i class="fa fa-star text-warning" aria-hidden="true"></i></span><span class="fs-5 text-dark fw-bold ms-2">5.0 | Terjual 2</span></p>
-                        </div>
-                    </div>
-                  </a>
-                <a href="/items-{{_id}}" style="text-decoration:none;">
-                    <div class="card" style="width: 18rem;">
-                      <input type="hidden" >
-                        <img src="https://images.tokopedia.net/img/cache/200-square/VqbcmM/2021/12/2/3a07f3f1-c950-4851-bf07-d958575bc13c.jpg" class="card-img-top" alt="">
-                        <div class="card-body">
-                        <p class="card-text text-dark lh-base fs-6" >Razer Deathadder Essential Gaming</p>
-                        <p class="card-text text-dark fw-bolder fs-4">Rp219.000</p>
-                        <p class="card-text mt-3"><span class=" text-light bg-danger fs-6 p-2">12%</span><span class="text-dark fs-6 text-decoration-line-through fw-bold ms-2">RP 249.000</span></p>
-                        <p class="card-text mt-3"><span class="fs-5"><i class="fa fa-star text-warning" aria-hidden="true"></i></span><span class="fs-5 text-dark fw-bold ms-2">5.0 | Terjual 2</span></p>
-                        </div>
-                    </div>
-                  </a>
-                <a href="/items-{{_id}}" style="text-decoration:none;">
-                    <div class="card" style="width: 18rem;">
-                      <input type="hidden" >
-                        <img src="https://images.tokopedia.net/img/cache/200-square/VqbcmM/2021/12/2/3a07f3f1-c950-4851-bf07-d958575bc13c.jpg" class="card-img-top" alt="">
-                        <div class="card-body">
-                        <p class="card-text text-dark lh-base fs-6" >Razer Deathadder Essential Gaming</p>
-                        <p class="card-text text-dark fw-bolder fs-4">Rp219.000</p>
-                        <p class="card-text mt-3"><span class=" text-light bg-danger fs-6 p-2">12%</span><span class="text-dark fs-6 text-decoration-line-through fw-bold ms-2">RP 249.000</span></p>
-                        <p class="card-text mt-3"><span class="fs-5"><i class="fa fa-star text-warning" aria-hidden="true"></i></span><span class="fs-5 text-dark fw-bold ms-2">5.0 | Terjual 2</span></p>
-                        </div>
-                    </div>
-                  </a>
-                <a href="/items-{{_id}}" style="text-decoration:none;">
-                    <div class="card" style="width: 18rem;">
-                      <input type="hidden" >
-                        <img src="https://images.tokopedia.net/img/cache/200-square/VqbcmM/2021/12/2/3a07f3f1-c950-4851-bf07-d958575bc13c.jpg" class="card-img-top" alt="">
-                        <div class="card-body">
-                        <p class="card-text text-dark lh-base fs-6" >Razer Deathadder Essential Gaming</p>
-                        <p class="card-text text-dark fw-bolder fs-4">Rp219.000</p>
-                        <p class="card-text mt-3"><span class=" text-light bg-danger fs-6 p-2">12%</span><span class="text-dark fs-6 text-decoration-line-through fw-bold ms-2">RP 249.000</span></p>
-                        <p class="card-text mt-3"><span class="fs-5"><i class="fa fa-star text-warning" aria-hidden="true"></i></span><span class="fs-5 text-dark fw-bold ms-2">5.0 | Terjual 2</span></p>
-                        </div>
-                    </div>
-                  </a>
-                <a href="/items-{{_id}}" style="text-decoration:none;">
-                    <div class="card" style="width: 18rem;">
-                      <input type="hidden" >
-                        <img src="https://images.tokopedia.net/img/cache/200-square/VqbcmM/2021/12/2/3a07f3f1-c950-4851-bf07-d958575bc13c.jpg" class="card-img-top" alt="">
-                        <div class="card-body">
-                        <p class="card-text text-dark lh-base fs-6" >Razer Deathadder Essential Gaming</p>
-                        <p class="card-text text-dark fw-bolder fs-4">Rp219.000</p>
-                        <p class="card-text mt-3"><span class=" text-light bg-danger fs-6 p-2">12%</span><span class="text-dark fs-6 text-decoration-line-through fw-bold ms-2">RP 249.000</span></p>
-                        <p class="card-text mt-3"><span class="fs-5"><i class="fa fa-star text-warning" aria-hidden="true"></i></span><span class="fs-5 text-dark fw-bold ms-2">5.0 | Terjual 2</span></p>
-                        </div>
-                    </div>
-                  </a>
-            {{#each items}}
-                <a href="/items-{{_id}}" style="text-decoration:none;">
-                  <div class="card" style="width: 18rem;">
-                    <input type="hidden" >
-                      <!-- <img src="..." class="card-img-top" alt="..."> -->
-                      <div class="card-body">
-                      <p class="card-text">{{name}}</p>
-                      <p class="card-text">{{price}}</p>
-                      <p class="card-text">{{formatHTML createdAt}}</p>
-                      </div>
-                  </div>
-                </a>
-            {{/each}}
-            </div>
-        </div>
+  <div class="d-flex p-1 w-100 pe-5">
+    <div class="d-flex flex-wrap filter w-25 h-50 card p-3 ms-5 mt-2">
+      <div class="ms-3 d-flex align-items-center">
+        <img src="{{ fotoProfile }}" class="rounded-circle me-2" style="width: 60px; height: 60px; object-fit: cover;"
+          alt="">
+        <span class="text-dark fs-2 fw-bold">{{thisUser.username}}</span>
+      </div>
+      <hr>
+      <ul class="fs-4 me-3" style="list-style-type: none;">
+        {{#each userMenu}}
+        <li>
+          <div class="d-grid gap-2 mb-3">
+            <button type="button" class="btn btn{{#if equals id now}}{{ else }}-outline{{/if}}-info user-menu fs-3"
+              value="{{id}}">{{ label }}</button>
+          </div>
+          <!-- <a href="#" class="user-menu" style="text-decoration: none;">Biodata Diri</a> -->
+        </li>
+        {{/each}}
+        <!-- <li>Daftar Alamat</li> -->
+      </ul>
+
     </div>
+    <div class="item flex-grow-1 px-4 w-100">
+      <!-- <div class="d-flex justify-content-between bd-highlight mb-3">
+
+      </div> -->
+      {{#if equals now 0}}
+        <div class="d-flex p-2 gap-3">
+          <div class="w-25">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-grid">
+                  <img src="{{ fotoProfile }}" class="w-100" alt="" srcset="">
+                  <input class="d-none" id="uploadImageProfile" type="file" accept="image/*" />
+                  <label class="btn fs-3 btn-info mt-3" for="uploadImageProfile">Pilih Foto</label>
+                  <!-- <button class="btn fs-3 btn-info mt-3">Pilih Foto</button> -->
+                </div>
+                <!-- <h5 class="card-title">Card title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="card-link">Card link</a>
+                        <a href="#" class="card-link">Another link</a> -->
+              </div>
+            </div>
+          </div>
+          <div class="w-75">
+            <div class="card">
+              <div class="card-body">
+                <table class="table table-borderless">
+                  <tr>
+                    <td colspan="2" class="fs-3 fw-bold">Ubah Biodata Diri</td>
+                  </tr>
+                  <tr>
+                    <td class="fs-4 w-25">Username</td>
+                    <td class="fs-4">{{thisUser.username}}</td>
+                  </tr>
+                  <tr>
+                    <td class="fs-4">Nama</td>
+                    <td class="fs-4"><input type="text" class="form-control" id="user-name" value="{{thisUser.name}}">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="fs-4">Tanggal Lahir</td>
+                    <td class="fs-4"><input type="date" name="" class="form-control" id="user-dob"
+                        value="{{thisUser.dob}}"></td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" class="fs-3 fw-bold">Ubah Kontak</td>
+                  </tr>
+                  <tr>
+                    <td class="fs-4">Nomor HP</td>
+                    <td class="fs-4"><input type="text" class="form-control" id="user-phone" value="{{thisUser.phone}}">
+                    </td>
+                  </tr>
+                </table>
+                <div class="d-flex justify-content-end m-3"><button class="btn btn-success fs-3 fw-bold"
+                    id="user-save">Save</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {{/if}}
+    </div>
+  </div>
 </template>
