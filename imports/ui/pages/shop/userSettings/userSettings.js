@@ -48,6 +48,9 @@ Template.userSettings.helpers({
     equals(a,b){
         return a == b
     },
+    address(){
+      return [1, 2]
+    },
     now(){
         return Template.instance().now.get()
     }
