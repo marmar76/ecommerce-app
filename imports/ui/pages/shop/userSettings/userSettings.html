@@ -26,60 +26,168 @@
 
       </div> -->
       {{#if equals now 0}}
-        <div class="d-flex p-2 gap-3">
-          <div class="w-25">
+      <div class="d-flex p-2 gap-3">
+        <div class="w-25">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-grid">
+                <img src="{{ fotoProfile }}" class="w-100" alt="" srcset="">
+                <input class="d-none" id="uploadImageProfile" type="file" accept="image/*" />
+                <label class="btn fs-3 btn-info mt-3" for="uploadImageProfile">Pilih Foto</label>
+                <!-- <button class="btn fs-3 btn-info mt-3">Pilih Foto</button> -->
+              </div>
+              <!-- <h5 class="card-title">Card title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="card-link">Card link</a>
+                        <a href="#" class="card-link">Another link</a> -->
+            </div>
+          </div>
+        </div>
+        <div class="w-75">
+          <div class="card">
+            <div class="card-body">
+              <table class="table table-borderless">
+                <tr>
+                  <td colspan="2" class="fs-3 fw-bold">Ubah Biodata Diri</td>
+                </tr>
+                <tr>
+                  <td class="fs-4 w-25">Username</td>
+                  <td class="fs-4">{{thisUser.username}}</td>
+                </tr>
+                <tr>
+                  <td class="fs-4">Nama</td>
+                  <td class="fs-4"><input type="text" class="form-control" id="user-name" value="{{thisUser.name}}">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="fs-4">Tanggal Lahir</td>
+                  <td class="fs-4"><input type="date" name="" class="form-control" id="user-dob"
+                      value="{{thisUser.dob}}"></td>
+                </tr>
+                <tr>
+                  <td colspan="2" class="fs-3 fw-bold">Ubah Kontak</td>
+                </tr>
+                <tr>
+                  <td class="fs-4">Nomor HP</td>
+                  <td class="fs-4"><input type="text" class="form-control" id="user-phone" value="{{thisUser.phone}}">
+                  </td>
+                </tr>
+              </table>
+              <div class="d-flex justify-content-end m-3"><button class="btn btn-success fs-3 fw-bold"
+                  id="user-save">Save</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{/if}}
+      {{#if equals now 1}}
+      <div class="d-flex p-2 gap-3">
+        <!-- <div class="w-25">
             <div class="card">
               <div class="card-body">
                 <div class="d-grid">
                   <img src="{{ fotoProfile }}" class="w-100" alt="" srcset="">
                   <input class="d-none" id="uploadImageProfile" type="file" accept="image/*" />
                   <label class="btn fs-3 btn-info mt-3" for="uploadImageProfile">Pilih Foto</label>
-                  <!-- <button class="btn fs-3 btn-info mt-3">Pilih Foto</button> -->
                 </div>
-                <!-- <h5 class="card-title">Card title</h5>
+                <h5 class="card-title">Card title</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         <a href="#" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a> -->
+                        <a href="#" class="card-link">Another link</a>
               </div>
             </div>
+          </div> -->
+        <div class="w-100">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex mb-3 justify-content-between">
+                <div class="form-group">
+
+                </div>
+                <div>
+                  <button class="btn btn-info rounded fs-4">+ Alamat Baru</button>
+                </div>
+              </div>
+              {{#if address}}
+              {{#each address}}
+              <div class="card mb-2" style="background: rgb(13, 202, 240, .4);">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center m-3">
+                    <div>
+                      <p class="fs-5 text-dark fw-bold">Alamat Rumah</p>
+                      <p class="fs-4 text-dark fw-bold">Andreas Iskandar</p>
+                      <p class="fs-4 text-dark">089648421493</p>
+                      <p class="fs-4 text-dark">Ngagel Wasana</p>
+                      <br>
+                      <a href="" class="fs-6 text-success fw-bold text-decoration-none">Ubah Alamat</a>
+                    </div>
+                    <div>
+
+                      <button class="btn fs-3 fw-bold" id="user-save"><i class="fa fa-check fs-3"
+                          aria-hidden="true"></i>
+                      </button>
+                      <!-- <button class="btn fs-3 fw-bold"
+                          id="user-save">Save
+                        </button> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {{/each}}
+              {{else}}
+              <div class="d-flex align-items-center justify-content-center fs-2" style="height: 50vh;">
+                <p class="fs-2 text-dark">
+                  Belum ada alamat nih, bisa tambahkan alamat dulu <a data-bs-target="#modal-add-address" data-bs-toggle="modal" href=""
+                    class="fs-2 text-info text-decoration-none"> disini</a>
+                </p>
+              </div>
+              {{/if}}
+              <!-- Vertically centered modal -->
+              <!-- <div class="modal-dialog modal-dialog-centered">
+                ...
+              </div> -->
+
+              <!-- Vertically centered scrollable modal -->
+              <div id="modal-add-address" class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                
+              </div>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Open modal for @mdo</button>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@fat">Open modal for @fat</button>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">Open modal for @getbootstrap</button>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Recipient:</label>
+            <input type="text" class="form-control" id="recipient-name">
           </div>
-          <div class="w-75">
-            <div class="card">
-              <div class="card-body">
-                <table class="table table-borderless">
-                  <tr>
-                    <td colspan="2" class="fs-3 fw-bold">Ubah Biodata Diri</td>
-                  </tr>
-                  <tr>
-                    <td class="fs-4 w-25">Username</td>
-                    <td class="fs-4">{{thisUser.username}}</td>
-                  </tr>
-                  <tr>
-                    <td class="fs-4">Nama</td>
-                    <td class="fs-4"><input type="text" class="form-control" id="user-name" value="{{thisUser.name}}">
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="fs-4">Tanggal Lahir</td>
-                    <td class="fs-4"><input type="date" name="" class="form-control" id="user-dob"
-                        value="{{thisUser.dob}}"></td>
-                  </tr>
-                  <tr>
-                    <td colspan="2" class="fs-3 fw-bold">Ubah Kontak</td>
-                  </tr>
-                  <tr>
-                    <td class="fs-4">Nomor HP</td>
-                    <td class="fs-4"><input type="text" class="form-control" id="user-phone" value="{{thisUser.phone}}">
-                    </td>
-                  </tr>
-                </table>
-                <div class="d-flex justify-content-end m-3"><button class="btn btn-success fs-3 fw-bold"
-                    id="user-save">Save</button></div>
-              </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Message:</label>
+            <textarea class="form-control" id="message-text"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Send message</button>
+      </div>
+    </div>
+  </div>
+</div>
             </div>
+
           </div>
         </div>
+      </div>
       {{/if}}
     </div>
   </div>
