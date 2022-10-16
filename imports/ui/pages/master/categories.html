@@ -13,9 +13,22 @@
                         </div>
                         <div class="col-8">
                           <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-smooth-scroll="true" class="scrollspy-example" tabindex="0">
-                            {{#each subcategory}}
-                                <h4 id="list-item-1"> {{name}} </h4> 
-                            {{/each}}
+                            <table class="table table-striped">
+                                <thead>
+                                  <tr>
+                                    <th class="fs-5">Name</th> 
+                                    <th class="fs-5">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {{#each subcategory}} 
+                                  <tr>
+                                    <td class="fs-5">{{name}}</td> 
+                                    <td class="fs-5"><a href="/master-subcategory-{{_id}}-edit"><button class="btn btn-primary">Edit</button></a></td> 
+                                  </tr> 
+                                  {{/each}}
+                                </tbody>
+                            </table> 
                           </div>
                         </div>
                       </div>

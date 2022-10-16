@@ -1,5 +1,71 @@
-<template name="subCategoriesHome">
-
+<template name="subCategoriesEditPage">
+    <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Edit Sub Category</h4>
+                    <p class="card-description">
+                        
+                    </p>
+                    <div class="mb-3 form-group">
+                        <label for="Category" class="form-label">Category</label>
+                        <select name="select-roles" id="categories" class="form-control">
+                          {{#each categories}}
+                            {{#if equals _id subCategory.categoryId}}
+                                <option value={{_id}} selected>{{name}}</option>
+                            {{else}}
+                                <option value={{_id}}>{{name}}</option>
+                            {{/if}}
+                          {{/each}}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="subCategoryName" value="{{subCategory.name}}" required>
+                    </div>
+                    <!-- <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <input type="text" class="form-control" id="subcategoriesDescription" required>
+                    </div>  -->
+                    <h3>Specification</h3>
+                    <input type="hidden" name="" id="show">
+                    
+                    <table class="table table-striped">
+                      <thead>
+                        <tr> 
+                          <th scope="col" class="fs-6">Name</th> 
+                          <th scope="col" class="fs-6">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-- {{#each subCategory.specification}} -->
+                            <!-- <tr>  
+                                <td class="fs-6"> {{name}}</td>
+                                <td><button class="btn btn-danger model-delete" value="{{slug}}">Delete</button></td>
+                            </tr>  -->
+                        <!-- {{/each}} -->
+                        {{#each i in models}}
+                            {{#if i.status}}
+                            <tr>  
+                                {{#if i.isNew}}
+                                    <td><input type="text" class="form-control" id="model-name-{{i.id}}" required placeholder="Specification Name"> </td>   
+                                {{else}}
+                                    <td><input type="text" class="form-control" id="model-name-{{i.id}}" required placeholder="{{i.name}}"> </td>
+                                {{/if}}
+                                <td><button class="btn btn-danger model-delete" value="{{i.id}}">Delete</button></td>
+                            </tr> 
+                            {{/if}}
+                        {{/each}}
+                      </tbody>
+                    </table>
+                    <div class="d-flex justify-content-end mt-2">
+                      <button class="btn btn-primary" id="model-more">+ add more fields</button>
+                    </div>
+                    <button id="submit" type="submit" class="btn btn-primary me-2">Submit</button> 
+                </div>
+            </div>
+        </div>
+    </div> 
 </template>
 <template name="subCategoriesCreatePage">
   <div class="row">
@@ -22,10 +88,32 @@
                       <label for="name" class="form-label">Name</label>
                       <input type="text" class="form-control" id="subCategoryName" required>
                   </div>
-                  <div class="mb-3">
+                  <!-- <div class="mb-3">
                       <label for="description" class="form-label">Description</label>
                       <input type="text" class="form-control" id="subcategoriesDescription" required>
-                  </div> 
+                  </div>  -->
+                  <h3>Specification</h3>
+                  <table class="table table-striped">
+                    <thead>
+                      <tr> 
+                        <th scope="col">Name</th> 
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {{#each i in models}}
+                        {{#if i.status}}
+                            <tr>  
+                              <td><input type="text" class="form-control" id="model-name-{{i.id}}" required placeholder="Specification Name"></td>
+                              <td><button class="btn btn-danger model-delete" value="{{i.id}}">Delete</button></td>
+                            </tr> 
+                          {{/if}}
+                      {{/each}}
+                    </tbody>
+                  </table>
+                  <div class="d-flex justify-content-end mt-2">
+                    <button class="btn btn-primary" id="model-more">+ add more fields</button>
+                  </div>
                   <button id="submit" type="submit" class="btn btn-primary me-2">Submit</button> 
               </div>
           </div>

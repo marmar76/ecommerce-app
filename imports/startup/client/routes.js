@@ -229,6 +229,14 @@ FlowRouter.route('/master-promotions-:_id-edit', {
       this.render('masterContainer', 'promotionEditPage');
     },
 })
+
+FlowRouter.route('/master-subcategory-:_id-edit', {
+    name: 'subCategoriesEditPage',
+    template: 'subCategoriesEditPage',
+    action() {
+      this.render('masterContainer', 'subCategoriesEditPage');
+    },
+})
 FlowRouter.route('/test', {
     name: 'test',
     template: 'test',

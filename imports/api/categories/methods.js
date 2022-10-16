@@ -9,10 +9,15 @@ Meteor.methods({
         return Categories.insert(param)
     },
 
-    'createSubCategory'(param){
+    'createSubCategory'(param, specs){
         check(param.name, String)
-        check(param.status, Boolean)
-        return SubCategories.insert(param)
+        check(param.categoryId, String)
+        check(param.categoryName, String)
+        check(param.status, Boolean) 
+        const id = SubCategories.insert(param)
+        SubCategories.update({_id: id}, {$set: {
+            specification: specs
+        }}) 
     },
 
     'getAllCategory'(){
@@ -37,6 +42,15 @@ Meteor.methods({
         check(id,String);
         return SubCategories.findOne({_id: id});
     },
+    'updateSubCategory'(id, param){
+        check(param.name, String)
+        check(param.categoryId, String)
+        check(param.categoryName, String)
+        check(param.status, Boolean) 
+        return SubCategories.update({_id: id},{
+            $set:param
+        });
+    }
     // 'getDetailSubCategory'(id){
 
     // }

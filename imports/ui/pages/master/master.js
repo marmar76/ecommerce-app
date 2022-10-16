@@ -855,6 +855,7 @@ Template.itemsCreatePage.helpers({
   comparison() {
     return Template.instance().comparison.get()
   },
+  
   models() {
     return Template.instance().models.get()
   },
@@ -1287,6 +1288,10 @@ Template.categoriesCreatePage.events({
 
 Template.subCategoriesCreatePage.onCreated(function () {
   const self = this;
+  this.models = new ReactiveVar([{
+    id: 0,
+    status: true
+  }]) 
   this.subCategory = new ReactiveVar();
   Meteor.call('getAllCategory', function (err, res) {
     self.subCategory.set(res);
@@ -1296,7 +1301,10 @@ Template.subCategoriesCreatePage.onCreated(function () {
 Template.subCategoriesCreatePage.helpers({
   categories() {
     return Template.instance().subCategory.get();
-  }
+  }, 
+  models() {
+    return Template.instance().models.get()
+  },
 
 })
 
@@ -1307,30 +1315,200 @@ Template.subCategoriesCreatePage.events({
     const categoryId = $(categories).val();
     const status = true;
     const category = getCategory.find((x) => {
-      return x._id == categoryId
-    });
-    const categoryName = category.name;
-    const data = {
-      name,
-      status,
-      categoryId,
-      categoryName
-    };
-    if (name.length === 0) {
-      failAlert("Nama tidak boleh kosong!")
-    } else {
-      Meteor.call('createSubCategory', data, function (error, res) {
-        console.log(error);
-        console.log(res);
-        if (error) {
-          failAlert(error);
-        } else {
-          successAlertBack();
+        return x._id == categoryId
+      });
+      const categoryName = category.name;
+    const models = t.models.get() 
+    let valid = models.length > 0 
+    const thisModels = models.filter((p) => p.status).map(function (x) {
+      if (valid) {
+        const name = $('#model-name-' + x.id).val();
+        const nameArr = name.split(' ') 
+        let slug =""
+        for (const i of nameArr) {
+          slug += i + ""
+        } 
+        if (!name || !slug ) {
+          failAlert("something wrong with item number " + (x.id + 1))
+          valid = false
+        }else{
+          return {
+            name,
+            slug
+          }
         }
+      } 
+    }) 
+    if(valid){
+      if (name.length === 0) {
+        failAlert("Nama tidak boleh kosong!")
+      } else {
+        const data = {
+          name,
+          status,
+          categoryId,
+          categoryName
+        };
+        Meteor.call('createSubCategory', data, thisModels, function (error, res) {
+          console.log(error);
+          console.log(res);
+          if (error) {
+            failAlert(error);
+          } else {
+            successAlertBack();
+          }
+        })
+      } 
+    }
+  },
+  'click #model-more'(e, t) {
+    const models = t.models.get()
+    models.push({
+      id: models.length,
+      status: true
+    })
+    t.models.set(models)
+  },
+  'click .model-delete'(e, t) {
+    const click = $(e.target).val();
+    const models = t.models.get()
+    const thisModel = models.find((x) => x.id == click)
+    thisModel.status = false
+    // console.log(models);
+    t.models.set(models)
+  },
+})
+
+Template.subCategoriesEditPage.onCreated(function () {
+  const self = this;
+  this.models = new ReactiveVar([])
+  const arr = this.models.get() 
+  
+  const paramId = FlowRouter.current().params._id
+  this.subCategory = new ReactiveVar()
+  this.category = new ReactiveVar();
+  Meteor.call('getAllCategory', function (err, res) {
+    self.category.set(res);
+  });
+  Meteor.call('getOneSubCategory', paramId, function (err, res) {  
+    for (const i of res.specification) {
+      arr.push({
+        id: arr.length,
+        status:true,
+        name: i.name,
+        slug: i.slug,
+        isNew: false
       })
     }
+    // arr.push({
+    //   id: arr.length,
+    //   status: true,
+    //   isNew:true
+    // })
+    self.subCategory.set(res);
+  })
+  setTimeout(() => {
+    $("#show").trigger("click");
+  }, 500);
+})
 
-  }
+Template.subCategoriesEditPage.helpers({
+  subCategory() {
+    return Template.instance().subCategory.get();
+  }, 
+  categories() {
+    return Template.instance().category.get();
+  }, 
+  models() {
+    let models = Template.instance().models.get() 
+    if(models){
+      console.log(models);
+      return models 
+    }
+  },
+  equals(a, b){
+    return a == b
+  },
+})
+
+Template.subCategoriesEditPage.events({
+  'click #submit'(e, t) {
+    const paramId = FlowRouter.current().params._id
+    const getCategory = t.category.get();
+    const name = $(subCategoryName).val();
+    const categoryId = $(categories).val();
+    const status = true;
+    const category = getCategory.find((x) => {
+        return x._id == categoryId
+      });
+      const categoryName = category.name;
+    const models = t.models.get()
+    let valid = models.length > 0 
+    const thisModels = models.filter((p) => p.status).map(function (x) {
+      if (valid) {
+        const name = x.name ? x.name : $('#model-name-' + x.id).val(); 
+        let nameArr = ""
+        if(name)nameArr = name.split(' ') 
+        let slug =""
+        for (const i of nameArr) {
+          slug += i + ""
+        } 
+        if (!name || !slug ) {
+          failAlert("something wrong with item number " + (x.id + 1))
+          valid = false
+        }else{ 
+          return {
+            name,
+            slug
+          }
+        }
+      } 
+    }) 
+    if(valid){
+      if (name.length === 0) {
+        failAlert("Nama tidak boleh kosong!")
+      } else {
+        const data = {
+          name,
+          status,
+          categoryId,
+          categoryName,
+          specification: thisModels
+        };
+        Meteor.call('updateSubCategory', paramId, data, function (error, res) {
+          console.log(error);
+          console.log(res);
+          if (error) {
+            failAlert(error);
+          } else {
+            successAlertBack();
+          }
+        })
+      } 
+    }
+  },
+  'click #model-more'(e, t) {
+    const models = t.models.get()
+    models.push({
+      id: models.length,
+      status: true,
+      isNew:true
+    })
+    t.models.set(models)
+  },
+  'click #show'(e, t) {
+    const models = t.models.get()
+    t.models.set(models)
+  },
+  'click .model-delete'(e, t) {
+    const click = $(e.target).val();
+    const models = t.models.get()
+    const thisModel = models.find((x) => x.id == click) ? models.find((x) => x.id == click) : models.find((x) => x.slug == click)
+    thisModel.status = false
+    console.log(models);
+    t.models.set(models)
+  },
+
 })
 //===============================================
 //                    PROMOTION
