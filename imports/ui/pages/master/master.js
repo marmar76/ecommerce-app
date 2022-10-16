@@ -913,7 +913,8 @@ Template.itemsCreatePage.events({
         } else {
           if (canCompare) {
             let specValid = true
-            const specification = canCompare.list.map(function (y) {
+            // const specification = canCompare.list.map(function (y) {
+            const specification = canCompare.specification.map(function (y) {
               if (specValid && valid) {
                 // console.log(`#${y.slug}-${x.id}`);
                 const thisValue = $(`#${y.slug}-${x.id}`).val();
@@ -1029,9 +1030,13 @@ Template.itemsCreatePage.events({
   },
   'change #subcategories'(e, t) {
     const click = $(e.target).val();
-    const canCompare = SpecificationComparison.find((x) => x.subcategoryId == click)
+    const subCategory = t.subcategory.get()
+    const canCompare = subCategory.find((x) => x._id == click)
+    // const canCompare = SpecificationComparison.find((x) => x.subcategoryId == click)
+    console.log(canCompare);
     // console.log(click);
-    if (canCompare) {
+    // if (canCompare) {
+    if (canCompare.specification) {
       t.comparison.set(canCompare)
     } else {
       t.comparison.set(false)

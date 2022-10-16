@@ -198,10 +198,16 @@
                       <tr>
                         <td colspan="4"><h2>{{comparison.name}} Specification</h2></td>
                       </tr>
-                      {{#each j in comparison.list}}
-                        <tr>
+                      <!-- {{#each j in comparison.list}} -->
+                        <!-- <tr>
                           <td scope="col">{{j.label}}</td>
                           <td colspan="3"><input type="{{j.type}}" class="form-control" id="{{j.slug}}-{{i.id}}" required placeholder="{{j.label}}"></td>
+                        </tr> -->
+                      <!-- {{/each}} -->
+                      {{#each j in comparison.specification}}
+                        <tr>
+                          <td scope="col">{{j.name}}</td>
+                          <td colspan="3"><input type="text" class="form-control" id="{{j.slug}}-{{i.id}}" required placeholder="{{j.name}}"></td>
                         </tr>
                       {{/each}}
                       <td>
