@@ -90,6 +90,11 @@ Meteor.methods({
         thisItem.subcategoryName = thisSubcategory.name
         return thisItem
     }, 
+    'getSpecificItems'(id){
+        check(id,String);
+        const thisItem = Items.find({subcategory: id}); 
+        return thisItem
+    }, 
     'getOneJenis'(id, idJenis){
         check(id,String);
         check(idJenis,String);

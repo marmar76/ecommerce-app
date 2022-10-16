@@ -14,6 +14,7 @@ import '../../ui/pages/shop/layouts/layouts'
 import '../../ui/pages/shop/homepage/homepage' 
 import '../../ui/pages/shop/productPage/productPage' 
 import '../../ui/pages/shop/cart/cart' 
+import '../../ui/pages/shop/comparison/comparison' 
 import '../../ui/pages/shop/checkout/checkout' 
 import '../../ui/pages/shop/userSettings/userSettings' 
 // FlowRouter.route('*', {
@@ -259,5 +260,13 @@ FlowRouter.route('/checkout/:_id', {
     template: 'checkout',
     action() {
       this.render('layouts','checkout');
+    },
+})
+
+FlowRouter.route('/comparison/:_id', {
+    name: 'comparison',
+    template: 'comparison',
+    action() {
+      this.render('layouts','comparison');
     },
 })

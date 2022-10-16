@@ -62,43 +62,49 @@
               <thead>
                 <tr>
                   <th class="fs-5">Name</th>
-                  <th class="fs-5">Price</th>
+                  <th class="fs-5">Model</th>
                   <!-- <th>Condi5ion</th> -->
                   <!-- <th>Stock5/th> -->
+                  <th class="fs-5 text-center" >Stock</th> 
+                  <th class="fs-5" >Price</th>
                   <th class="fs-5">Weight</th>
                   <th class="fs-5">Category</th>
-                  <th class="fs-5">Sub Category</th>
-                  <th class="fs-5">Description</th>
+                  <th class="fs-5">Sub Category</th>  
                   <th class="fs-5">Action</th>
                 </tr>
               </thead>
               <tbody>
-                {{#each items}}
+                {{#each items}} 
                 <tr>
                   <td class="fs-5">{{name}}</td>
-                  <td class="fs-5">{{price}}</td>
-                  <!-- <td>{{con5ition}}</td> -->
-                  <!-- <td>{{sto5k}}</td> -->
+                  <td class="fs-5">
+                    <ul>
+                    {{#each models}}
+                      <li class="fs-5">{{name}}</li>
+                    {{/each}}
+                    </ul>
+                  </td>
+                  <td class="fs-5">
+                    <ul>
+                    {{#each models}}
+                      <li class="fs-5">{{stock}}</li>
+                    {{/each}}
+                    </ul>
+                  </td>
+                  <td class="fs-5">
+                    <ul>
+                    {{#each models}}
+                      <li class="fs-5">Rp.{{price}}</li>
+                    {{/each}}
+                    </ul>
+                  </td>
                   <td class="fs-5">{{weight}}</td>
                   <td class="fs-5">{{categoryName}}</td>
-                  <td class="fs-5">{{subcategoryName}}</td>
-                  <td class="fs-5">{{description}}</td>
-                  <td class="fs-5"><a href="/master-items-{{_id}}-details"><button class="btn btn-primary">Details</button></a></td>
-                </tr>
-                <tr>
-                  <th class="fs-5" colspan="1">Items model</th>
-                  <th class="fs-5 text-center" colspan="2">Stock</th>
-                  <th class="fs-5" colspan="1"></th>
-                  <th class="fs-5" colspan="3">Price</th>
-                </tr>
-                  {{#each models}}
-                  <tr>
-                    <td class="fs-5">{{name}}</td>
-                    <td class="fs-5 text-center" colspan="2">{{stock}}</td>
-                    <td class="fs-5" colspan="1"></td>
-                    <td class="fs-5" colspan="4">{{price}}</td>
-                  </tr>
-                  {{/each}}
+                  <td class="fs-5">{{subcategoryName}}</td> 
+                  <!-- <td class="fs-5 text-center" colspan="2">{{stock}}</td> 
+                  <td class="fs-5" colspan="4">{{price}}</td> -->
+                  <td class="fs-5"><a href="/master-items-{{_id}}-details"><button class="btn btn-primary">Details</button></a></td> 
+                </tr> 
                 {{/each}}
               </tbody>
             </table>
@@ -302,8 +308,14 @@
                   <td>{{ items.name }}</td>
                 </tr>
                 <tr>
-                  <th>Price</th>
-                  <td>{{ items.price }}</td>
+                  <th>Model</th>
+                  <td>
+                    <ul>
+                    {{#each items.models}}
+                      <li >{{name}} - {{stock}} pcs - Rp.{{price}}</li>
+                    {{/each}}
+                    </ul>
+                  </td>
                 </tr>
                 <tr>
                   <th>Category</th>
@@ -312,15 +324,7 @@
                 <tr>
                   <th>Weight</th>
                   <td>{{ items.weight }}</td>
-                </tr>
-                <tr>
-                  <th>Stock</th>
-                  <td>{{ items.stock }}</td>
-                </tr>
-                <tr>
-                  <th>Condition</th>
-                  <td>{{ items.condition }}</td>
-                </tr>
+                </tr> 
                 <tr>
                   <th>Description</th>
                   <td>{{ items.description }}</td>

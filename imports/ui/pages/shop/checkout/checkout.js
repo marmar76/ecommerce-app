@@ -148,6 +148,7 @@ Template.checkout.events({
             items: cart.items,
             totalPurchase: +grandtotal,
             discount: +discount,
+            // address:user.address[0],
             promotionId: promotion._id,
             promotionCode: promotion.code,
             createdBy: user._id,

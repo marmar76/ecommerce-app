@@ -56,8 +56,10 @@ Meteor.methods({
     async 'getMyself'(){
         // check(id,String);
         const user = Meteor.users.findOne({_id: Meteor.userId()});
-        const profilePictureLink = await getFireImage('user/picture', user.profilePicture)
-        user.profilePicture = profilePictureLink
+        if(user.profilePicture){
+            const profilePictureLink = await getFireImage('user/picture', user.profilePicture)
+            user.profilePicture = profilePictureLink
+        }
         return user
     },
     'updateMyself'(data){

@@ -724,6 +724,7 @@ Template.itemsHome.onCreated(function () {
     self.subcategory.set(res);
   });
   Meteor.call('getAllItem', self.filtering.get(), function (err, res) {
+    console.log(res);
     self.item.set(res);
   })
 
