@@ -3,6 +3,7 @@ import { Template } from 'meteor/templating';
 import moment, { now } from 'moment';
 import { ImagePlaceholder } from '../../../../api/users/users';
 import './userSettings.html';
+
 function isValidDate(d) {
     return d instanceof Date && !isNaN(d);
 }
@@ -49,7 +50,11 @@ Template.userSettings.helpers({
         return a == b
     },
     address(){
-      return [1, 2]
+      const thisUser = Template.instance().thisUser.get()
+      if(thisUser.address){
+        return thisUser.address
+      }
+      else return false
     },
     now(){
         return Template.instance().now.get()
@@ -60,6 +65,36 @@ Template.userSettings.events({
     'click .user-menu'(e, t){
         const click = e.target.value
         t.now.set(click)
+    },
+    'click .add-alamat'(e, t){
+      var data = [
+        {
+            id: 0,
+            text: 'enhancement'
+        },
+        {
+            id: 1,
+            text: 'bug'
+        },
+        {
+            id: 2,
+            text: 'duplicate'
+        },
+        {
+            id: 3,
+            text: 'invalid'
+        },
+        {
+            id: 4,
+            text: 'wontfix'
+        }
+    ];
+      setTimeout(() => {
+        $('#user-kecamatan').select2({
+          dropdownParent: $('#modal-add-address'),
+          data: data
+        });
+      }, 200);
     },
     'change #uploadImageProfile': function (event, template) {
         event.preventDefault();

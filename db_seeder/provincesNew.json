@@ -1,0 +1,206 @@
+[
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d536"},
+    "code": 51,
+    "name": "Bali",
+    "province_id": "1"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d531"},
+    "code": 33,
+    "name": "Jawa Tengah",
+    "province_id": "10"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d534"},
+    "code": 35,
+    "name": "Jawa Timur",
+    "province_id": "11"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d53d"},
+    "code": 61,
+    "name": "Kalimantan Barat",
+    "province_id": "12"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d53f"},
+    "code": 63,
+    "name": "Kalimantan Selatan",
+    "province_id": "13"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d53e"},
+    "code": 62,
+    "name": "Kalimantan Tengah",
+    "province_id": "14"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d540"},
+    "code": 64,
+    "name": "Kalimantan Timur",
+    "province_id": "15"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d541"},
+    "code": 65,
+    "name": "Kalimantan Utara",
+    "province_id": "16"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d530"},
+    "code": 18,
+    "name": "Lampung",
+    "province_id": "18"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d548"},
+    "code": 81,
+    "name": "Maluku",
+    "province_id": "19"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d52c"},
+    "code": 19,
+    "name": "Bangka Belitung",
+    "province_id": "2"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d549"},
+    "code": 82,
+    "name": "Maluku Utara",
+    "province_id": "20"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d537"},
+    "code": 11,
+    "name": "Nanggroe Aceh Darussalam (NAD)",
+    "province_id": "21"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d53b"},
+    "code": 52,
+    "name": "Nusa Tenggara Barat (NTB)",
+    "province_id": "22"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d53c"},
+    "code": 53,
+    "name": "Nusa Tenggara Timur (NTT)",
+    "province_id": "23"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d54b"},
+    "code": 94,
+    "name": "Papua",
+    "province_id": "24"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d54a"},
+    "code": 91,
+    "name": "Papua Barat",
+    "province_id": "25"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d52b"},
+    "code": 14,
+    "name": "Riau",
+    "province_id": "26"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d52d"},
+    "code": 21,
+    "name": "Riau",
+    "province_id": "26"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d547"},
+    "code": 76,
+    "name": "Sulawesi Barat",
+    "province_id": "27"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d544"},
+    "code": 73,
+    "name": "Sulawesi Selatan",
+    "province_id": "28"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d543"},
+    "code": 72,
+    "name": "Sulawesi Tengah",
+    "province_id": "29"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d535"},
+    "code": 36,
+    "name": "Banten",
+    "province_id": "3"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d545"},
+    "code": 74,
+    "name": "Sulawesi Tenggara",
+    "province_id": "30"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d542"},
+    "code": 71,
+    "name": "Sulawesi Utara",
+    "province_id": "31"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d54c"},
+    "code": 13,
+    "name": "Sumatera Barat",
+    "province_id": "32"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d539"},
+    "code": 16,
+    "name": "Sumatera Selatan",
+    "province_id": "33"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d52f"},
+    "code": 12,
+    "name": "Sumatera Utara",
+    "province_id": "34"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d53a"},
+    "code": 17,
+    "name": "Bengkulu",
+    "province_id": "4"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d533"},
+    "code": 34,
+    "name": "DI Yogyakarta",
+    "province_id": "5"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d52e"},
+    "code": 31,
+    "name": "DKI Jakarta",
+    "province_id": "6"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d546"},
+    "code": 75,
+    "name": "Gorontalo",
+    "province_id": "7"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d538"},
+    "code": 15,
+    "name": "Jambi",
+    "province_id": "8"
+  },
+  {
+    "_id": {"$oid": "5fd81707b1a7d8e34710d532"},
+    "code": 32,
+    "name": "Jawa Barat",
+    "province_id": "9"
+  }
+]

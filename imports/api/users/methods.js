@@ -56,7 +56,7 @@ Meteor.methods({
     async 'getMyself'(){
         // check(id,String);
         const user = Meteor.users.findOne({_id: Meteor.userId()});
-        if(user.profilePicture){
+        if(user.profilePicture && false){
             const profilePictureLink = await getFireImage('user/picture', user.profilePicture)
             user.profilePicture = profilePictureLink
         }
