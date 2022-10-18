@@ -60,6 +60,7 @@ Meteor.methods({
             const profilePictureLink = await getFireImage('user/picture', user.profilePicture)
             user.profilePicture = profilePictureLink
         }
+        
         return user
     },
     'updateMyself'(data){

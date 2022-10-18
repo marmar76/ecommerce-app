@@ -14,6 +14,7 @@ import './items.html';
 import './promotions.html';
 import './subCategories.html';
 import './categories.html';
+import './banners.html';
 
 // import '../../assets/master/vendors/feather/feather.css'
 import '../../assets/master/vendors/mdi/css/materialdesignicons.min.css'
@@ -114,6 +115,21 @@ const navbar = [{
       },
       {
         href: '/master-promotions-create',
+        title: 'Create Promotion'
+      }
+    ]
+  },
+  {
+    type: 2,
+    title: 'Banner',
+    icon: 'menu-icon mdi mdi-account',
+    href: 'master-promotions',
+    child: [{
+        href: '/master-banner',
+        title: 'List Banner'
+      },
+      {
+        href: '/master-banner-create',
         title: 'Create Promotion'
       }
     ]

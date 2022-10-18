@@ -29,6 +29,7 @@ Meteor.methods({
     'getAllItem'(filtering){
         const thisFilter = {}
         const sort = {}
+        console.log(filtering);
         if (filtering) {
         // if ((+filtering.sort) === 1) {
         //     sort.price = 1
@@ -49,15 +50,20 @@ Meteor.methods({
         //     thisFilter.createdAt = {$gte: filtering.dateFrom}
         // } 
             thisFilter.status = true
-            if((filtering.filtercategory) && (+filtering.filtercategory) != -1){
-                thisFilter.category = filtering.filtercategory.toString();
-                if((filtering.filtersubcategory)  && (+filtering.filtersubcategory) != -1){
-                    thisFilter.subcategory = filtering.filtersubcategory.toString();
-                }
+            // if((filtering.filtercategory) && (+filtering.filtercategory) != -1){
+            //     thisFilter.category = filtering.filtercategory.toString();
+            //     if((filtering.filtersubcategory)  && (+filtering.filtersubcategory) != -1){
+            //         thisFilter.subcategory = filtering.filtersubcategory.toString();
+            //     }
+            // }
+            if(filtering.category){
+                thisFilter.category = filtering.category.toString()
             }
-            
+            if(filtering.subcategory){
+                thisFilter.subcategory = filtering.subcategory.toString()
+            }
         }
-        console.log(thisFilter);
+        // console.log(thisFilter);
         const item = Items.find(thisFilter, {
             sort: sort
         }).fetch();
@@ -66,6 +72,8 @@ Meteor.methods({
         // console.log(item);
         if (filtering) {
             return item.filter(function (x) {
+                console.log(x.name);
+                console.log(filtering.filter);
                 return x.name.toLowerCase().includes(filtering.filter.toLowerCase());
             }).map(function (y) {  
                 const thisCategory = categories.find((x) => y.category == x._id)
@@ -75,8 +83,28 @@ Meteor.methods({
                 const lowestPrice = y.models.sort(function (a, b) {  
                     return a.price - b.price
                 })
+                y.lowestPrice = lowestPrice[0].price
                 y.price = lowestPrice[0].price
                 return y
+            }).filter(function (x) {  
+                if(filtering.hargaAwal){
+                    if(x.price < filtering.hargaAwal){
+                        return false
+                    }
+                }
+                if(filtering.hargaAkhir){
+                    if(x.price > filtering.hargaAkhir){
+                        return false
+                    }
+                }
+                return true
+            }).sort(function (x, y) { 
+                if ((+filtering.sort) == 1) {
+                    return x.price - y.price
+                }
+                if ((+filtering.sort) == 2) {
+                    return y.price - x.price 
+                } 
             })
         }
         return item;

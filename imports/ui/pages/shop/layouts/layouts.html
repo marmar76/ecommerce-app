@@ -25,7 +25,7 @@
                       </li> 
                     </ul> 
                       <input class="form-control mx-2" type="text" placeholder="Search" aria-label="Search" id="search">
-                      <button class="btn btn-outline-success bg-danger text-white fw-bold" id="btn-search" type="submit">Search</button>
+                      <button class="btn btn-outline-success bg-danger text-white fw-bold" id="btn-search" type="button">Search</button>
                       <div class="mx-3 d-flex align-items-center">
                           <i class="fa fa-shopping-cart fs-3 mx-3" aria-hidden="true"></i>
                           {{#if isLogin}}
@@ -44,10 +44,10 @@
                           </ul> 
                           {{else}}
                             <a href="/login">
-                                <button class="btn btn-outline-success ms-3 bg-white text-black fw-bold" id="btn-search" type="submit">Masuk</button>
+                                <button class="btn btn-outline-success ms-3 bg-white text-black fw-bold" type="submit">Masuk</button>
                             </a>
                             <a href="/register">
-                                <button class="btn btn-outline-success ms-2 bg-danger text-white fw-bold" id="btn-search" type="submit">Daftar</button>
+                                <button class="btn btn-outline-success ms-2 bg-danger text-white fw-bold" type="submit">Daftar</button>
                             </a>
                           {{/if}}
                       </div>
@@ -57,7 +57,6 @@
         </div>
         <div>
           <button style="display: none;" class="trigger-button"></button>
-            <h1>tes</h1>
         </div>
     </div>
     <div class="content">

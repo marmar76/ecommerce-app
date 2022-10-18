@@ -113,69 +113,70 @@ Template.layouts.events({
           })
     },
   'click .category_filter'(e,t){
-    const id = $(e.target).val(); 
-    for (const key of t.category.curValue) { 
-      if(key._id == id){  
-        t.subcategory.set(key.subcategory);
-      }
-    }  
+    // const id = $(e.target).val(); 
+    // for (const key of t.category.get().curValue) { 
+    //   if(key._id == id){  
+    //     t.subcategory.set(key.subcategory);
+    //   }
+    // }  
   },
   'click #btn-search'(e,t){
+    $(".btn-search").trigger("click");
     // console.log($('#search').val());
-    const filter = $('#search').val()
-    const sort = $('#sort').val()
-    const hargaAwal = +$('#hargaAwal').val();
-    const hargaAkhir = +$('#hargaAkhir').val();
-    const dateFrom = $('#dateFrom').val();
-    const active = true 
-    t.filtering.set({
-      filter,
-      sort,
-      hargaAwal,
-      hargaAkhir,
-      dateFrom,
-      active
-    })
-    Meteor.call('getAllItem', {filter,
-      sort, 
-      hargaAwal,
-      hargaAkhir,
-      dateFrom,
-      active}, function (err, res) {
-      if(err){
-        // failAlert(err)
-      }else{
-        t.item.set(res)
-      } 
-    })
+    // const filter = $('#search').val()
+    // const sort = $('#sort').val()
+    // const hargaAwal = +$('#hargaAwal').val();
+    // const hargaAkhir = +$('#hargaAkhir').val();
+    // const dateFrom = $('#dateFrom').val();
+    // const active = true 
+    // t.filtering.set({
+    //   filter,
+    //   sort,
+    //   hargaAwal,
+    //   hargaAkhir,
+    //   dateFrom,
+    //   active
+    // })
+    // Meteor.call('getAllItem', {filter,
+    //   sort, 
+    //   hargaAwal,
+    //   hargaAkhir,
+    //   dateFrom,
+    //   active}, function (err, res) {
+    //   if(err){
+    //     // failAlert(err)
+    //   }else{
+    //     t.item.set(res)
+    //   } 
+    // })
   },
   'change .filtering'(e, t){
-    const filter = $('#search').val()
-    const sort = $('#sort').val()
-    const hargaAwal = +$('#hargaAwal').val();
-    const hargaAkhir = +$('#hargaAkhir').val();
-    const dateFrom = $('#dateFrom').val();
-    const active = true 
-    t.filtering.set({
-      filter,
-      sort,
-      hargaAwal,
-      hargaAkhir,
-      dateFrom,
-      active
-    })
-    Meteor.call('getAllItem', {
-      filter, 
-      sort, 
-      hargaAwal,
-      hargaAkhir,
-      dateFrom, 
-      active}, function (err, res) {
-      if(err){
-        // failAlert(err)
-      }else{
-        t.item.set(res)
-      } 
-    })
+    // const filter = $('#search').val()
+    // const sort = $('#sort').val()
+    // const hargaAwal = +$('#hargaAwal').val();
+    // const hargaAkhir = +$('#hargaAkhir').val();
+    // const dateFrom = $('#dateFrom').val();
+    // const active = true 
+    // t.filtering.set({
+    //   filter,
+    //   sort,
+    //   hargaAwal,
+    //   hargaAkhir,
+    //   dateFrom,
+    //   active
+    // })
+    // Meteor.call('getAllItem', {
+    //   filter, 
+    //   sort, 
+    //   hargaAwal,
+    //   hargaAkhir,
+    //   dateFrom, 
+    //   active}, function (err, res) {
+    //   if(err){
+    //     // failAlert(err)
+    //   }else{
+    //     t.item.set(res)
+    //   } 
+    // })
   }
 });

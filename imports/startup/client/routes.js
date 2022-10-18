@@ -161,6 +161,30 @@ FlowRouter.route('/items-:_id', {
     },
 })
 
+FlowRouter.route('/master-banner', {
+    name: 'bannersHomePage',
+    template: 'bannersHomePage',
+    action() {
+      this.render('masterContainer','bannersHomePage');
+    },
+})
+
+FlowRouter.route('/master-banner-create', {
+    name: 'bannersCreatePage',
+    template: 'bannersCreatePage',
+    action() {
+      this.render('masterContainer','bannersCreatePage');
+    },
+})
+
+FlowRouter.route('/master-banner-:_id-edit', {
+    name: 'bannersEditPage',
+    template: 'bannersEditPage',
+    action() {
+      this.render('masterContainer','bannersEditPage');
+    },
+})
+
 // FlowRouter.route('/master-items/:_id/edit', {
 //     name: 'itemsEditPage',
 //     template: 'itemsEditPage',

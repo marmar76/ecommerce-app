@@ -101,6 +101,7 @@ Template.userSettings.events({
         const checkFile = event.currentTarget.files;
     
         if (checkFile && checkFile.length > 0) {
+          
           let imageList = template.imageList.get()
         //   _.each(checkFile, function (file) {
         //     imageList = [file]
