@@ -25550,7 +25550,7 @@ dl li {
 }
 
 .table td {
-  font-size: 0.812rem;
+  /* font-size: 0.812rem; */
 }
 
 .table td img {
