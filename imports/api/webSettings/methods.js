@@ -17,7 +17,7 @@ Meteor.methods({
     'createBanner'(data){
         check(data.name, String)
         check(data.description, String)
-        check(data.foto, String)
+        // check(data.foto, String)
 
         return WebSettings.insert(data)
     }

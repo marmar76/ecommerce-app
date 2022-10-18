@@ -1741,6 +1741,94 @@ Template.promotionEditPage.events({
 
 
 Template.bannersCreatePage.onCreated(function () {
-  
+  const self = this;
+  this.banner = new ReactiveVar();
+  this.imageList = new ReactiveVar(null)
+  this.fotoProfile = new ReactiveVar()
+})
+
+Template.bannersCreatePage.helpers({
+  banners() {
+    const banner = Template.instance().banner.get();
+    if (banner) {
+      return banner;
+    }
+  },
+  formatHTML(context) {
+    return moment(context).format("YYYY-MM-DD");
+  },
+  fotoProfile() {
+    return Template.instance().fotoProfile.get()
+  },
+})
+
+Template.bannersCreatePage.events({
+  'change #uploadImageProfile': function (event, template) {
+    event.preventDefault();
+    const checkFile = event.currentTarget.files;
+
+    if (checkFile && checkFile.length > 0) {
+      let imageList = template.imageList.get()
+      //   _.each(checkFile, function (file) {
+      //     imageList = [file]
+      //   });
+      // console.log(checkFile);
+      template.fotoProfile.set(URL.createObjectURL(checkFile[0]))
+      template.imageList.set(checkFile[0])
+    }
+  },
+  'click #submit'(e, t){
+      const name = $("#bannersName").val();
+      const description = $("#bannersDescription").val();
+      const data = {name, description}
+      if(name || description){
+          const imageList = t.imageList.get()
+          let thisFile, getExt
+          if(imageList){
+              thisFile = imageList
+              getExt = thisFile.type.split('/')[1]
+              getExt = '.' + getExt
+              data.ext = getExt
+              // data.profilePicture = Meteor.userId() + getExt
+          }
+          Meteor.call('createBanner', data, function (error, res) {  
+              if(error){
+                failAlert(error)
+              } else {
+                if(imageList){
+                  const fileName = res._id + getExt
+                  uploadImageFile(imageList, 'banners/picture', fileName).then((snapshot) => {
+                  //   exitLoading()
+                  //   $(".trigger-addition").trigger("click");
+                  //   $("#success-agent").val("true");
+                    console.log('Image Uploaded Successfully');
+                    // console.log(snapshot)
+                    successAlert()
+                    // $(".trigger-button").trigger("click");
+                  //   if(FlowRouter.current().path == "/agents/create")history.back()
+                  }).catch((error) => {
+                  //   exitLoading()
+                  //   $(".trigger-addition").trigger("click");
+                  //   $("#success-agent").val("true");
+                    console.error(error);
+                  //   const msg = errorFileMsg + '\nSilahkan upload file-nya lewat edit agent.'
+                    failAlert(error)
+                  //   if(FlowRouter.current().path == "/agents/create")history.back()
+                  });
+                } else {
+                  // exitLoading()
+                  // $(".trigger-addition").trigger("click");
+                  // $("#success-agent").val("true");
+                  // successAlert()
+                  // if(FlowRouter.current().path == "/agents/create")history.back()
+                }
+              }
+              // exitLoading()
+            })
+      }
+      else{
+          failAlert("something wrong with the user input")
+      }
+  }
 })
 
