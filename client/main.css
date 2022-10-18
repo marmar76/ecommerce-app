@@ -1,3 +1,12 @@
+* {
+  line-height: normal;
+}
+.isSelected{
+  background: rgb(13, 202, 240, .4)
+}
+.isblue{
+  background: rgb(13, 202, 240, .4)
+}
 /* body {
   font-family: sans-serif;
   background-color: #315481;

@@ -14,5 +14,11 @@ Meteor.methods({
         // check(data.createdBy, String)
         // return Invoices.insert(data)
     },  
+    'createBanner'(data){
+        check(data.name, String)
+        check(data.description, String)
+        check(data.foto, String)
 
+        return WebSettings.insert(data)
+    }
 })

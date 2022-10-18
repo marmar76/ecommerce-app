@@ -73,3 +73,40 @@
 </div>
 </template>
   
+<template name="bannersCreatePage">
+    <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Create New Banner</h4>
+                    <p class="card-description">
+                        
+                    </p>
+                    <div class="mb-3 form-group">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="promotionsName" placeholder="promotion name" required>
+                    </div> 
+                    <div class="card-body">
+                        <div class="d-grid">
+                            <label for="" class="form-label">Gambar Banner</label>
+                            <img src="{{ fotoProfile }}" class="w-100" alt="" srcset="">
+                            <input class="d-none" id="uploadImageProfile" type="file" accept="image/*" />
+                            <label class="btn fs-3 btn-info mt-3 form-control" for="uploadImageProfile">Pilih Foto</label>
+                          <!-- <button class="btn fs-3 btn-info mt-3">Pilih Foto</button> -->
+                        </div>
+                        <!-- <h5 class="card-title">Card title</h5>
+                                  <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                  <a href="#" class="card-link">Card link</a>
+                                  <a href="#" class="card-link">Another link</a> -->
+                      </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <input type="text" class="form-control" id="promotionsDescription" required>
+                    </div>  
+                    <button id="submit" type="submit" class="btn btn-primary me-2">Submit</button> 
+                </div>
+            </div>
+        </div>
+    </div> 
+</template>

@@ -123,14 +123,14 @@ const navbar = [{
     type: 2,
     title: 'Banner',
     icon: 'menu-icon mdi mdi-account',
-    href: 'master-promotions',
+    href: 'master-banner',
     child: [{
         href: '/master-banner',
         title: 'List Banner'
       },
       {
         href: '/master-banner-create',
-        title: 'Create Promotion'
+        title: 'Create Banner'
       }
     ]
   },
@@ -1738,3 +1738,9 @@ Template.promotionEditPage.events({
     }
   }
 })
+
+
+Template.bannersCreatePage.onCreated(function () {
+  
+})
+
