@@ -16,6 +16,23 @@ Template.productPage.onCreated(function () {
     this.jenisItem = new ReactiveVar();
     this.cart = new ReactiveVar();
     this.subtotal = new ReactiveVar(0)
+    this.subcategory = new ReactiveVar(null)
+    this.subcategoryItem = new ReactiveVar(null)
+    this.comparison = new ReactiveVar([
+        {
+            id: 1,
+            product: null
+        },
+        {
+            id: 2,
+            product: null
+        },
+        {
+            id: 3,
+            product: null
+        },
+
+    ])
     const paramId = FlowRouter.current().params._id
     Meteor.call('getOneItem', paramId, function (err, res) {
         if (err) {
@@ -23,6 +40,37 @@ Template.productPage.onCreated(function () {
             // failalert(err)
         } else {
             self.item.set(res);
+            Meteor.call('getOneSubCategory', res.subcategory, function (err, res) {  
+                self.subcategory.set(res)
+            })
+            Meteor.call('getItemOnSubCategory', res.subcategory, function (err, res) {  
+                self.subcategoryItem.set(res)
+                console.log(res);
+                setTimeout(() => {
+                    for (const i of self.comparison.get()) {
+                        new TomSelect('#compare-'+i.id,{
+                            valueField: 'id',
+                            labelField: 'name',
+                            searchField: ['name'],
+                            // fetch remote data
+                            options: res,
+                            // custom rendering function for options
+                            render: {
+                                option: function(item, escape) {
+                                    return `<div class="py-2 d-flex">
+                                                <div class="mb-1">
+                                                    <span class="h5">
+                                                        ${ escape(item.name) }
+                                                    </span>
+                                                </div>
+                                            </div>`;
+                                }
+                            },
+                        });  
+                    }
+                    
+                }, 500);
+            })
         }
     })
     Meteor.call('getOneJenis', paramId, paramId + "-0", function (err, res) {
@@ -34,7 +82,14 @@ Template.productPage.onCreated(function () {
     })
 
 })
+Template.productPage.onRendered(function () {
+    const self = this
+    
+})
 Template.productPage.helpers({
+    comparison(){
+        return Template.instance().comparison.get()
+    },
     item() {
         const items = Template.instance().item.get();
         if (items) {
@@ -56,11 +111,35 @@ Template.productPage.helpers({
             return Template.instance().subtotal.get()
         }
     },
+    subcategory(){
+        const subcategory = Template.instance().subcategory.get()
+        if(subcategory){
+            return subcategory.specification
+        }
+    },
+    getSpec(item, slug){
+        if(item){
+            return item.find((x) => x.slug == slug).value
+        }
+    }
 })
 
 Template.productPage.events({
     'click #compare-specification'(e, t) {
         
+    },
+    'change .compare-item'(e, t){
+        const thisDiv = $(e.target);
+        const position = thisDiv.attr('compare')
+        const comparison = t.comparison.get()
+        // console.log(position);
+        const value = thisDiv.val()
+        // console.log(value);
+        const thisProduct = t.subcategoryItem.get().find((x) => x.id == value)
+        const thisComparison = comparison.find((x) => x.id == position)
+        thisComparison.product = thisProduct
+        t.comparison.set(comparison)
+        console.log(comparison);
     },
     'click .btnJenis'(e, t) {
         const itemId = $(e.target).val();

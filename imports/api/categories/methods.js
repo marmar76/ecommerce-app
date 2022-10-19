@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Categories,SubCategories } from './categories';
+import { Items } from '../items/items';
 
 Meteor.methods({
     'createCategory'(param){
@@ -41,6 +42,18 @@ Meteor.methods({
     'getOneSubCategory'(id){
         check(id,String);
         return SubCategories.findOne({_id: id});
+    },
+    'getItemOnSubCategory'(id){
+        const items = Items.find({subcategory: id}).fetch()
+        const totalItems = []
+        for (const i of items) {
+            for (const j of i.models) {
+                j.id = totalItems.length
+                totalItems.push(j)
+            }
+        }
+        return totalItems
+
     },
     'updateSubCategory'(id, param){
         check(param.name, String)

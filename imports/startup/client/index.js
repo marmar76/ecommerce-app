@@ -6,6 +6,7 @@ import '../../../imports/ui/stylesheets/global/owl.carousel.min.css'
 import '../../../imports/ui/stylesheets/global/bootstrap.min.css'
 // import 'jquery'
 // import 'select2'
+// import 'tom-select'
 
 // // import './vendors/feather/feather.css'
 // import '../../ui/assets/master/vendors/mdi/css/materialdesignicons.min.css'
