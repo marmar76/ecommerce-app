@@ -27,6 +27,7 @@
                                   <th>Name</th> 
                                   <th>Description</th>   
                                   <th>Picture</th>
+                                  <th>Appear on Home</th>
                                   <th>Action</th> 
                               </tr>
                           </thead>
@@ -36,6 +37,11 @@
                                   <td>{{name}}</td> 
                                   <td>{{description}}</td>
                                   <td><img src="{{link}}" alt=""></td>
+                                  {{#if equals check true}}
+                                  <td>Yes</td>
+                                  {{else}}
+                                  <td>No</td>
+                                  {{/if}}
                                   <td><a href="/master-banner-{{_id}}-edit"><button class="btn btn-primary">Details</button></a></td>
                               </tr>
                               {{/each}}
@@ -77,7 +83,7 @@
                     </div>  
                     <div class="mb-3"> 
                         <input type="checkbox" class="form-check-input check-banner"  id="checkBanner">
-                        <label for="checklist" class="form-label">For Homepage </label> 
+                        <label for="checklist" class="form-label">Appear on Homepage </label> 
                     </div> 
                     <button id="submit" type="submit" class="btn btn-primary me-2">Submit</button> 
                 </div>
@@ -157,7 +163,7 @@
                         {{else}}
                         <input type="checkbox" class="form-check-input check-banner"  id="checkBanner">
                         {{/if}}
-                        <label for="checklist" class="form-label">For Homepage </label> 
+                        <label for="checklist" class="form-label">Appear on Homepage </label> 
                     </div> 
                     <button type="submit" class="btn btn-success me-2" id="btnSave">Save</button> 
                     <button type="submit" class="btn btn-warning me-2" id="btnDelete">Delete</button> 
