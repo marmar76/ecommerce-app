@@ -9,17 +9,13 @@
                       <h4 class="card-title">List Banners</h4> 
                     </div>
                     <div class="d-flex flex-row-reverse">
-                        <a href="/master-banners-create"><button class="btn btn-primary">+ Add Banner</button></a>
+                        <a href="/master-banner-create"><button class="btn btn-primary">+ Add Banner</button></a>
                     </div>
                         <label for="">Sort</label>
                         <div class="mb-3 form-group">
                             <select class="form-control filtering" id="sort">
                               <option value="1">Sort Name A-Z</option>
                               <option value="2">Sort Name Z-A</option>
-                              <option value="3">Sort Start Date Ascending</option>
-                              <option value="4">Sort Start Date Descending</option>
-                              <option value="5">Sort Expired Date Ascending</option>
-                              <option value="6">Sort Expired Date Descending</option>
                             </select>
                         </div>
                         <p class="card-description">
@@ -28,25 +24,19 @@
                         <table class="table table-striped">
                           <thead>
                               <tr>
-                                  <th>Name</th>
-                                  <th>Code</th>
-                                  <th>Discount</th>
-                                  <th>Description</th>  
-                                  <th>Start Date</th>
-                                  <th>Expired Date</th>
+                                  <th>Name</th> 
+                                  <th>Description</th>   
+                                  <th>Picture</th>
                                   <th>Action</th> 
                               </tr>
                           </thead>
                           <tbody>
-                              {{#each promotions}}
+                              {{#each banners}}
                               <tr>
-                                  <td>{{name}}</td>
-                                  <td>{{code}}</td>
-                                  <td>{{discount}}</td>
-                                  <td>{{description}}</td> 
-                                  <td>{{formatDateIDN startDate}}</td> 
-                                  <td>{{formatDateIDN expiredDate}}</td>
-                                  <td><a href="/master-promotions-{{_id}}-details"><button class="btn btn-primary">Details</button></a></td>
+                                  <td>{{name}}</td> 
+                                  <td>{{description}}</td>
+                                  <td><img src="{{link}}" alt=""></td>
+                                  <td><a href="/master-banner-{{_id}}-edit"><button class="btn btn-primary">Details</button></a></td>
                               </tr>
                               {{/each}}
                           </tbody>
@@ -56,21 +46,6 @@
             </div> 
           </div>
       </div>
-</template>
-  
-<template name="bannersEditPage">
-<div class="row">
-    <div class="col-12 grid-margin stretch-card">
-    <div class="card">
-        <div class="d-grid w-25">
-            <!-- <img src="{{ fotoProfile }}" class="w-100" alt="" srcset=""> -->
-            <input class="d-none" id="uploadImageProfile" type="file" accept="image/*" />
-            <label class="btn fs-3 btn-info mt-3" for="uploadImageProfile">Pilih Foto</label>
-            <!-- <button class="btn fs-3 btn-info mt-3">Pilih Foto</button> -->
-        </div>
-    </div>
-    </div>
-</div>
 </template>
   
 <template name="bannersCreatePage">
@@ -86,27 +61,109 @@
                         <label for="name" class="form-label">Name</label>
                         <input type="text" class="form-control" id="bannersName" placeholder="banner name" required>
                     </div> 
-                    <div class="card-body">
-                        <div class="d-grid">
-                            <label for="" class="form-label">Gambar Banner</label>
-                            <img src="{{ fotoProfile }}" class="w-100" alt="" srcset="">
-                            <input class="d-none" id="uploadImageProfile" type="file" accept="image/*" />
-                            <label class="btn fs-3 btn-info mt-3 form-control" for="uploadImageProfile">Pilih Foto</label>
-                          <!-- <button class="btn fs-3 btn-info mt-3">Pilih Foto</button> -->
+                    <div class="mb-3">
+                        <div class="card-body">
+                            <div class="d-grid">
+                                <label for="" class="form-label">Gambar Banner</label>
+                                <img src="{{ fotoProfile }}" class="w-100" alt="" srcset="">
+                                <input class="d-none" id="uploadImageProfile" type="file" accept="image/*" />
+                                <label class="btn fs-3 btn-info mt-3 form-control" for="uploadImageProfile">Pilih Foto</label> 
+                            </div> 
                         </div>
-                        <!-- <h5 class="card-title">Card title</h5>
-                                  <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                  <a href="#" class="card-link">Card link</a>
-                                  <a href="#" class="card-link">Another link</a> -->
-                      </div>
+                    </div>
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
                         <input type="text" class="form-control" id="bannersDescription" required>
                     </div>  
+                    <div class="mb-3"> 
+                        <input type="checkbox" class="form-check-input check-banner"  id="checkBanner">
+                        <label for="checklist" class="form-label">For Homepage </label> 
+                    </div> 
                     <button id="submit" type="submit" class="btn btn-primary me-2">Submit</button> 
                 </div>
             </div>
         </div>
     </div> 
 </template>
+<!-- 
+<template name="bannersDetailPage">
+    <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Create New Banner</h4>
+                    <p class="card-description">
+                        
+                    </p>
+                    <div class="mb-3 form-group">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="bannersName" placeholder="banner name" required>
+                    </div> 
+                    <div class="mb-3">
+                        <div class="card-body">
+                            <div class="d-grid">
+                                <label for="" class="form-label">Gambar Banner</label>
+                                <img src="{{ fotoProfile }}" class="w-100" alt="" srcset="">
+                                <input class="d-none" id="uploadImageProfile" type="file" accept="image/*" />
+                                <label class="btn fs-3 btn-info mt-3 form-control" for="uploadImageProfile">Pilih Foto</label> 
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <input type="text" class="form-control" id="bannersDescription" required>
+                    </div>  
+                    <div class="mb-3"> 
+                        <input type="checkbox" class="form-check-input check-banner"  id="checkBanner">
+                        <label for="checklist" class="form-label">For Homepage </label> 
+                    </div> 
+                    <button id="submit" type="submit" class="btn btn-primary me-2">Submit</button> 
+                </div>
+            </div>
+        </div>
+    </div> 
+</template> -->
+
+<template name="bannersEditPage">
+    <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Edit Banner</h4>
+                    <p class="card-description">
+                        
+                    </p>
+                    <div class="mb-3 form-group">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="bannersName" placeholder="banner name" value="{{banners.name}}" required>
+                    </div> 
+                    <div class="mb-3">
+                        <div class="card-body">
+                            <div class="d-grid">
+                                <label for="" class="form-label">Gambar Banner</label>
+                                <img src="{{ fotoProfile }}" class="w-100" alt="" srcset="">
+                                <input class="d-none" id="uploadImageProfile" type="file" accept="image/*" />
+                                <label class="btn fs-3 btn-info mt-3 form-control" for="uploadImageProfile">Pilih Foto</label> 
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <input type="text" class="form-control" id="bannersDescription" value="{{banners.description}}" required>
+                    </div>  
+                    <div class="mb-3"> 
+                        {{#if equals banners.check true}}
+                        <input type="checkbox" class="form-check-input check-banner"  id="checkBanner" checked>
+                        {{else}}
+                        <input type="checkbox" class="form-check-input check-banner"  id="checkBanner">
+                        {{/if}}
+                        <label for="checklist" class="form-label">For Homepage </label> 
+                    </div> 
+                    <button type="submit" class="btn btn-success me-2" id="btnSave">Save</button> 
+                    <button type="submit" class="btn btn-warning me-2" id="btnDelete">Delete</button> 
+                </div>
+            </div>
+        </div>
+    </div> 
+</template>
+

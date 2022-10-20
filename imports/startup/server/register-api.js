@@ -1,6 +1,7 @@
 
 import '../../api/promotions/methods'
 import '../../api/categories/methods'
+import '../../api/banners/methods'
 import '../../api/items/methods'
 import '../../api/carts/methods'
 import '../../api/invoices/methods'

@@ -11,8 +11,10 @@ Template.homepage.onCreated(function () {
         sort: 1,
     })
     this.item = new ReactiveVar();
+    this.banner = new ReactiveVar();
     this.category = new ReactiveVar();
     this.subcategory = new ReactiveVar();
+    this.index = new ReactiveVar(1);
     this.now = new ReactiveVar(-1);
     Meteor.call('getAllCategory', function (err, res) {
         self.category.set(res.filter(function (x) {
@@ -25,6 +27,16 @@ Template.homepage.onCreated(function () {
     Meteor.call('getAllItem', self.filtering.get(), function (err, res) {
         self.item.set(res);
     })
+    Meteor.call('getAllBanner', self.filtering.get(), function (err, res) {  
+        self.banner.set(res.filter((x) => x.check == true).map(function (x) {  
+            x.index = +self.index.get()
+            self.index.set(+self.index.get() + 1)
+            return x 
+        }) )
+        // self.category.set(res.filter(function (x) {
+        //     return x.subcategory.length != 0
+        //   }));
+    }) 
     
 })
   
@@ -33,6 +45,13 @@ Template.homepage.helpers({
         const items = Template.instance().item.get();
         if (items) {
           return items;
+        }
+    },
+    banners(){
+        const banner = Template.instance().banner.get()
+        if(banner){
+            console.log(banner);
+            return banner
         }
     },
     // lowerPrice(id){
@@ -65,6 +84,12 @@ Template.homepage.helpers({
                 return x.categoryId == id
             })   
         }
+    },
+    equals(a, b){
+        return a == b
+    },
+    minus(a){ 
+        return a-1
     }
 })
 

@@ -177,6 +177,14 @@ FlowRouter.route('/master-banner-create', {
     },
 })
 
+// FlowRouter.route('/master-banner-:_id-details', {
+//     name: 'bannersDetailPage',
+//     template: 'bannersDetailPage',
+//     action() {
+//       this.render('masterContainer','bannersDetailPage');
+//     },
+// })
+
 FlowRouter.route('/master-banner-:_id-edit', {
     name: 'bannersEditPage',
     template: 'bannersEditPage',

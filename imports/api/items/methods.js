@@ -22,6 +22,7 @@ Meteor.methods({
         Items.update({_id: id}, {$set: {
             models: models.map(function (x, i) {  
                 x.itemId = id + "-" + i
+                x.status = true
                 return x
             })
         }})
@@ -72,8 +73,6 @@ Meteor.methods({
         // console.log(item);
         if (filtering) {
             return item.filter(function (x) {
-                console.log(x.name);
-                console.log(filtering.filter);
                 return x.name.toLowerCase().includes(filtering.filter.toLowerCase());
             }).map(function (y) {  
                 const thisCategory = categories.find((x) => y.category == x._id)
@@ -142,5 +141,9 @@ Meteor.methods({
         return Items.update({_id: id}, {$set: {
             status: false
         }})
+    },
+    'updateItem'(id,data){
+        check(id, String)
+        
     }
 })

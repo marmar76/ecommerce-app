@@ -231,7 +231,7 @@
 
 <template name="itemsDetailPage">
   {{#if editing}}
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
@@ -248,7 +248,7 @@
           </div>
           <div class="mb-3 form-group">
             <label for="Category" class="form-label">Category</label>
-            <select name="select-roles" id="categories" class="selectedCategory form-control">
+            <select name="select-roles" id="categories" class="select2 selectedCategory form-control">
               {{#each categories}}
               {{#if equals _id items.categoryId}}
               <option value="{{_id}}" selected>{{name}}</option>
@@ -260,7 +260,7 @@
           </div>
           <div class="mb-3 form-group">
             <label for="Category" class="form-label">Sub Category</label>
-            <select name="select-roles" id="subcategories" class="form-control">
+            <select name="select-roles" id="subcategories" class="form-control"> 
               {{#each subcategories}}
               {{#if equals _id items.subcategoryId}}
               <option value={{_id}} selected>{{name}}</option>
@@ -290,7 +290,99 @@
             <input type="text" class="form-control" id="itemsDescription" required placeholder="item's Description">
           </div>
           <button id="submit" type="submit" class="btn btn-primary me-2">Submit</button>
-          <!-- <button class="btn btn-light">Cancel</button> -->
+          <button class="btn btn-light">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <div class="row">
+    <div class="col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="page-title">Edit {{items.name}} {{items.subcategory}}</h4>
+          <div class="mb-3 form-group">
+            <label for="">Name</label>
+            <input type="text" class="form-control" id="itemsName" required placeholder="item Name" value={{items.name}}>
+          </div> 
+          <div class="mb-3 form-group">
+            <label for="Category" class="form-label">Category</label>
+            <select name="select-roles" id="categories" class="selectedCategory form-control">
+              <option value="0">Select Category</option>
+              {{#each categories}}
+              {{#if equals _id items.category}}
+                <option value="{{_id}}" selected>{{name}}</option>
+              {{else}}
+                <option value="{{_id}}">{{name}}</option>
+              {{/if}}
+              {{/each}}
+            </select>
+          </div>
+          {{#if subcategories}}
+          <div class="mb-3 form-group">
+              <label for="Category" class="form-label">Sub Category</label>
+              <select name="select-roles" id="subcategories" class="form-control">
+                <option value="0">Select SubCategory</option>
+                {{#each subcategories}} 
+                {{#if equals _id items.subcategory}}
+                <option value={{_id}} selected>{{name}}</option>
+                {{else}}
+                <option value={{_id}}>{{name}}</option>
+                {{/if}}
+                {{/each}}
+              </select>
+            </div>
+            {{/if}}
+            <div class="mb-3 form-group">
+              <label for="">Weight</label>
+              <input type="number" class="form-control" id="weight" required placeholder="item's Weight (Kg)" value={{items.weight}}>
+            </div>
+          <div class="mb-3 form-group">
+            <label for="">Description</label>
+            <textarea name="" id="itemsDescription" class="form-control" cols="30" rows="10" value={{items.description}}></textarea>
+          </div>
+          <hr>
+          <h3>Item models</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr> 
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Stock</th> 
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each i in models}}
+                {{#if i.status}}
+                    <tr> 
+                      <td><input type="text" class="form-control" id="model-name-{{i.id}}" required placeholder="Model Name"></td>
+                      <td><input type="number" class="form-control" id="model-price-{{i.id}}" required placeholder="Price"></td>
+                      <td><input type="number" class="form-control" id="model-stock-{{i.id}}" required placeholder="Stock"></td>
+                      <td><button class="btn btn-danger model-delete" value="{{i.id}}">Delete</button></td>
+                    </tr>
+                    {{#if comparison}}
+                      <tr>
+                        <td colspan="4"><h2>{{comparison.name}} Specification</h2></td>
+                      </tr>
+                      {{#each j in comparison.specification}}
+                        <tr>
+                          <td scope="col">{{j.name}}</td>
+                          <td colspan="3"><input type="text" class="form-control" id="{{j.slug}}-{{i.id}}" required placeholder="{{j.name}}"></td>
+                        </tr>
+                      {{/each}}
+                      <td>
+                        <td colspan="4"><hr></td>
+                      </td>
+                    {{/if}}
+                  {{/if}}
+              {{/each}}
+            </tbody>
+          </table>
+          <div class="d-flex justify-content-end mt-2">
+            <button class="btn btn-primary" id="btnAddModel">Add models</button>
+            <button class="btn btn-primary" id="btnDeleteModel">Delete models</button>
+          </div>
+          <button id="btnSave" type="submit" class="btn btn-primary me-2">Save</button>
         </div>
       </div>
     </div>

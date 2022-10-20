@@ -3,11 +3,33 @@
         <div id="carouselExampleIndicators" class="carousel slide bg-danger" data-bs-ride="carousel" style="border-radius: 15px;">
             <!-- <h1>asdasd</h1> -->
             <div class="carousel-indicators">
-              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active p-1" aria-current="true" aria-label="Slide 1"></button>
+              {{#each banners}} 
+                {{#if equals index 1}}
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{minus index}}" class="active p-1" aria-current="true" aria-label="Slide {{index}}"></button>
+                {{else}}
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{minus index}}" class="p-1" aria-label="Slide {{index}}"></button>
+                {{/if}}
+              {{/each}}
+              <!-- Template Bawaan -->
+              <!-- <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active p-1" aria-current="true" aria-label="Slide 1"></button>
               <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" class="p-1" aria-label="Slide 2"></button>
-              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" class="p-1" aria-label="Slide 3"></button>
+              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" class="p-1" aria-label="Slide 3"></button> -->
             </div>
             <div class="carousel-inner rounded-lg" style="border-radius: 15px;">
+              {{#each banners}}
+                {{#if equals index 1}}
+                <div class="carousel-item active">
+                  <img src="{{link}}" class="d-block w-100" alt="...">
+                </div> 
+                {{else}}
+                <div class="carousel-item">
+                  <img src="{{link}}" class="d-block w-100" alt="...">
+                </div> 
+                {{/if}}
+              {{/each}}
+            </div>
+            <!-- Template bawaan -->
+            <!-- <div class="carousel-inner rounded-lg" style="border-radius: 15px;">
               <div class="carousel-item active">
                 <img src="https://images.tokopedia.net/img/cache/1208/NsjrJu/2022/10/8/7a8dde5c-d749-4d78-b540-94b44aa349c9.jpg.webp?ect=3g" class="d-block w-100" alt="...">
               </div>
@@ -17,7 +39,7 @@
               <div class="carousel-item">
                 <img src="https://images.tokopedia.net/img/cache/1208/NsjrJu/2022/10/5/08e9e01d-66c7-479d-970e-96d758aef9bb.jpg.webp?ect=3g" class="d-block w-100" alt="...">
               </div>
-            </div>
+            </div> -->
             <div>
                 <button class="carousel-control-prev bg-success rounded-circle" style="width: 50px; height: 50px; margin-top: 12%;" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                   <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -130,7 +152,7 @@
                         </div>
                     </div>
                 </a>
-            {{/each}}
+              {{/each}}
             </div>
         </div>
     </div>

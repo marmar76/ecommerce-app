@@ -36,6 +36,7 @@ Template.userSettings.onCreated(function () {
     self.thisUser.set(res)
     // self.fotoProfile.set(res.profilePicture ? res.profilePicture : ImagePlaceholder)
     if (res.profilePicture) {
+      console.log(res.profilePicture);
       self.fotoProfile.set(res.profilePicture)
     } else {
       // self.fotoProfile
