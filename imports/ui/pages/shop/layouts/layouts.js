@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import moment from 'moment';
 import Swal from 'sweetalert2';
 import { ImagePlaceholder } from '../../../../api/users/users';
@@ -11,6 +12,10 @@ Template.layouts.onCreated(function () {
   this.thisUser = new ReactiveVar()
 
   Meteor.call('getMyself', async function (err, res) {  
+    if(err){
+      console.log(err);
+    }
+    else if(res){
       self.thisUser.set(res)
       // self.fotoProfile.set(res.profilePicture ? res.profilePicture : ImagePlaceholder)
       if(res.profilePicture){
@@ -19,6 +24,7 @@ Template.layouts.onCreated(function () {
       else{
           // self.fotoProfile
       }
+    }
   })
 //   self.filtering = new ReactiveVar({
 //       filter: '',
@@ -120,7 +126,9 @@ Template.layouts.events({
     //   }
     // }  
   },
-  'click #btn-search'(e,t){
+  'submit .search-form'(e,t){
+    e.preventDefault();
+    // FlowRouter.go('search', {halo: 'there'})
     $(".btn-search").trigger("click");
     // console.log($('#search').val());
     // const filter = $('#search').val()

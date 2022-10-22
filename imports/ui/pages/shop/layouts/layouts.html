@@ -1,66 +1,81 @@
 <template name="layouts">
-    <!-- ver iki interface elek,benakno ben apik -->
-    <div class="container">
-        <div>
-            <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
-                <div class="container-fluid d-flex flex-md-fill">
-                    <div>
-                        <a class="navbar-brand" href="{{ pathFor route='homepage' }}"><img class="img-fluid" src="../img/logo/logov2.png" alt="" srcset="" style="width: 100%; height: 80px;"></a>
-                    </div>
-                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                  </button>
-                  <div class="collapse navbar-collapse text-white mx-3" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 text-white"> 
-                      <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-dark fs-5" href="#" id="navbarKategori" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                          <span class="text-light">Kategori</span>
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarKategori">
-                          <li><a class="dropdown-item" href="#">Mouse</a></li>
-                          <li><a class="dropdown-item" href="#">Keyboard</a></li> 
-                          <li><a class="dropdown-item" href="#">Speaker</a></li> 
-                          <li><a class="dropdown-item" href="#">Headset</a></li> 
-                        </ul>
-                      </li> 
-                    </ul> 
-                      <input class="form-control mx-2" type="text" placeholder="Search" aria-label="Search" id="search">
-                      <button class="btn btn-outline-success bg-danger text-white fw-bold" id="btn-search" type="button">Search</button>
-                      <div class="mx-3 d-flex align-items-center">
-                          <i class="fa fa-shopping-cart fs-3 mx-3" aria-hidden="true"></i>
-                          {{#if isLogin}}
-                          <ul class="navbar-nav me-auto mb-2 mb-lg-0 text-white"> 
-                            <li class="nav-item dropdown">
-                              <a class="nav-link dropdown-toggle text-dark fs-5" href="#" id="navbarProfile" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="{{ fotoProfile }}" class="rounded-circle me-2" style="width: 50px; height: 50px; object-fit: cover;" alt=""><span class="text-white fs-4 fw-bold">{{thisUser.username}}</span>
-                            </a>
-                              <ul class="dropdown-menu" aria-labelledby="navbarProfile">
-                                <li><a class="dropdown-item fs-4" href="#"><i class="fa fa-truck me-3" aria-hidden="true"></i>Pembelian</a></li>
-                                <li><a class="dropdown-item fs-4" href="#"><i class="fa fa-bookmark me-4" aria-hidden="true"></i>Wishlist</a></li> 
-                                <li><a class="dropdown-item fs-4" href="{{ pathFor route='userSettings' }}"><i class="fa fa-cog me-3" aria-hidden="true"></i>Pengaturan</a></li> 
-                                <li class="mt-3"><a class="dropdown-item fs-4 d-flex align-items-center" href="#" id="btn-logout"><img src="../img/icon/logout.png" class="me-2" style="width: 30px; height: 30px;" alt=""><span>Logout</span></a></li> 
-                              </ul>
-                            </li> 
-                          </ul> 
-                          {{else}}
-                            <a href="/login">
-                                <button class="btn btn-outline-success ms-3 bg-white text-black fw-bold" type="submit">Masuk</button>
-                            </a>
-                            <a href="/register">
-                                <button class="btn btn-outline-success ms-2 bg-danger text-white fw-bold" type="submit">Daftar</button>
-                            </a>
-                          {{/if}}
-                      </div>
-                  </div>
-                </div>
-              </nav> 
+  <!-- ver iki interface elek,benakno ben apik -->
+  <div class="container">
+    <div>
+      <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid d-flex flex-md-fill">
+          <div>
+            <a class="navbar-brand" href="{{ pathFor route='homepage' }}"><img class="img-fluid"
+                src="../img/logo/logov2.png" alt="" srcset="" style="width: 100%; height: 80px;"></a>
+          </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse text-white mx-3" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 text-white" style="display: none;">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-dark fs-5" href="#" id="navbarKategori" role="button"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+                  <span class="text-light">Kategori</span>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarKategori">
+                  <li><a class="dropdown-item" href="#">Mouse</a></li>
+                  <li><a class="dropdown-item" href="#">Keyboard</a></li>
+                  <li><a class="dropdown-item" href="#">Speaker</a></li>
+                  <li><a class="dropdown-item" href="#">Headset</a></li>
+                </ul>
+              </li>
+            </ul>
+            <form class="search-form w-100 d-flex">
+              <input class="form-control mx-2" type="text" placeholder="Search" aria-label="Search" id="search">
+              <button class="btn btn-outline-success bg-danger text-white fw-bold" id="btn-search"
+                type="submit">Search</button>
+            </form>
+            <div class="mx-3 d-flex align-items-center">
+              <i class="fa fa-shopping-cart fs-3 mx-3" aria-hidden="true"></i>
+              {{#if isLogin}}
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0 text-white">
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle text-dark fs-5" href="#" id="navbarProfile" role="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="{{ fotoProfile }}" class="rounded-circle me-2"
+                      style="width: 50px; height: 50px; object-fit: cover;" alt=""><span
+                      class="text-white fs-4 fw-bold">{{thisUser.username}}</span>
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarProfile">
+                    <li><a class="dropdown-item fs-4" href="#"><i class="fa fa-truck me-3"
+                          aria-hidden="true"></i>Pembelian</a></li>
+                    <li><a class="dropdown-item fs-4" href="#"><i class="fa fa-bookmark me-4"
+                          aria-hidden="true"></i>Wishlist</a></li>
+                    <li><a class="dropdown-item fs-4" href="{{ pathFor route='userSettings' }}"><i
+                          class="fa fa-cog me-3" aria-hidden="true"></i>Pengaturan</a></li>
+                    <li class="mt-3"><a class="dropdown-item fs-4 d-flex align-items-center" href="#"
+                        id="btn-logout"><img src="../img/icon/logout.png" class="me-2"
+                          style="width: 30px; height: 30px;" alt=""><span>Logout</span></a></li>
+                  </ul>
+                </li>
+              </ul>
+              {{else}}
+              <a href="/login">
+                <button class="btn btn-outline-success ms-3 bg-white text-black fw-bold" type="submit">Masuk</button>
+              </a>
+              <a href="/register">
+                <button class="btn btn-outline-success ms-2 bg-danger text-white fw-bold" type="submit">Daftar</button>
+              </a>
+              {{/if}}
+            </div>
+          </div>
         </div>
-        <div>
-          <button style="display: none;" class="trigger-button"></button>
-        </div>
+      </nav>
     </div>
-    <div class="content">
-        {{> yield}}
+    <div>
+      <button style="display: none;" class="trigger-button"></button>
     </div>
-    
+  </div>
+  <div class="content">
+    {{> yield}}
+  </div>
+
 </template>
