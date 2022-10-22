@@ -68,7 +68,6 @@ Meteor.methods({
         const item = Items.find(thisFilter, {
             sort: sort
         }).fetch();
-        console.log(item);
         const categories = Categories.find().fetch()
         const subcategories = SubCategories.find().fetch()
         // console.log(item);

@@ -24,19 +24,26 @@ Meteor.methods({
     'getAllCategory'(filtering){
         const thisFilter = {}
         const sort = {} 
+        console.log(filtering);
         if (filtering) { 
             thisFilter.status = true  
         }
         const category = Categories.find(thisFilter,{
             sort:sort
         }).fetch(); 
-        return category.map(function (x) {
-            x.subcategory = SubCategories.find({
-                categoryId:x._id
-            }).fetch();    
-            return x;
-        })
-        
+        if(filtering){
+            console.log(filtering.filter);
+            return category.filter(function (x) {
+                return x.name.toLowerCase().includes(filtering.filter.toLowerCase());
+            }).map(function (x) {
+                x.subcategory = SubCategories.find({
+                    categoryId:x._id,
+                    status: true
+                }).fetch();    
+                return x;
+            })
+        }
+        return category
     },
     'getOneCategory'(id){
         check(id,String);
@@ -46,8 +53,9 @@ Meteor.methods({
         const thisFilter = {}
         const sort = {} 
         if (filtering) { 
-            thisFilter.status = true  
         }
+        thisFilter.status = true  
+        console.log(thisFilter);
         const subcategory = SubCategories.find(thisFilter,{
             sort:sort
         }).fetch();
