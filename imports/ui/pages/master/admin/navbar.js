@@ -4,6 +4,7 @@ import {
     FlowRouter
   } from 'meteor/ostrio:flow-router-extra';
 import { navbar } from '../master';
+import Swal from 'sweetalert2';
 
 Template.navbarTop.onCreated(function () {
     const self = this;

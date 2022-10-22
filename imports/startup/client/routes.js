@@ -313,7 +313,7 @@ FlowRouter.route('/checkout/:_id', {
     name: 'checkout',
     template: 'checkout',
     action() {
-      this.render('layouts','checkout');
+      this.render('checkout');
     },
 })
 

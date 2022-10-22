@@ -3,6 +3,7 @@ import { Template } from 'meteor/templating';
 import {FlowRouter} from 'meteor/ostrio:flow-router-extra';
 import moment from 'moment';
 import './checkout.html'; 
+import { Snap } from 'midtrans-client';
 
 Template.checkout.onCreated(function () {
     const self = this
@@ -30,6 +31,15 @@ Template.checkout.onCreated(function () {
             console.log(err);
         }else{
             self.user.set(res)
+        }
+    })
+    this.clientKey = new ReactiveVar()
+    Meteor.call('clientKey', function (err, res) {  
+        if(err){
+            console.log(err);
+        }
+        else{
+            self.clientKey.set(res)      
         }
     })
     
@@ -91,6 +101,13 @@ Template.checkout.helpers({
             return user.address[0]
         }
     },
+    clientKey(){
+        const clientKey = Template.instance().clientKey.get()
+        if(clientKey){
+            return clientKey
+        }
+        return ''
+    }
 })
 
 Template.checkout.events({
@@ -124,6 +141,7 @@ Template.checkout.events({
         }
     },
     'click #btnCheckOut'(e, t){
+        console.log('halo');
         const user = Template.instance().user.get()
         const cart = Template.instance().cart.get()
         const ongkir = Template.instance().ongkir.get()
@@ -151,13 +169,33 @@ Template.checkout.events({
             // address:user.address[0],
             promotionId: promotion._id,
             promotionCode: promotion.code,
-            createdBy: user._id,
+            // createdBy: user._id,
         }
+        const items = cart.items.map(function (x) {  
+            return {
+                id: x.itemId,
+                price: x.price,
+                name: x.name,
+                quantity: x.quantity
+            }
+        })
+        console.log(items);
         Meteor.call('createInvoice', data, function (err, res) {  
             if(err){
                 console.log(err);
             }else{
-                console.log(res);
+                snap.pay(res, {
+                    onSuccess: function (result) {  
+                        console.log("success", result);
+                    },
+                    onPending: function (result) {  
+                        console.log("pending", result);
+                    },
+                    onError: function (result) {  
+                        console.log("error", result);
+                    }
+                })
+                // console.log(res);
             }
         })
     },
