@@ -20,6 +20,9 @@ Meteor.methods({
         check(id,String);
         return Carts.findOne({userId: id});
     },
+    'getMyCart'(){
+        return Carts.findOne({userId: Meteor.userId()})
+    },
     'updateCart'(id,data){ 
         check(id,String); 
         check(data.items, Array)   

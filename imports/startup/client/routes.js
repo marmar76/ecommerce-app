@@ -352,14 +352,14 @@ FlowRouter.route('/productPage/:_id', {
     },
 })
 //id dari cart adalah id user
-FlowRouter.route('/cart/:_id', {
+FlowRouter.route('/cart', {
     name: 'cart',
     template: 'cart',
     action() {
       this.render('layouts','cart');
     },
 })
-FlowRouter.route('/checkout/:_id', {
+FlowRouter.route('/checkout', {
     name: 'checkout',
     template: 'checkout',
     action() {
@@ -367,10 +367,10 @@ FlowRouter.route('/checkout/:_id', {
     },
 })
 
-FlowRouter.route('/comparison/:_id', {
-    name: 'comparison',
-    template: 'comparison',
-    action() {
-      this.render('layouts','comparison');
-    },
-})
+// FlowRouter.route('/comparison/:_id', {
+//     name: 'comparison',
+//     template: 'comparison',
+//     action() {
+//       this.render('layouts','comparison');
+//     },
+// })

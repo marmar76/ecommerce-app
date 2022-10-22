@@ -7,7 +7,7 @@ import { Snap } from 'midtrans-client';
 
 Template.checkout.onCreated(function () {
     const self = this
-    const paramId = FlowRouter.current().params._id
+    // const paramId = FlowRouter.current().params._id
     this.cart = new ReactiveVar()
     this.discount = new ReactiveVar(0)
     this.ongkir = new ReactiveVar(0)
@@ -18,7 +18,7 @@ Template.checkout.onCreated(function () {
         console.log(res);
         self.promotion.set(res);
     });
-    Meteor.call('getOneCart', paramId,function (err, res) {  
+    Meteor.call('getMyCart', function (err, res) {  
         if(err){
             console.log(err);
         }else{
@@ -26,7 +26,7 @@ Template.checkout.onCreated(function () {
             self.cart.set(res)
         }
     })
-    Meteor.call('getOneUser', paramId, function (err,res) {  
+    Meteor.call('getMySelf', function (err,res) {  
         if(err){
             console.log(err);
         }else{

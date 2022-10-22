@@ -6,9 +6,9 @@ import './cart.html';
 
 Template.cart.onCreated(function () {
     const self = this
-    const paramId = FlowRouter.current().params._id   
+    // const paramId = FlowRouter.current().params._id   
     this.cart = new ReactiveVar()
-    Meteor.call('getOneCart', paramId,function (err, res) {  
+    Meteor.call('getMyCart',function (err, res) {  
         if(err){
             console.log(err);
         }else{
