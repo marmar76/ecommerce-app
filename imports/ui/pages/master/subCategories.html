@@ -1,3 +1,91 @@
+
+<template name="subCategoriesHome">
+  <div class="row">
+      <div class="col-12 grid-margin stretch-card">
+          <div class="card">
+              <div class="card-body">
+                  <div class="row">
+                      <div class="col-4">
+                        <div id="list-example" class="list-group">
+                          {{#each categories}}
+                              <button class="list-group-item list-group-item-action category_filter" href="#list-item-1" value={{_id}} >{{name}}</button>
+                          {{/each}}
+                        </div>
+                      </div>
+                      <div class="col-8">
+                        <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-smooth-scroll="true" class="scrollspy-example" tabindex="0">
+                          <table class="table table-striped">
+                              <thead>
+                                <tr>
+                                  <th class="fs-5">Name</th> 
+                                  <th class="fs-5">Action</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {{#each subcategory}} 
+                                <tr>
+                                  <td class="fs-5">{{name}}</td> 
+                                  <td class="fs-5"><a href="/master-subcategories-{{_id}}-details"><button class="btn btn-primary">Edit</button></a></td> 
+                                </tr> 
+                                {{/each}}
+                              </tbody>
+                          </table> 
+                        </div>
+                      </div>
+                    </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</template>
+
+
+<template name="subCategoriesDetailPage">
+  <div class="row">
+      <div class="col-12 grid-margin stretch-card">
+          <div class="card">
+              <div class="card-body">
+                <h1 class="page-title">SubCategory Details</h1>
+                <section class="section-page-shoulders">
+                  <div class="btn-group">
+                    <a class="btn btn-warning" href="/master-subcategories-{{subCategory._id}}-edit">Edit</a>
+                  </div>
+                </section>
+  
+                <div class="user-info">
+                  <table class="table caption-top"> 
+                    <tbody>
+                      <tr>
+                        <th>Category Name</th>
+                        <td>{{ subCategory.categoryName }}</td>
+                      </tr>
+                      <tr>
+                        <th>Sub Category name</th>
+                        <td> {{subCategory.name}} </td>
+                      </tr> 
+                      <tr>
+                        <th>Satus</th>
+                        <td>
+                          {{#if equals subCategory.status true}}
+                            Active
+                            {{else}}
+                            Inactive
+                          {{/if}}
+                        </td>
+                      </tr> 
+                    </tbody> 
+                  </table>
+                </div>
+                <div class="form-actions form-group"> 
+                  <button style="float: right;" class="btn btn-danger" id="delete">Delete</button>
+                  <div style="clear: both;"></div>
+                </div>
+              </div>
+          </div>
+      </div>
+  </div> 
+</template>
+
 <template name="subCategoriesEditPage">
     <div class="row">
         <div class="col-12 grid-margin stretch-card">
@@ -50,7 +138,7 @@
                                 {{#if i.isNew}}
                                     <td><input type="text" class="form-control" id="model-name-{{i.id}}" required placeholder="Specification Name"> </td>   
                                 {{else}}
-                                    <td><input type="text" class="form-control" id="model-name-{{i.id}}" required placeholder="{{i.name}}"> </td>
+                                    <td><input type="text" class="form-control" id="model-name-{{i.id}}" required placeholder="{{i.label}}" value="{{i.label}}"> </td>
                                 {{/if}}
                                 <td><button class="btn btn-danger model-delete" value="{{i.id}}">Delete</button></td>
                             </tr> 
@@ -67,6 +155,7 @@
         </div>
     </div> 
 </template>
+
 <template name="subCategoriesCreatePage">
   <div class="row">
       <div class="col-12 grid-margin stretch-card">

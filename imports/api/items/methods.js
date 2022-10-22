@@ -68,6 +68,7 @@ Meteor.methods({
         const item = Items.find(thisFilter, {
             sort: sort
         }).fetch();
+        console.log(item);
         const categories = Categories.find().fetch()
         const subcategories = SubCategories.find().fetch()
         // console.log(item);
@@ -119,8 +120,9 @@ Meteor.methods({
     }, 
     'getSpecificItems'(id){
         check(id,String);
-        const thisItem = Items.find({subcategory: id}); 
-        return thisItem
+        const thisItem = Items.find().fetch(); 
+        return thisItem.filter((x) => x.subcategory == id) 
+         
     }, 
     'getOneJenis'(id, idJenis){
         check(id,String);

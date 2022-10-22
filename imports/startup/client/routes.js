@@ -211,6 +211,7 @@ FlowRouter.route('/master-categories', {
     },
 })
 
+
 FlowRouter.route('/master-categories-create', {
     name: 'categoriesCreatePage',
     template: 'categoriesCreatePage',
@@ -219,11 +220,51 @@ FlowRouter.route('/master-categories-create', {
     },
 })
 
+FlowRouter.route('/master-categories-:_id-details', {
+    name: 'categoriesDetailPage',
+    template: 'categoriesDetailPage',
+    action() {
+      this.render('masterContainer', 'categoriesDetailPage');
+    },
+})
+
+FlowRouter.route('/master-categories-:_id-edit', {
+    name: 'categoriesEditPage',
+    template: 'categoriesEditPage',
+    action() {
+      this.render('masterContainer', 'categoriesEditPage');
+    },
+})
+
+FlowRouter.route('/master-subcategories', {
+    name: 'subCategoriesHome',
+    template: 'subCategoriesHome',
+    action() {
+      this.render('masterContainer', 'subCategoriesHome');
+    },
+})
+
 FlowRouter.route('/master-subcategories-create', {
     name: 'subCategoriesCreatePage',
     template: 'subCategoriesCreatePage',
     action() {
       this.render('masterContainer', 'subCategoriesCreatePage');
+    },
+})
+
+FlowRouter.route('/master-subcategories-:_id-edit', {
+    name: 'subCategoriesEditPage',
+    template: 'subCategoriesEditPage',
+    action() {
+      this.render('masterContainer', 'subCategoriesEditPage');
+    },
+})
+
+FlowRouter.route('/master-subcategories-:_id-details', {
+    name: 'subCategoriesDetailPage',
+    template: 'subCategoriesDetailPage',
+    action() {
+      this.render('masterContainer', 'subCategoriesDetailPage');
     },
 })
 
@@ -260,15 +301,8 @@ FlowRouter.route('/master-promotions-:_id-edit', {
     action() {
       this.render('masterContainer', 'promotionEditPage');
     },
-})
+}) 
 
-FlowRouter.route('/master-subcategory-:_id-edit', {
-    name: 'subCategoriesEditPage',
-    template: 'subCategoriesEditPage',
-    action() {
-      this.render('masterContainer', 'subCategoriesEditPage');
-    },
-})
 FlowRouter.route('/test', {
     name: 'test',
     template: 'test',

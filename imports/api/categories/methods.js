@@ -21,8 +21,15 @@ Meteor.methods({
         }}) 
     },
 
-    'getAllCategory'(){
-        const category = Categories.find().fetch();
+    'getAllCategory'(filtering){
+        const thisFilter = {}
+        const sort = {} 
+        if (filtering) { 
+            thisFilter.status = true  
+        }
+        const category = Categories.find(thisFilter,{
+            sort:sort
+        }).fetch(); 
         return category.map(function (x) {
             x.subcategory = SubCategories.find({
                 categoryId:x._id
@@ -33,10 +40,17 @@ Meteor.methods({
     },
     'getOneCategory'(id){
         check(id,String);
-        return category.findOne({_id: id});
+        return Categories.findOne({_id: id});
     },
-    'getAllSubCategory'(){
-        const subcategory = SubCategories.find().fetch();
+    'getAllSubCategory'(filtering){
+        const thisFilter = {}
+        const sort = {} 
+        if (filtering) { 
+            thisFilter.status = true  
+        }
+        const subcategory = SubCategories.find(thisFilter,{
+            sort:sort
+        }).fetch();
         return subcategory;
     },
     'getOneSubCategory'(id){
@@ -63,7 +77,41 @@ Meteor.methods({
         return SubCategories.update({_id: id},{
             $set:param
         });
-    }
+    },
+    'deleteCategory'(id){
+        check(id, String)
+        return Categories.update({_id: id},{
+            $set:{
+                status:false
+            }
+        })
+    },
+    'updateCategory'(id,name){
+        check(id, String)
+        return Categories.update({_id: id},{
+            $set:{
+                name:name
+            }
+        })
+    },
+    'deleteSubCategory'(id){
+        check(id, String)
+        return SubCategories.update({_id: id},{
+            $set:{
+                status:false
+            }
+        })
+    },
+    'updateSubCategory'(id,param){
+        check(param.name, String)
+        check(param.categoryId, String)
+        check(param.categoryName, String)
+        check(param.status, Boolean) 
+        check(id, String)
+        SubCategories.update({_id: id}, {
+            $set: param
+        }) 
+    },
     // 'getDetailSubCategory'(id){
 
     // }
