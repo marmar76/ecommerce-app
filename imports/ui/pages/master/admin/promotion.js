@@ -1,3 +1,4 @@
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 Template.promotionsHome.onCreated(function () {
     const self = this;
     self.filtering = new ReactiveVar({

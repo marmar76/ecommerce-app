@@ -217,3 +217,4 @@ import './admin/category'
 import './admin/promotion'
 
 import './admin/banner'
+import './admin/item'

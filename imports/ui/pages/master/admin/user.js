@@ -1,3 +1,4 @@
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 Template.usersHome.onCreated(function () {
     document.title = "Mastah User"
     Meteor.subscribe('users.all', function () {

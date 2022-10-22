@@ -26,6 +26,7 @@ Meteor.methods({
                 return x
             })
         }})
+        return id
     },
     'getAllItem'(filtering){
         const thisFilter = {}
@@ -106,6 +107,7 @@ Meteor.methods({
                 } 
             })
         }
+        console.log(items);
         return item;
     },
     'getOneItem'(id){
@@ -143,8 +145,22 @@ Meteor.methods({
             status: false
         }})
     },
-    'updateItem'(id,data){
-        check(id, String)
+    'updateItem'(id,item){
+        item.createdAt = new Date()
+        item.createdBy = Meteor.userId()
+        item.status = true
+        Items.update({_id: id}, {$set: item})
+        Items.update({_id: id}, {$set: {
+            models: item.models.map(function (x, i) {  
+                x.itemId = id + "-" + i
+                x.status = true
+                return x
+            })
+        }})
         
-    }
+        const thisItem = Items.findOne({_id: id});
+        console.log(thisItem);
+        return thisItem
+        // return Items.find((x)=> x._id == id)
+    },
 })
