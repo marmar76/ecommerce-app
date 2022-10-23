@@ -468,7 +468,7 @@ Template.categoriesHome.onCreated(function () {
         } 
       }) 
       if(valid){
-        if (name.length === 0) {
+        if (name.length === 0){
           failAlert("Nama tidak boleh kosong!")
         } else {
           const data = {

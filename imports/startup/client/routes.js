@@ -169,62 +169,24 @@ FlowRouter.route('/master-items-:_id-details', {
       this.render('masterContainer','itemsDetailPage');
     },
 })
-FlowRouter.route('/master-models-:_id-details-:pos', {
+
+FlowRouter.route('/master-models-:_id-details', {
     name: 'modelDetailPage',
     template: 'modelDetailPage',
     action() {
-        const some = FlowRouter.current().params
-        console.log(some._id, some["pos"]);
-    //   this.render('masterContainer','itemsDetailPage');
+      this.render('masterContainer','modelDetailPage');
     },
-})
-FlowRouter.route('/items-:_id', {
-    name: 'itemsClientDetailPage',
-    template: 'itemsClientDetailPage',
+}) 
+
+FlowRouter.route('/master-models-:_id-edit', {
+    name: 'modelEditPage',
+    template: 'modelEditPage',
     action() {
-      this.render('itemsClientDetailPage');
+      this.render('masterContainer','modelEditPage');
     },
-})
+}) 
 
-FlowRouter.route('/master-banner', {
-    name: 'bannersHomePage',
-    template: 'bannersHomePage',
-    action() {
-      this.render('masterContainer','bannersHomePage');
-    },
-})
 
-FlowRouter.route('/master-banner-create', {
-    name: 'bannersCreatePage',
-    template: 'bannersCreatePage',
-    action() {
-      this.render('masterContainer','bannersCreatePage');
-    },
-})
-
-// FlowRouter.route('/master-banner-:_id-details', {
-//     name: 'bannersDetailPage',
-//     template: 'bannersDetailPage',
-//     action() {
-//       this.render('masterContainer','bannersDetailPage');
-//     },
-// })
-
-FlowRouter.route('/master-banner-:_id-edit', {
-    name: 'bannersEditPage',
-    template: 'bannersEditPage',
-    action() {
-      this.render('masterContainer','bannersEditPage');
-    },
-})
-
-// FlowRouter.route('/master-items/:_id/edit', {
-//     name: 'itemsEditPage',
-//     template: 'itemsEditPage',
-//     action() {
-//       this.render('masterContainer','itemsEditPage');
-//     },
-// })
 //=====================================================
 //                  CATEGORY
 //=====================================================
@@ -341,6 +303,40 @@ FlowRouter.route('/test', {
     },
 })
 
+//=====================================================
+//                  Master Banner     
+//=====================================================
+FlowRouter.route('/master-banner', {
+    name: 'bannersHomePage',
+    template: 'bannersHomePage',
+    action() {
+      this.render('masterContainer','bannersHomePage');
+    },
+})
+
+FlowRouter.route('/master-banner-create', {
+    name: 'bannersCreatePage',
+    template: 'bannersCreatePage',
+    action() {
+      this.render('masterContainer','bannersCreatePage');
+    },
+})
+
+// FlowRouter.route('/master-banner-:_id-details', {
+//     name: 'bannersDetailPage',
+//     template: 'bannersDetailPage',
+//     action() {
+//       this.render('masterContainer','bannersDetailPage');
+//     },
+// })
+
+FlowRouter.route('/master-banner-:_id-edit', {
+    name: 'bannersEditPage',
+    template: 'bannersEditPage',
+    action() {
+      this.render('masterContainer','bannersEditPage');
+    },
+})
 //=====================================================
 //                  Client side     
 //=====================================================

@@ -589,4 +589,121 @@ Template.itemsHome.onCreated(function () {
   })
 
   
+  Template.modelDetailPage.onCreated(function () {
+    const self = this;   
+    this.model = new ReactiveVar() 
+    const paramId = FlowRouter.current().params._id
+    //parmaID = tasjdhi123-0, tasjdhi123-1, tasjdhi123-2 dll 
+    //id[0] untuk id item (tsa123sakj,123koaosjdh)dll
+    //id[1] untuk id model (0,1,2,3)dll
+    const id=paramId.split('-')
+    console.log(id[0]);
+    console.log(id[1]);
+    Meteor.call('getOneModel', id[0], paramId, function (err, res) {
+      if(err){
+        console.log(err);
+        FlowRouter.go('forbidden')
+      }else if(res){
+         console.log(res);
+         self.model.set(res)
+      }
+      else{
+        FlowRouter.go('forbidden')
+      } 
+    })
+  })
+  
+  Template.modelDetailPage.helpers({
+    model() {
+      console.log(Template.instance().model.get());
+      return Template.instance().model.get()
+    },
+    equals(a, b){
+      return a == b
+    },
+  })
+  
+  Template.modelDetailPage.events({ 
+    'click #delete'(e, t){
+      const paramId = FlowRouter.current().params._id
+      const id=paramId.split('-')
+      Meteor.call('deleteModel', id[0], paramId, function (err, res) {
+        console.log(res);
+      })
+    },
+  })
+  
+  
+  Template.modelEditPage.onCreated(function () {
+    const self = this;   
+    this.model = new ReactiveVar() 
+    const paramId = FlowRouter.current().params._id
+    //parmaID = tasjdhi123-0, tasjdhi123-1, tasjdhi123-2 dll 
+    //id[0] untuk id item (tsa123sakj,123koaosjdh)dll
+    //id[1] untuk id model (0,1,2,3)dll
+    const id=paramId.split('-')
+    console.log(id[0]);
+    console.log(id[1]);
+    Meteor.call('getOneModel', id[0], paramId, function (err, res) {
+      if(err){
+        console.log(err);
+        FlowRouter.go('forbidden')
+      }else if(res){
+         console.log(res);
+         self.model.set(res)
+      }
+      else{
+        FlowRouter.go('forbidden')
+      } 
+    })
+  })
+  
+  Template.modelEditPage.helpers({ 
+    model() {
+      console.log(Template.instance().model.get());
+      return Template.instance().model.get()
+    },
+    equals(a, b){
+      return a == b
+    },
+  })
+  
+  Template.modelEditPage.events({ 
+    'click #btnSave'(e, t){
+      const model = t.model.get()
+      console.log(model);
+      const paramId = FlowRouter.current().params._id
+      const id=paramId.split('-')
+      const name = $('#name').val();
+      const price = $('#price').val();
+      const stock = $('#stock').val();
+      const specification = model.specification.map(function (x) {
+          const label = $('#model-label-' + x.slug).val();
+          const value = $('#model-value-' + x.slug).val();
+          const slug = $('#model-slug-' + x.slug).val();
+          if (!label || !slug || !value) {
+            failAlert("something wrong with specification in field " + (ctr))
+          }else{
+            return {
+              label,
+              slug,
+              value
+            }
+          }
+      }) 
+      if(!name || !price || !stock || !specification){
+        failAlert('field tidak boleh kosong')
+      }else{
+        const data = {
+          name:name,
+          price:price,
+          stock:stock,
+          specification:specification
+        }
+        Meteor.call('updateModel', id[0], paramId, data, function (err, res) {
+          console.log(res);
+        })
+      }
+    },
+  })
   

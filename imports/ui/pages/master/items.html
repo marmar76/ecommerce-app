@@ -161,18 +161,6 @@
           </div>
           <hr>
           <h3>Item models</h3>
-          <!-- <div class="mb-3 form-group">
-            <label for="">Name Model</label>
-            <input type="text" class="form-control" id="model-name" required placeholder="Model Name">
-          </div>
-          <div class="mb-3 form-group">
-            <label for="">Price</label>
-            <input type="number" class="form-control" id="model-price" required placeholder="Price">
-          </div>
-          <div class="mb-3 form-group">
-            <label for="">Stock</label>
-            <input type="number" class="form-control" id="model-stock" required placeholder="Stock">
-          </div> -->
           <table class="table table-striped">
             <thead>
               <tr>
@@ -299,7 +287,7 @@
     <div class="col-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
-          <h4 class="page-title">Edit {{items.name}} {{items.subcategory}}</h4>
+          <h4 class="page-title">Edit {{items.name}}</h4>
           <div class="mb-3 form-group">
             <label for="">Name</label>
             <input type="text" class="form-control" id="itemsName" required placeholder="item Name" value={{items.name}}>
@@ -451,7 +439,97 @@
   {{/if}}
 </template>
 
-<template name="itemsEditPage">
-  !BUG TIDAK BISA MENAMPILKAN SUBCATEGORY DARI ITEM TERSEBUT!
-  
+<template name="modelDetailPage">
+  <div class="row">
+    <div class="col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="page-title">Item Model Details</h1>
+          <section class="section-page-shoulders">
+            <div class="btn-group">
+              <a class="btn btn-warning" href="/master-models-{{ model.itemId }}-edit">Edit</a>
+            </div>
+          </section>
+          <div class="user-info">
+            <table class="table caption-top">
+              <tbody>
+                <tr>
+                  <th>Name</th>
+                  <td>{{ model.name }}</td>
+                </tr>
+                <tr>
+                  <th>Price</th>
+                  <td>{{model.price}}</td>
+                </tr>
+                <tr>
+                  <th>Stock</th>
+                  <td>{{model.status}}</td>
+                </tr>
+                <tr>
+                  <th>Specification</th> 
+                </tr>
+                {{#each model.specification}}
+                  <tr>
+                    <th>{{label}}</th>
+                    <td>{{value}}</td>
+                  </tr>
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
+          <div class="form-actions form-group">
+            <button style="float: right;" class="btn btn-danger" id="delete">Delete Item Model</button>
+            <div style="clear: both;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> 
+</template>
+
+<template name="modelEditPage">
+  <div class="row">
+    <div class="col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="page-title">Edit {{model.name}}</h4>
+          <div class="mb-3 form-group">
+            <label for="">Name</label>
+            <input type="text" class="form-control" id="name" required placeholder="Model Name" value={{model.name}}>
+          </div>
+          <div class="mb-3 form-group">
+            <label for="">price</label>
+            <input type="number" class="form-control" id="price" required placeholder="Model's price" value={{model.price}}>
+          </div>
+          <div class="mb-3 form-group">
+            <label for="">Stock</label>
+            <input type="number" class="form-control" id="stock" required placeholder="Model's stock" value={{model.stock}}>
+          </div>
+          <hr>
+          <h3>Item Specification</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr> 
+                <th scope="col">Name</th>
+                <th scope="col">Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each i in model.specification}}
+              <td><input type="hidden" class="form-control" id="model-slug-{{i.slug}}" required placeholder="{{i.label}}" value="{{i.slug}}" disabled> </td>
+                <tr>
+                  <td><input type="text" class="form-control" id="model-label-{{i.slug}}" required placeholder="{{i.label}}" value="{{i.label}}" disabled> </td>
+                  <td><input type="text" class="form-control" id="model-value-{{i.slug}}" required value="{{i.value}}"> </td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+          <button id="btnSave" type="submit" class="btn btn-primary me-2">Save</button>
+          <div class="btn-group">
+            <a class="btn btn-warning" href="/master-models-{{ model.itemId }}-details">Cancel</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>

@@ -74,7 +74,8 @@ Meteor.methods({
         // console.log(item);
         if (filtering) {
             return item.filter(function (x) {
-                return x.name.toLowerCase().includes(filtering.filter.toLowerCase());
+                console.log(x.models.filter((y)=> y.status ==true));
+                return x.name.toLowerCase().includes(filtering.filter.toLowerCase())
             }).map(function (y) {  
                 const thisCategory = categories.find((x) => y.category == x._id)
                 const thisSubcategory = subcategories.find((x) => y.subcategory == x._id)
@@ -85,6 +86,7 @@ Meteor.methods({
                 })
                 y.lowestPrice = lowestPrice[0].price
                 y.price = lowestPrice[0].price
+                y.models= y.models.filter((z) => z.status == true)
                 return y
             }).filter(function (x) {  
                 if(filtering.hargaAwal){
@@ -107,7 +109,6 @@ Meteor.methods({
                 } 
             })
         }
-        console.log(items);
         return item;
     },
     'getOneItem'(id){
@@ -119,6 +120,13 @@ Meteor.methods({
         thisItem.subcategoryName = thisSubcategory.name
         return thisItem
     }, 
+    'getOneModel'(id, idmodel){
+        const thisItem = Items.findOne({_id: id});
+        const model = thisItem.models  
+        const spesificmodel = model.find((x) => x.itemId == idmodel) 
+        console.log(spesificmodel);
+        return spesificmodel
+    },
     'getSpecificItems'(id){
         check(id,String);
         const thisItem = Items.find().fetch(); 
@@ -157,10 +165,24 @@ Meteor.methods({
                 return x
             })
         }})
-        
         const thisItem = Items.findOne({_id: id});
-        console.log(thisItem);
         return thisItem
-        // return Items.find((x)=> x._id == id)
+    },
+    'deleteModel'(id, idmodel){
+        const thisItem = Items.findOne({_id: id});
+        const thisModel = thisItem.models.find((x) => x.itemId == idmodel)
+        thisModel.status = false
+        Items.update({_id: id}, {$set: thisItem})
+        return Items.update({_id: id}, {$set: thisItem})
+    },
+    'updateModel'(id, idmodel, data){
+        const thisItem = Items.findOne({_id: id});
+        const thisModel = thisItem.models.find((x) => x.itemId == idmodel)
+        thisModel.name = data.name
+        thisModel.price = data.price
+        thisModel.stock = data.stock
+        thisModel.specification = data.specification 
+        Items.update({_id: id}, {$set: thisItem})
+        return Items.update({_id: id}, {$set: thisItem})
     },
 })
