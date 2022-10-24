@@ -85,6 +85,7 @@ Meteor.methods({
             })
         }
         user.address[pos] = data
+        // console.log(user);
         return Meteor.users.update({
             _id: userId ? userId : Meteor.userId()
         }, {$set: user})
