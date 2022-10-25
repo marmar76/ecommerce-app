@@ -20,6 +20,7 @@ Meteor.methods({
         item.status = true
         const id = Items.insert(item)
         Items.update({_id: id}, {$set: {
+            picture: id + item.ext,
             models: models.map(function (x, i) {  
                 x.itemId = id + "-" + i
                 x.status = true
@@ -28,10 +29,9 @@ Meteor.methods({
         }})
         return id
     },
-    'getAllItem'(filtering){
+    async 'getAllItem'(filtering){
         const thisFilter = {}
         const sort = {}
-        console.log(filtering);
         if (filtering) {
         // if ((+filtering.sort) === 1) {
         //     sort.price = 1
@@ -72,23 +72,31 @@ Meteor.methods({
         const categories = Categories.find().fetch()
         const subcategories = SubCategories.find().fetch()
         // console.log(item);
+        let items = item.map(async function (y) {  
+            const thisCategory = categories.find((x) => y.category == x._id)
+            const thisSubcategory = subcategories.find((x) => y.subcategory == x._id)
+            y.categoryName = thisCategory.name
+            y.subcategoryName = thisSubcategory.name
+            const lowestPrice = y.models.sort(function (a, b) {  
+                return a.price - b.price
+            })
+            y.lowestPrice = lowestPrice[0].price
+            y.price = lowestPrice[0].price
+            y.models= y.models.filter((z) => z.status == true)
+            if(y.picture){
+                try {
+                    const itemPicture = await getFireImage('items/picture', y.picture)
+                    y.link = itemPicture
+                } catch (error) {
+                    console.log(error);
+                    console.log(y.picture);
+                }
+            }
+            return y
+        })
+        items = await Promise.all(items)
         if (filtering) {
-            return item.filter(function (x) {
-                console.log(x.models.filter((y)=> y.status ==true));
-                return x.name.toLowerCase().includes(filtering.filter.toLowerCase())
-            }).map(function (y) {  
-                const thisCategory = categories.find((x) => y.category == x._id)
-                const thisSubcategory = subcategories.find((x) => y.subcategory == x._id)
-                y.categoryName = thisCategory.name
-                y.subcategoryName = thisSubcategory.name
-                const lowestPrice = y.models.sort(function (a, b) {  
-                    return a.price - b.price
-                })
-                y.lowestPrice = lowestPrice[0].price
-                y.price = lowestPrice[0].price
-                y.models= y.models.filter((z) => z.status == true)
-                return y
-            }).filter(function (x) {  
+            return items.filter(function (x) {  
                 if(filtering.hargaAwal){
                     if(x.price < filtering.hargaAwal){
                         return false
@@ -99,6 +107,9 @@ Meteor.methods({
                         return false
                     }
                 }
+                if(filtering.filter && !x.name.toLowerCase().includes(filtering.filter.toLowerCase())){
+                    return false
+                }
                 return true
             }).sort(function (x, y) { 
                 if ((+filtering.sort) == 1) {
@@ -108,30 +119,38 @@ Meteor.methods({
                     return y.price - x.price 
                 } 
             })
+            
         }
-        return item;
+        return items;
     },
-    'getOneItem'(id){
+    async 'getOneItem'(id){
         check(id,String);
         const thisItem = Items.findOne({_id: id});
         const thisCategory = Categories.findOne({_id: thisItem.category})
         const thisSubcategory = SubCategories.findOne({_id: thisItem.subcategory})
+        if(thisItem.picture){
+            try {
+                const profilePictureLink = await getFireImage('items/picture', thisItem.picture)
+                thisItem.link = profilePictureLink
+            } catch (error) {
+                console.log(error);
+            }
+        }
         thisItem.categoryName = thisCategory.name
         thisItem.subcategoryName = thisSubcategory.name
+        console.log(thisItem);
         return thisItem
     }, 
     'getOneModel'(id, idmodel){
         const thisItem = Items.findOne({_id: id});
         const model = thisItem.models  
-        const spesificmodel = model.find((x) => x.itemId == idmodel) 
-        console.log(spesificmodel);
+        const spesificmodel = model.find((x) => x.itemId == idmodel)
         return spesificmodel
     },
     'getSpecificItems'(id){
         check(id,String);
         const thisItem = Items.find().fetch(); 
         return thisItem.filter((x) => x.subcategory == id) 
-         
     }, 
     'getOneJenis'(id, idJenis){
         check(id,String);
@@ -184,5 +203,13 @@ Meteor.methods({
         thisModel.specification = data.specification 
         Items.update({_id: id}, {$set: thisItem})
         return Items.update({_id: id}, {$set: thisItem})
+    },
+    async 'getMyItem'(_id){
+        const item = Items.findOne({_id: _id});
+        if(item.picture){
+            const profilePictureLink = await getFireImage('items/picture', item.picture)
+            item.picture = profilePictureLink
+        }
+        return item
     },
 })
