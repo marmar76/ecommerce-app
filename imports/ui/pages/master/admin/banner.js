@@ -90,19 +90,12 @@ Template.bannersHomePage.onCreated(function () {
   
   Template.bannersCreatePage.onCreated(function () {
     const self = this;
-    this.banner = new ReactiveVar();
     this.imageList = new ReactiveVar(null)
     this.fotoProfile = new ReactiveVar()
   
   })
   
   Template.bannersCreatePage.helpers({
-    banners() {
-      const banner = Template.instance().banner.get();
-      if (banner) {
-        return banner;
-      }
-    },
     formatHTML(context) {
       return moment(context).format("YYYY-MM-DD");
     },

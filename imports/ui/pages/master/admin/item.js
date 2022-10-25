@@ -132,6 +132,8 @@ Template.itemsHome.onCreated(function () {
       status: true
     }])
     this.comparison = new ReactiveVar(false)
+    this.imageList = new ReactiveVar(null)
+    this.fotoItem = new ReactiveVar()
     Meteor.call('getAllCategory', this.filtering.get() , function (err, res) {
       self.category.set(res);
     });
@@ -185,9 +187,27 @@ Template.itemsHome.onCreated(function () {
       }
       return [];
     },
+    fotoItem() {
+      return Template.instance().fotoItem.get()
+    },
   })
   
   Template.itemsCreatePage.events({
+    'change #uploadImageItem': function (event, template) {
+      event.preventDefault();
+      const checkFile = event.currentTarget.files;
+  
+      if (checkFile && checkFile.length > 0) {
+        let imageList = template.imageList.get()
+        //   _.each(checkFile, function (file) {
+        //     imageList = [file]
+        //   });
+        // console.log(checkFile);
+        console.log(checkFile);
+        template.fotoItem.set(URL.createObjectURL(checkFile[0]))
+        template.imageList.set(checkFile[0])
+      }
+    },
     'click #submit'(e, t) {
       const models = t.models.get()
       const canCompare = t.comparison.get()
@@ -256,6 +276,17 @@ Template.itemsHome.onCreated(function () {
             weight,
             description
           }
+          $("#uploadImageItem").trigger("change");
+            const imageList = t.imageList.get()
+            let thisFile, getExt
+            if(imageList){
+              thisFile = imageList
+              getExt = thisFile.type.split('/')[1]
+              getExt = '.' + getExt
+              data.ext = getExt
+              console.log(data);
+              // data.profilePicture = Meteor.userId() + getExt
+          }
           Meteor.call('createItem', data, thisModels, function (error, res) {  
             console.log(error);
             console.log(res);
@@ -263,6 +294,19 @@ Template.itemsHome.onCreated(function () {
               failAlert(error);
             }
             else{
+              if(imageList){
+                console.log(res);
+                const fileName = res + getExt
+                uploadImageFile(imageList, 'items/picture', fileName).then((snapshot) => { 
+                  console.log('Image Uploaded Successfully'); 
+                  successAlert() 
+                }).catch((error) => { 
+                  console.error(error); 
+                  failAlert(error) 
+                });
+              } else {
+                // exitLoading() 
+              }
               successAlertBack();
             }
           }) 
@@ -317,6 +361,8 @@ Template.itemsHome.onCreated(function () {
       sort: '1',
     })
     this.item = new ReactiveVar();
+    this.imageList = new ReactiveVar(null)
+    this.fotoItem = new ReactiveVar()
     this.category = new ReactiveVar();
     this.subcategory = new ReactiveVar();
     this.now = new ReactiveVar(1);
@@ -340,7 +386,6 @@ Template.itemsHome.onCreated(function () {
           for (const i of res.models) {
             if(i.specification){
               if(i.specification.length > 0){
-              
                 arr.push({
                   id: arr.length,
                   name: i.name,
@@ -371,7 +416,8 @@ Template.itemsHome.onCreated(function () {
             isNew:true
           })
         }
-        self.item.set(res);
+        self.item.set(res)
+        self.fotoItem.set(res.picture)
         if (category) {
           self.now.set(res.category)
         }
@@ -430,22 +476,39 @@ Template.itemsHome.onCreated(function () {
     now() {
       return Template.instance().now.get();
     },
+    fotoItem() {
+      return Template.instance().fotoItem.get()
+    },
   })
   
   Template.itemsDetailPage.events({
+    'change #uploadImageItem': function (event, template) {
+      event.preventDefault();
+      const checkFile = event.currentTarget.files;
+  
+      if (checkFile && checkFile.length > 0) {
+        let imageList = template.imageList.get()
+        //   _.each(checkFile, function (file) {
+        //     imageList = [file]
+        //   });
+        // console.log(checkFile);
+        console.log(checkFile);
+        template.fotoItem.set(URL.createObjectURL(checkFile[0]))
+        template.imageList.set(checkFile[0])
+      }
+    },
     'click #btnSave'(e, t) {
       const models = t.models.get()
       const item = t.item.get()
       const canCompare = t.comparison.get()
       const name = $("#itemsName").val();
-      console.log(name);
+      const picture = t.fotoItem.get()
+      const imageList = t.imageList.get()
       const category = $("#categories").val();
       const subcategory = $("#subcategories").val();
       const weight = $("#weight").val();
       const description = $("#itemsDescription").val();
       const paramId = FlowRouter.current().params._id
-      console.log(paramId);
-      console.log(item);
       let valid = models.length > 0
       const arr = []
       const oldModels  = (item.subcategory == subcategory  && item.category == category) ? models.filter((p) => !p.isNew) : models.filter((p) => !p.isNew).map( function (x) {
@@ -502,27 +565,49 @@ Template.itemsHome.onCreated(function () {
       }
       console.log(arr);
       if (valid) {
-        if (!name || !category || !subcategory || !weight || !description) {
+        if (!name || !category || !subcategory || !weight || !description || !picture) {
           failAlert("something missing with this item")
         } else {
+          
           const data = {
             name,
             category,
             subcategory,
             weight,
+            picture,
             description,
             models: arr
           }
-          console.log(paramId);
-          console.log(data);
-          
+          // $("#uploadImageItem").trigger("change");
+            const imageList = t.imageList.get()
+            let thisFile, getExt
+            if(imageList){
+              thisFile = imageList
+              getExt = thisFile.type.split('/')[1]
+              getExt = '.' + getExt
+              // data.ext = getExt
+              // console.log(data);
+              data.picture = paramId + getExt
+          }
           Meteor.call('updateItem',paramId, data, function (error, result) {  
             if(error){
               failAlert(error);
             }
             else{
-              console.log(result);
-              // successAlertBack();
+              if(imageList){
+                console.log(result);
+                const fileName = paramId + getExt
+                uploadImageFile(imageList, 'items/picture', fileName).then((snapshot) => { 
+                  console.log('Image Uploaded Successfully'); 
+                  // successAlert() 
+                }).catch((error) => { 
+                  console.error(error); 
+                  failAlert(error) 
+                });
+              } else {
+                // exitLoading() 
+              }
+              successAlertBack();
             }
           }) 
         }

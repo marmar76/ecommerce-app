@@ -62,6 +62,7 @@
               <thead>
                 <tr>
                   <th class="fs-5">Name</th>
+                  <th class="fs-5">Image</th>
                   <th class="fs-5">Model</th>
                   <!-- <th>Condi5ion</th> -->
                   <!-- <th>Stock5/th> -->
@@ -77,6 +78,7 @@
                 {{#each items}} 
                 <tr>
                   <td class="fs-5">{{name}}</td>
+                  <td><img src="{{link}}" alt=""></td>
                   <td class="fs-5">
                     <ul>
                     {{#each models}}
@@ -141,19 +143,29 @@
           </div>
           {{#if subcategories}}
           <div class="mb-3 form-group">
-              <label for="Category" class="form-label">Sub Category</label>
-              <select name="select-roles" id="subcategories" class="form-control">
-                <option value="0">Select SubCategory</option>
-                {{#each subcategories}}
-                <option value={{_id}}>{{name}}</option>
-                {{/each}}
-              </select>
+            <label for="Category" class="form-label">Sub Category</label>
+            <select name="select-roles" id="subcategories" class="form-control">
+              <option value="0">Select SubCategory</option>
+              {{#each subcategories}}
+              <option value={{_id}}>{{name}}</option>
+              {{/each}}
+            </select>
+          </div>
+          {{/if}}
+          <div class="mb-3">
+            <div class="card-body">
+                <div class="d-grid">
+                    <label for="" class="form-label">Gambar Item</label>
+                    <img src="{{ fotoItem }}" class="w-100" alt="" srcset="">
+                    <input class="d-none" id="uploadImageItem" type="file" accept="image/*" />
+                    <label class="btn fs-3 btn-info mt-3 form-control" for="uploadImageItem">Pilih Foto</label> 
+                </div> 
             </div>
-            {{/if}}
-            <div class="mb-3 form-group">
-              <label for="">Weight</label>
-              <input type="number" class="form-control" id="weight" required placeholder="item's Weight (Kg)">
-            </div>
+          </div>
+          <div class="mb-3 form-group">
+            <label for="">Weight</label>
+            <input type="number" class="form-control" id="weight" required placeholder="item's Weight (Kg)">
+          </div>
           <div class="mb-3 form-group">
             <label for="">Description</label>
             <textarea name="" id="itemsDescription" class="form-control" cols="30" rows="10"></textarea>
@@ -307,23 +319,33 @@
           </div>
           {{#if subcategories}}
           <div class="mb-3 form-group">
-              <label for="Category" class="form-label">Sub Category</label>
-              <select name="select-roles" id="subcategories" class="form-control">
-                <option value="0">Select SubCategory</option>
-                {{#each subcategories}} 
-                {{#if equals _id items.subcategory}}
-                <option value={{_id}} selected>{{name}}</option>
-                {{else}}
-                <option value={{_id}}>{{name}}</option>
-                {{/if}}
-                {{/each}}
-              </select>
+            <label for="Category" class="form-label">Sub Category</label>
+            <select name="select-roles" id="subcategories" class="form-control">
+              <option value="0">Select SubCategory</option>
+              {{#each subcategories}} 
+              {{#if equals _id items.subcategory}}
+              <option value={{_id}} selected>{{name}}</option>
+              {{else}}
+              <option value={{_id}}>{{name}}</option>
+              {{/if}}
+              {{/each}}
+            </select>
+          </div>
+          {{/if}}
+          <div class="mb-3">
+            <div class="card-body">
+                <div class="d-grid">
+                    <label for="" class="form-label">Gambar Item</label>
+                    <img src="{{ fotoItem }}" class="w-100" alt="" srcset="">
+                    <input class="d-none" id="uploadImageItem" type="file" accept="image/*" />
+                    <label class="btn fs-3 btn-info mt-3 form-control" for="uploadImageItem">Pilih Foto</label> 
+                </div> 
             </div>
-            {{/if}}
-            <div class="mb-3 form-group">
-              <label for="">Weight</label>
-              <input type="number" class="form-control" id="weight" required placeholder="item's Weight (Kg)" value={{items.weight}}>
-            </div>
+          </div>
+          <div class="mb-3 form-group">
+            <label for="">Weight</label>
+            <input type="number" class="form-control" id="weight" required placeholder="item's Weight (Kg)" value={{items.weight}}>
+          </div>
           <div class="mb-3 form-group">
             <label for="">Description</label>
             <textarea name="" id="itemsDescription" class="form-control" cols="30" rows="10" value={{items.description}}></textarea>
@@ -402,6 +424,10 @@
                 <tr>
                   <th>Name</th>
                   <td>{{ items.name }}</td>
+                </tr>
+                <tr>
+                  <th>Gambar Item</th>
+                  <td><img src="{{fotoItem}}" alt=""></td>
                 </tr>
                 <tr>
                   <th>Model</th>

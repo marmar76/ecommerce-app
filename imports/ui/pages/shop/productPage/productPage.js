@@ -191,7 +191,7 @@ Template.productPage.events({
     },
     'click #cart'(e, t) {
         const user = Meteor.user()
-        const qty = $('#quantity').val();
+        const qty = +$('#quantity').val();
         const itemId = $('#cart').val();
         const item = Template.instance().item.get()
         const jenisItem = Template.instance().jenisItem.get()
