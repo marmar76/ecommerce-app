@@ -11,7 +11,7 @@ import {
   ImagePlaceholder
 } from '../../../../api/users/users';
 import './userSettings.html';
-
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 function isValidDate(d) {
   return d instanceof Date && !isNaN(d);
 }
@@ -416,4 +416,43 @@ Template.userAddress.events({
     }
 
   },
+})
+
+Template.selectAddress.onCreated(function () {  
+  const self = this
+  self.selected = new ReactiveVar()
+  self.thisUser = new ReactiveVar()
+  Meteor.call('getMyself', function (err, res) {  
+    self.thisUser.set(res)
+    // console.log(res);
+    self.selected.set(res.address.find((x) => x.isDefault))
+    // console.log(res.address.find((x) => x.isSelected));
+  })
+})
+
+Template.selectAddress.helpers({
+  address(){
+    return Template.instance().thisUser.get().address
+  },
+  selected(){
+    return Template.instance().selected.get()
+  }
+})
+
+Template.selectAddress.events({
+  'click .set-selected-alamat'(e, t){
+    const click = e.target.value
+    const thisUser = t.thisUser.get()
+    const userAddress = thisUser.address.map(function (x) {  
+      x.isDefault = false
+      return x
+    })
+    userAddress[click].isDefault = true
+    t.selected.set(thisUser.address[click])
+    t.thisUser.set(thisUser)
+    $('.btn-close').trigger('click');
+  },
+  'click .add-alamat'(e, t){
+    FlowRouter.go('userSettings')
+  }
 })

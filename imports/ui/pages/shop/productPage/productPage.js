@@ -18,6 +18,7 @@ Template.productPage.onCreated(function () {
     this.subtotal = new ReactiveVar(0)
     this.subcategory = new ReactiveVar(null)
     this.subcategoryItem = new ReactiveVar(null)
+    this.quantity = new ReactiveVar(1)
     this.comparison = new ReactiveVar([
         {
             id: 1,
@@ -39,12 +40,15 @@ Template.productPage.onCreated(function () {
             console.log(err);
             // failalert(err)
         } else {
+            console.log(res);
             self.item.set(res);
+            self.jenisItem.set(res.models[0])
             Meteor.call('getOneSubCategory', res.subcategory, function (err, res) {  
                 self.subcategory.set(res)
             })
             Meteor.call('getItemOnSubCategory', res.subcategory, function (err, res) {  
                 self.subcategoryItem.set(res)
+                
                 console.log(res);
                 setTimeout(() => {
                     for (const i of self.comparison.get()) {
@@ -73,13 +77,13 @@ Template.productPage.onCreated(function () {
             })
         }
     })
-    Meteor.call('getOneJenis', paramId, paramId + "-0", function (err, res) {
-        if (err) {
-            console.log(err);
-        } else {
-            self.jenisItem.set(res)
-        }
-    })
+    // Meteor.call('getOneJenis', paramId, paramId + "-0", function (err, res) {
+    //     if (err) {
+    //         console.log(err);
+    //     } else {
+    //         self.jenisItem.set(res)
+    //     }
+    // })
 
 })
 Template.productPage.onRendered(function () {
@@ -103,7 +107,7 @@ Template.productPage.helpers({
         }
     },
     subtotal() {
-        const qty = $('#quantity').val();
+        const qty = Template.instance().quantity.get()
         const jenis = Template.instance().jenisItem.get();
         if (jenis) {
             let total = qty * jenis.price
@@ -125,6 +129,31 @@ Template.productPage.helpers({
 })
 
 Template.productPage.events({
+    'click .btn-plus'(e, t){
+        const quantity = $("#quantity").val();
+        if(quantity){
+            $("#quantity").val((+quantity) + 1);
+        }else $("#quantity").val(1);
+    },
+    'click .btn-min'(e, t){
+        const quantity = $("#quantity").val();
+        if(quantity){
+            let res = (+quantity) - 1
+            if(res == 0){
+                $("#quantity").val(1);
+            }
+            else $("#quantity").val(res);
+        }else $("#quantity").val(1);
+
+    },
+    'input #quantity'(e, t){
+        const quantity = $("#quantity").val();
+        t.quantity.set(quantity)
+    },
+    'click .btn-quantity'(e, t){
+        const quantity = $("#quantity").val();
+        t.quantity.set(quantity)
+    },
     'click #compare-specification'(e, t) {
         
     },
@@ -143,15 +172,17 @@ Template.productPage.events({
     },
     'click .btnJenis'(e, t) {
         const itemId = $(e.target).val();
-        const paramId = FlowRouter.current().params._id
-        Meteor.call('getOneJenis', paramId, itemId, function (err, res) {
-            if (err) {
-                console.log(err);
-            } else {
-                t.jenisItem.set(res)
-            }
-        })
-        e.target.selected
+        const item = t.item.get()
+        t.jenisItem.set(item.models.find((x) => itemId == x.itemId))
+        // const paramId = FlowRouter.current().params._id
+        // Meteor.call('getOneJenis', paramId, itemId, function (err, res) {
+        //     if (err) {
+        //         console.log(err);
+        //     } else {
+        //         t.jenisItem.set(res)
+        //     }
+        // })
+        // e.target.selected
     },
     'click #buy'(e, t) {
         const qty = $('#quantity').val();
@@ -159,87 +190,94 @@ Template.productPage.events({
         console.log(Template.instance().cart.get());
     },
     'click #cart'(e, t) {
-
         const user = Meteor.user()
         const qty = $('#quantity').val();
         const itemId = $('#cart').val();
         const item = Template.instance().item.get()
         const jenisItem = Template.instance().jenisItem.get()
-        let name = item.name + " - " + jenisItem.name
-        if (user) {
-            Meteor.call('getOneCart', user._id, function (err, res) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    if (res) {
-                        const items = []
-                        let status = true
-                        for (const i of res.items) {
-                            if (i.itemId == itemId) {
-                                i.quantity += +qty
-                                i.subtotal = +i.quantity * +i.price
-                                status = false
-                            }
-                            items.push(i)
-                        }
-                        if (status) {
-                            const dataitem = {
-                                name,
-                                itemId,
-                                weight: +item.weight,
-                                quantity: +qty,
-                                price: +jenisItem.price,
-                                subtotal: +qty * +jenisItem.price
-                            }
-                            items.push(dataitem)
-                        }
-                        console.log(items);
-                        let grandtotal = 0
-                        for (const i of items) {
-                            console.log(i.subtotal);
-                            grandtotal += +i.subtotal
-                        }
-                        const data = {
-                            items,
-                            grandtotal: +grandtotal
-                        }
-                        console.log(+grandtotal);
-                        Meteor.call('updateCart', user._id, data, function (err, res) {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                console.log("success Update Cart");
-                            }
-                        })
-                    } else {
-
-                        const items = [{
-                            name,
-                            itemId,
-                            weight: +item.weight,
-                            quantity: +qty,
-                            price: +jenisItem.price,
-                            subtotal: +qty * +jenisItem.price
-                        }]
-                        const data = {
-                            username: user.username,
-                            userId: user._id,
-                            items,
-                            grandtotal: items[0].subtotal,
-                            status: true
-                        }
-                        Meteor.call('createCart', data, function (err, res) {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                console.log("success");
-                            }
-                        })
-                    }
-                    t.cart.set(res)
-                }
-            })
-        }
+        console.log(itemId, qty);
+        // let name = item.name + " - " + jenisItem.name
+        Meteor.call('insertCart', {itemId, qty}, function (err, res) {  
+            if(err){
+                console.log(err);
+            }
+            else{
+                successAlert('Barang berhasil ditambahkan')
+            }
+        })
+        // if (user) { <- dis is sucks so much
+        //     Meteor.call('getOneCart', user._id, function (err, res) {
+        //         if (err) {
+        //             console.log(err);
+        //         } else {
+        //             if (res) {
+        //                 const items = []
+        //                 let status = true
+        //                 for (const i of res.items) {
+        //                     if (i.itemId == itemId) {
+        //                         i.quantity += +qty
+        //                         i.subtotal = +i.quantity * +i.price
+        //                         status = false
+        //                     }
+        //                     items.push(i)
+        //                 }
+        //                 if (status) {
+        //                     const dataitem = {
+        //                         name,
+        //                         itemId,
+        //                         weight: +item.weight,
+        //                         quantity: +qty,
+        //                         price: +jenisItem.price,
+        //                         subtotal: +qty * +jenisItem.price
+        //                     }
+        //                     items.push(dataitem)
+        //                 }
+        //                 console.log(items);
+        //                 let grandtotal = 0
+        //                 for (const i of items) {
+        //                     console.log(i.subtotal);
+        //                     grandtotal += +i.subtotal
+        //                 }
+        //                 const data = {
+        //                     items,
+        //                     grandtotal: +grandtotal
+        //                 }
+        //                 console.log(+grandtotal);
+        //                 Meteor.call('updateCart', user._id, data, function (err, res) {
+        //                     if (err) {
+        //                         console.log(err);
+        //                     } else {
+        //                         console.log("success Update Cart");
+        //                     }
+        //                 })
+        //             } else {
+        //                 const items = [{
+        //                     name,
+        //                     itemId,
+        //                     weight: +item.weight,
+        //                     quantity: +qty,
+        //                     price: +jenisItem.price,
+        //                     subtotal: +qty * +jenisItem.price
+        //                 }]
+        //                 const data = {
+        //                     username: user.username,
+        //                     userId: user._id,
+        //                     items,
+        //                     grandtotal: items[0].subtotal,
+        //                     status: true
+        //                 }
+        //                 Meteor.call('createCart', data, function (err, res) {
+        //                     if (err) {
+        //                         console.log(err);
+        //                     } else {
+        //                         console.log("success");
+        //                     }
+        //                 })
+        //             }
+        //             t.cart.set(res)
+        //         }
+        //     })
+        // }
 
     },
     'change #quantity'(e, t) {

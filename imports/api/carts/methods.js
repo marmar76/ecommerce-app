@@ -1,8 +1,25 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check'; 
 import { Carts } from './carts';
+import { Items } from '../items/items';
 
 Meteor.methods({
+    'insertcart'(data){
+        const thisUser = Meteor.users.findOne({_id: Meteor.userId()})
+        if(!thisUser.cart){
+            thisUser.cart = [data]
+        }
+        else{
+            const existingItem = thisUser.cart.find((x) => x.itemId == data.itemId)
+            if(existingItem){
+                existingItem.qty += data.qty
+            }
+            else{
+                thisUser.cart.push(data)
+            }
+        }
+        return Meteor.users.update({_id: Meteor.userId()}, {$set: thisUser})
+    },
     'createCart'(data){
         check(data.username, String)  
         check(data.userId, String)  
@@ -21,7 +38,28 @@ Meteor.methods({
         return Carts.findOne({userId: id});
     },
     'getMyCart'(){
-        return Carts.findOne({userId: Meteor.userId()})
+        const thisUser = Meteor.users.findOne({_id: Meteor.userId()})
+        if(thisUser){
+            if(thisUser.cart){
+                const cart = thisUser.cart.map(function (x) {
+                    const itemId = x.itemId.split('-')
+                    const item = Items.findOne({_id: itemId[0]})
+                    const thisModel = item.models[itemId[1]]
+                    return {
+                        name: item.name + " - " + thisModel.name,
+                        price: thisModel.price,
+                        stock: thisModel.stock,
+                        qty: x.qty,
+                        weight: item.weight
+                    }
+                })
+                return cart
+            }
+            else{
+                return []
+            }
+        }
+        // return Carts.findOne({userId: Meteor.userId()})
     },
     'updateCart'(id,data){ 
         check(id,String); 

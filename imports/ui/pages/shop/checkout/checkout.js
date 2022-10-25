@@ -26,7 +26,7 @@ Template.checkout.onCreated(function () {
             self.cart.set(res)
         }
     })
-    Meteor.call('getMySelf', function (err,res) {  
+    Meteor.call('getMyself', async function (err,res) {  
         if(err){
             console.log(err);
         }else{

@@ -1,5 +1,5 @@
 * {
-  line-height: normal;
+  line-height: normal!important;
 }
 .isSelected{
   background: rgb(13, 202, 240, .4)

@@ -137,14 +137,15 @@
               <p class="fs-4 text-dark">{{i.hp}}</p>
               <p class="fs-4 text-dark">{{i.address}} - {{i.regency.label}}</p>
               <br>
-              <button value="{{@index}}" class="btn-edit-alamat btn p-0 fs-6 me-2 text-success fw-bold text-decoration-none">Ubah Alamat</button>
+              <button value="{{@index}}"
+                class="btn-edit-alamat btn p-0 fs-6 me-2 text-success fw-bold text-decoration-none">Ubah Alamat</button>
               <!-- <br> -->
-              <button value="{{@index}}" class="btn-hapus-alamat btn p-0 fs-6 text-danger fw-bold text-decoration-none">Hapus Alamat</button>
+              <button value="{{@index}}"
+                class="btn-hapus-alamat btn p-0 fs-6 text-danger fw-bold text-decoration-none">Hapus Alamat</button>
             </div>
             <div>
               {{#if i.isDefault}}
-              <button class="btn fs-3 fw-bold"><i class="fa fa-check fs-3"
-                  aria-hidden="true"></i>
+              <button class="btn fs-3 fw-bold"><i class="fa fa-check fs-3" aria-hidden="true"></i>
               </button>
               {{else}}
               <button class="btn btn-info fs-6 fw-bold set-default-alamat" value="{{@index}}">
@@ -162,14 +163,14 @@
       {{else}}
       <div class="d-flex align-items-center justify-content-center fs-2" style="height: 50vh;">
         <p class="fs-2 text-dark">
-          Belum ada alamat nih, bisa tambahkan alamat dulu <a data-bs-toggle="modal"
-            data-bs-target="#modal-add-address" href="" class="fs-2 text-info text-decoration-none add-alamat">
+          Belum ada alamat nih, bisa tambahkan alamat dulu <a data-bs-toggle="modal" data-bs-target="#modal-add-address"
+            href="" class="fs-2 text-info text-decoration-none add-alamat">
             disini</a>
         </p>
       </div>
       {{/if}}
-      <div class="modal fade" id="modal-add-address" data-bs-backdrop="static" data-bs-keyboard="false"
-        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal fade" id="modal-add-address" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
@@ -211,7 +212,8 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" id="btn-close-address" class="close-btn btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" id="btn-close-address" class="close-btn btn btn-secondary"
+                data-bs-dismiss="modal">Cancel</button>
               <button type="button" id="save-alamat-user" class="btn btn-primary">Save</button>
             </div>
           </div>
@@ -219,5 +221,93 @@
       </div>
     </div>
 
+  </div>
+</template>
+
+<template name="selectAddress">
+  <div class="">
+    {{#if selected}}
+    <div>
+      <p class="fs-5 text-dark fw-bold">{{selected.label}}</p>
+      <p class="fs-4 text-dark fw-bold">{{selected.name}}</p>
+      <p class="fs-4 text-dark">{{selected.hp}}</p>
+      <p class="fs-4 text-dark">{{selected.address}} - {{selected.regency.label}}</p>
+      <br>
+      <button data-bs-toggle="modal" data-bs-target="#modal-select-address"
+        class="change-alamat btn p-0 fs-6 me-2 fw-bold text-decoration-none">Ubah Alamat</button>
+      <!-- <br> -->
+      <!-- <button class="btn-hapus-alamat btn p-0 fs-6 text-danger fw-bold text-decoration-none">Hapus Alamat</button> -->
+    </div>
+    {{else}}
+    <div class="d-flex align-items-center justify-content-center fs-2" style="height: 20vh;">
+      <p class="fs-4 text-dark">
+        Belum ada alamat default nih, bisa tambahkan alamat dulu <a data-bs-toggle="modal" data-bs-target="#modal-select-address"
+          href="" class="fs-4 text-info text-decoration-none">
+          disini</a>
+      </p>
+    </div>
+    {{/if}}
+    <div class="modal fade" id="modal-select-address" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title fs-3" id="staticBackdropLabel">Pilih Alamat</h5>
+            <button type="button" class="close-btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            {{#if address}}
+            {{#each i in address}}
+            <div class="card mb-2 {{#if i.isDefault}}isSelected isblue{{/if}}">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center m-3">
+                  <div>
+                    <p class="fs-5 text-dark fw-bold">{{i.label}}</p>
+                    <p class="fs-4 text-dark fw-bold">{{i.name}}</p>
+                    <p class="fs-4 text-dark">{{i.hp}}</p>
+                    <p class="fs-4 text-dark">{{i.address}} - {{i.regency.label}}</p>
+                    <!-- <br> -->
+                    <!-- <button value="{{@index}}"
+                      class="btn-edit-alamat btn p-0 fs-6 me-2 text-success fw-bold text-decoration-none">Ubah
+                      Alamat</button> -->
+                    <!-- <br> -->
+                    <!-- <button value="{{@index}}"
+                      class="btn-hapus-alamat btn p-0 fs-6 text-danger fw-bold text-decoration-none">Hapus
+                      Alamat</button> -->
+                  </div>
+                  <div>
+                    {{#if i.isDefault}}
+                    <button class="btn fs-3 fw-bold"><i class="fa fa-check fs-3" aria-hidden="true"></i>
+                    </button>
+                    {{else}}
+                    <button class="btn btn-info fs-6 fw-bold set-selected-alamat" value="{{@index}}">
+                      Pilih Alamat
+                    </button>
+                    {{/if}}
+                    <!-- <button class="btn fs-3 fw-bold"
+                  id="user-save">Save
+                </button> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            {{/each}}
+            {{else}}
+            <div class="d-flex align-items-center justify-content-center fs-2" style="height: 50vh;">
+              <p class="fs-2 text-dark">
+                Belum ada alamat nih, bisa tambahkan alamat dulu <a data-bs-dismiss="modal" aria-label="Close" class="fs-2 text-info text-decoration-none add-alamat">
+                  disini</a>
+              </p>
+            </div>
+            {{/if}}
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="btn-close-address" class="close-btn btn btn-secondary"
+              data-bs-dismiss="modal">Cancel</button>
+            <!-- <button type="button" id="save-alamat-user" class="btn btn-primary">Save</button> -->
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
