@@ -22,12 +22,12 @@ Template.productList.onCreated(function () {
     this.subcategory = new ReactiveVar();
     this.index = new ReactiveVar(1);
     this.now = new ReactiveVar(-1);
-    Meteor.call('getAllCategory', function (err, res) {
+    Meteor.call('getAllCategory', self.filtering.get() ,function (err, res) {
         self.category.set(res.filter(function (x) {
         return x.subcategory.length != 0
         }));
     });
-    Meteor.call('getAllSubCategory', function (err, res) {
+    Meteor.call('getAllSubCategory', self.filtering.get(), function (err, res) {
         self.subcategory.set(res);
     });
     Meteor.call('getAllItem', self.filtering.get(), function (err, res) {
@@ -64,11 +64,15 @@ Template.productList.helpers({
     //     }
     // },
     categories(){
+        console.log(Template.instance().category.get());
         return Template.instance().category.get()
     },
     subcategory(id){
         const subcategory = Template.instance().subcategory.get()
         if(subcategory){
+            console.log(subcategory.filter(function (x) {
+                return x.categoryId == id
+            }));
             return subcategory.filter(function (x) {
                 return x.categoryId == id
             })   

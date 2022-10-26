@@ -417,12 +417,12 @@ Template.itemsHome.onCreated(function () {
           })
         }
         self.item.set(res)
-        self.fotoItem.set(res.picture)
+        self.fotoItem.set(res.link)
         if (category) {
           self.now.set(res.category)
         }
         Meteor.call('getOneSubCategory', res.subcategory, function (error, result) {
-          self.comparison.set(result)
+          if(result.specification)self.comparison.set(result)
         })
       }
       else{
@@ -502,7 +502,7 @@ Template.itemsHome.onCreated(function () {
       const item = t.item.get()
       const canCompare = t.comparison.get()
       const name = $("#itemsName").val();
-      const picture = t.fotoItem.get()
+      const picture = item.picture
       const imageList = t.imageList.get()
       const category = $("#categories").val();
       const subcategory = $("#subcategories").val();

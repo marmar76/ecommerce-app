@@ -138,7 +138,9 @@ Meteor.methods({
         }
         thisItem.categoryName = thisCategory.name
         thisItem.subcategoryName = thisSubcategory.name
-        console.log(thisItem);
+        let items = thisItem.models.filter((z) => z.status == true)
+        // items =  await Promise.all(items)
+        thisItem.models = items
         return thisItem
     }, 
     'getOneModel'(id, idmodel){

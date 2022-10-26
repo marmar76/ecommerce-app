@@ -25,9 +25,7 @@ Meteor.methods({
         const thisFilter = {}
         const sort = {} 
         console.log(filtering);
-        if (filtering) { 
-            thisFilter.status = true  
-        }
+        thisFilter.status = true  
         const category = Categories.find(thisFilter,{
             sort:sort
         }).fetch(); 
@@ -52,8 +50,6 @@ Meteor.methods({
     'getAllSubCategory'(filtering){
         const thisFilter = {}
         const sort = {} 
-        if (filtering) { 
-        }
         thisFilter.status = true  
         console.log(thisFilter);
         const subcategory = SubCategories.find(thisFilter,{
