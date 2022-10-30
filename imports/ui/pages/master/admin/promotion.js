@@ -1,4 +1,5 @@
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import Swal from 'sweetalert2';
 Template.promotionsHome.onCreated(function () {
     const self = this;
     self.filtering = new ReactiveVar({

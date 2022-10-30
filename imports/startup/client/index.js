@@ -58,6 +58,28 @@ function basicStyle(message, type) {
     // })
     return style;
 }
+// checkAdmin = function (id) {
+//     switch (id) {
+//         case '':
+//             return false
+//         case 'null':
+//             return false
+//         case null:
+//             return false
+//         case undefined:
+//             return false
+//         default:
+//             {
+//                 Meteor.call('getOneUser', id, function (err,res) {
+//                     console.log(res.role)
+//                     if(res.role == 'admin'){ 
+//                         return true
+//                     }
+//                     // else return false 
+//                 })
+//             }
+//     }
+// }
 
 checkValid = function (data) {
     switch (data) {

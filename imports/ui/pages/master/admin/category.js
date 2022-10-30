@@ -1,10 +1,15 @@
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import Swal from 'sweetalert2';
 Template.categoriesHome.onCreated(function () {
     const self = this;
     this.filtering = new ReactiveVar({
       filter: '',
       sort: '1',
     })
+    // const getUser = () => Meteor.user();
+    const getUser =  Meteor.user();
+    console.log(getUser) 
+    console.log(Meteor.user().role) 
     self.category = new ReactiveVar();
     self.subcategory = new ReactiveVar([]);
     Meteor.call('getAllCategory', this.filtering.get(), function (err, res) {
@@ -131,13 +136,22 @@ Template.categoriesHome.onCreated(function () {
       const paramId = FlowRouter.current().params._id 
       const subCategories = t.subcategory.get()
       console.log(subCategories.length);
-      if(subCategories.length<=0){
-        console.log("woe");
-        Meteor.call('deleteCategory', paramId, function (err, res) {
-          successAlertBack()
+      if(subCategories.length<=0){ 
+        Swal.fire({
+          title: 'Are you sure you want to delete this category',
+          icon: 'warning', 
+          showCancelButton: true,
+          confirmButtonText: 'OK', 
+        }).then((result) => {  
+          if (result.isConfirmed) { 
+            Meteor.call('deleteCategory', paramId, function (err, res) {
+              successAlertBack()
+            })
+          }
         })
+        
       }else{
-        failAlert('ga bisa delete,ada subcategorynya')
+        failAlert("can't delete this category,it have subcategory")
       }
       
        
@@ -168,11 +182,20 @@ Template.categoriesHome.onCreated(function () {
       const paramId = FlowRouter.current().params._id  
       const name = $('#categoryName').val();
       if(name){ 
-        Meteor.call('updateCategory', paramId, name, function (err, res) {
-          successAlertBack()
+        Swal.fire({
+          title: 'Are you sure you want to update this category',
+          icon: 'warning', 
+          showCancelButton: true,
+          confirmButtonText: 'OK', 
+        }).then((result) => {  
+          if (result.isConfirmed) { 
+            Meteor.call('updateCategory', paramId, name, function (err, res) {
+              successAlertBack()
+            })
+          }
         })
       }else{
-        failAlert('Nama Harus Diisi')
+        failAlert('insert name')
       }
        
     }, 
@@ -323,10 +346,15 @@ Template.categoriesHome.onCreated(function () {
     'click .model-delete'(e, t) {
       const click = $(e.target).val();
       const models = t.models.get()
-      const thisModel = models.find((x) => x.id == click)
-      thisModel.status = false
-      // console.log(models);
-      t.models.set(models)
+      const status = models.filter((x) => x.status == true)
+      //penjagaan agar tidak semua model bisa didelete
+      if(status.length>1){
+        const thisModel = models.find((x) => x.id == click)
+        thisModel.status = false
+        t.models.set(models)
+      }else{
+        failAlert("minimum specification is 1 ,can't delete this field")
+      } 
     },
   })
   
@@ -365,11 +393,20 @@ Template.categoriesHome.onCreated(function () {
       const paramId = FlowRouter.current().params._id
       const items = t.item.get()
       if(items.length <=0){
-        Meteor.call('deleteSubCategory', paramId, function (err, res) {
-          successAlertBack('Berhasil Delete')
+        Swal.fire({
+          title: 'Are you sure you want to delete this subcategory',
+          icon: 'warning', 
+          showCancelButton: true,
+          confirmButtonText: 'OK', 
+        }).then((result) => {  
+          if (result.isConfirmed) { 
+            Meteor.call('deleteSubCategory', paramId, function (err, res) {
+              successAlertBack('Berhasil Delete')
+            })
+          }
         })
       }else{
-        failAlert("Gagal Delete Ada item yang mengandung subcategory tersebut")
+        failAlert("can't delete this subcategory while it have an item")
       }
     }, 
   
@@ -436,7 +473,7 @@ Template.categoriesHome.onCreated(function () {
   })
   
   Template.subCategoriesEditPage.events({
-    'click #submit'(e, t) {
+    'click #save'(e, t) {
       const paramId = FlowRouter.current().params._id
       const getCategory = t.category.get();
       const name = $(subCategoryName).val();
@@ -477,12 +514,21 @@ Template.categoriesHome.onCreated(function () {
             categoryId,
             categoryName,
             specification: thisModels
-          };
-          Meteor.call('updateSubCategory', paramId, data, function (error, res) { 
-            if (error) {
-              failAlert(error);
-            } else {
-              successAlertBack();
+          }
+          Swal.fire({
+            title: 'Are you sure you want to update this subcategory',
+            icon: 'warning', 
+            showCancelButton: true,
+            confirmButtonText: 'OK', 
+          }).then((result) => {  
+            if (result.isConfirmed) { 
+              Meteor.call('updateSubCategory', paramId, data, function (error, res) { 
+                if (error) {
+                  failAlert(error);
+                } else {
+                  successAlertBack();
+                }
+              })
             }
           })
         } 
@@ -505,7 +551,9 @@ Template.categoriesHome.onCreated(function () {
       const click = $(e.target).val();
       const models = t.models.get()
       const items= t.item.get()
-      let status = true 
+      const modelStatus = models.filter((x) => x.status == true)
+      //penjagaan agar tidak semua model bisa didelete
+      let status = modelStatus.length > 1 ? 0 : -1
       const thisModel = models.find((x) => x.id == click) ? models.find((x) => x.id == click) : models.find((x) => x.slug == click)
       //pengechekan item dan model yang terakhir diinput
       //nampilin item terbaru dengan model terbaru
@@ -516,11 +564,13 @@ Template.categoriesHome.onCreated(function () {
         }
       }
       console.log(thisModel.label);
-      if(status){
+      if(status == 0){
         thisModel.status = false
         t.models.set(models)
-      }else{
+      }else if(status == 1){
         failAlert('Tidak Bisa delete karena ada Item yang memiliki specification ini')
+      }else{
+        failAlert("minimum specification is 1 ,can't delete this field")
       }
     },
   

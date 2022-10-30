@@ -1,4 +1,5 @@
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import Swal from 'sweetalert2';
 Template.bannersHomePage.onCreated(function () {
     const self = this;
     this.filtering = new ReactiveVar({
@@ -277,27 +278,37 @@ Template.bannersHomePage.onCreated(function () {
             }else{
               data.ext = banner.ext 
             }
-            Meteor.call('updateBanner', paramId, data, function (error, res) {  
-              if(error){
-                failAlert(error)
-              } else {
-                console.log(res);
-                if(imageList){
-                  const fileName = res + getExt
-                  uploadImageFile(imageList, 'banners/picture', fileName).then((snapshot) => { 
-                    console.log('Image Uploaded Successfully'); 
-                    successAlert() 
-                  }).catch((error) => { 
-                    console.error(error); 
-                    failAlert(error) 
-                  });
-                } else {
-                  successAlert()
-                  // exitLoading() 
-                }
+            Swal.fire({
+              title: 'Are you sure you want to update this banner',
+              icon: 'warning', 
+              showCancelButton: true,
+              confirmButtonText: 'OK', 
+            }).then((result) => {  
+              if (result.isConfirmed) { 
+                Meteor.call('updateBanner', paramId, data, function (error, res) {  
+                  if(error){
+                    failAlert(error)
+                  } else {
+                    console.log(res);
+                    if(imageList){
+                      const fileName = res + getExt
+                      uploadImageFile(imageList, 'banners/picture', fileName).then((snapshot) => { 
+                        console.log('Image Uploaded Successfully'); 
+                        successAlert() 
+                      }).catch((error) => { 
+                        console.error(error); 
+                        failAlert(error) 
+                      });
+                    } else {
+                      successAlert()
+                      // exitLoading() 
+                    }
+                  }
+                  // exitLoading()
+                })
               }
-              // exitLoading()
             })
+            
         }
         else{
             failAlert("something wrong with the user input")
@@ -305,13 +316,23 @@ Template.bannersHomePage.onCreated(function () {
     },
     'click #btnDelete'(e, t){
       const paramId = FlowRouter.current().params._id
-      Meteor.call('deleteBanner', paramId, function (err, res) {  
-        if(err){
-          failAlert(err)
-        }else{
-          successAlertBack()
+      Swal.fire({
+        title: 'Are you sure you want to delete this banner',
+        icon: 'warning', 
+        showCancelButton: true,
+        confirmButtonText: 'OK', 
+      }).then((result) => {  
+        if (result.isConfirmed) { 
+          Meteor.call('deleteBanner', paramId, function (err, res) {  
+            if(err){
+              failAlert(err)
+            }else{
+              successAlertBack()
+            }
+          })
         }
       })
+      
     }
   })
   

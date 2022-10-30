@@ -138,7 +138,12 @@ Meteor.methods({
         }
         thisItem.categoryName = thisCategory.name
         thisItem.subcategoryName = thisSubcategory.name
-        let items = thisItem.models.filter((z) => z.status == true)
+        let items = thisItem.models.filter((z) => z.status == true).map(function (x) {
+            if(!x.specification){
+                x.specification = thisSubcategory.specification
+            }
+            return x
+        })
         // items =  await Promise.all(items)
         thisItem.models = items
         return thisItem

@@ -18,6 +18,7 @@ import '../../ui/pages/shop/comparison/comparison'
 import '../../ui/pages/shop/checkout/checkout' 
 import '../../ui/pages/shop/userSettings/userSettings' 
 import '../../ui/pages/shop/productList/productList' 
+
 // FlowRouter.route('*', {
 //     action() {
 //       // Show 404 error page
@@ -148,7 +149,7 @@ FlowRouter.route('/master-items', {
     action(){
         if(!Meteor.userId()){
             FlowRouter.go('login', {});
-        }
+        } 
         this.render('masterContainer', 'itemsHome')
         
     },

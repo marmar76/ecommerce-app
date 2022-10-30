@@ -1,5 +1,6 @@
 
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import Swal from 'sweetalert2';
 Template.itemsHome.onCreated(function () {
     const self = this;
     self.filtering = new ReactiveVar({
@@ -347,10 +348,15 @@ Template.itemsHome.onCreated(function () {
     'click .model-delete'(e, t) {
       const click = $(e.target).val();
       const models = t.models.get()
-      const thisModel = models.find((x) => x.id == click)
-      thisModel.status = false
-      // console.log(models);
-      t.models.set(models)
+      const status = models.filter((x) => x.status == true)
+      //penjagaan agar tidak semua model bisa didelete
+      if(status.length>1){
+        const thisModel = models.find((x) => x.id == click)
+        thisModel.status = false
+        t.models.set(models)
+      }else{
+        failAlert("minimum model is 1 ,can't delete this model")
+      }
     },
   })
   
@@ -460,6 +466,7 @@ Template.itemsHome.onCreated(function () {
       const category = Template.instance().category.get();
       if (category) {
         const now = Template.instance().now.get();
+        console.log(category.find((x) => x._id == now).subcategory);
         return category.find((x) => x._id == now).subcategory
       }
       return [];
@@ -511,8 +518,15 @@ Template.itemsHome.onCreated(function () {
       const paramId = FlowRouter.current().params._id
       let valid = models.length > 0
       const arr = []
+      console.log(canCompare.specification);
+      // const thisSubcategory = Meteor.call('getOneSubcategory', function (err, res) {
+      //   console.log(specification);
+      //   return res.specification
+      // })
+      // console.log(thisSubcategory);
       const oldModels  = (item.subcategory == subcategory  && item.category == category) ? models.filter((p) => !p.isNew) : models.filter((p) => !p.isNew).map( function (x) {
-        delete x.specification
+        // delete x.specification
+        x.specification = canCompare.specification
         return x
       })
       for (const i of oldModels) {
@@ -589,27 +603,39 @@ Template.itemsHome.onCreated(function () {
               // console.log(data);
               data.picture = paramId + getExt
           }
-          Meteor.call('updateItem',paramId, data, function (error, result) {  
-            if(error){
-              failAlert(error);
+          Swal.fire({
+            title: 'Are you sure you want to update this item',
+            icon: 'warning', 
+            showCancelButton: true,
+            confirmButtonText: 'OK', 
+          }).then((result) => { 
+            // console.log("tes1");
+            if (result.isConfirmed) {
+              // console.log("tes2");
+              Meteor.call('updateItem',paramId, data, function (error, result) {  
+                if(error){
+                  failAlert(error);
+                }
+                else{
+                  if(imageList){
+                    console.log(result);
+                    const fileName = paramId + getExt
+                    uploadImageFile(imageList, 'items/picture', fileName).then((snapshot) => { 
+                      console.log('Image Uploaded Successfully'); 
+                      // successAlert() 
+                    }).catch((error) => { 
+                      console.error(error); 
+                      failAlert(error) 
+                    });
+                  } else {
+                    // exitLoading() 
+                  }
+                  successAlertBack();
+                }
+              }) 
             }
-            else{
-              if(imageList){
-                console.log(result);
-                const fileName = paramId + getExt
-                uploadImageFile(imageList, 'items/picture', fileName).then((snapshot) => { 
-                  console.log('Image Uploaded Successfully'); 
-                  // successAlert() 
-                }).catch((error) => { 
-                  console.error(error); 
-                  failAlert(error) 
-                });
-              } else {
-                // exitLoading() 
-              }
-              successAlertBack();
-            }
-          }) 
+          })
+          
         }
       }
   
@@ -644,13 +670,23 @@ Template.itemsHome.onCreated(function () {
     },
     'click #delete'(e, t) {
       const param = FlowRouter.current().params._id;
-      Meteor.call('deleteItem', param, function (err, res) {
-        if (err) {
-          failAlert(err);
-        } else {
-          successAlertBack();
+      Swal.fire({
+        title: 'Are you sure you want to delete this item',
+        icon: 'warning', 
+        showCancelButton: true,
+        confirmButtonText: 'OK', 
+      }).then((result) => {  
+        if (result.isConfirmed) { 
+          Meteor.call('deleteItem', param, function (err, res) {
+            if (err) {
+              failAlert(err);
+            } else {
+              successAlertBack();
+            }
+          });
         }
-      });
+      })
+      
     },
     'click #btnAddModel'(e, t) {
       const models = t.models.get()
@@ -712,9 +748,19 @@ Template.itemsHome.onCreated(function () {
     'click #delete'(e, t){
       const paramId = FlowRouter.current().params._id
       const id=paramId.split('-')
-      Meteor.call('deleteModel', id[0], paramId, function (err, res) {
-        console.log(res);
+      Swal.fire({
+        title: 'Are you sure you want to delete this item model',
+        icon: 'warning', 
+        showCancelButton: true,
+        confirmButtonText: 'OK', 
+      }).then((result) => {  
+        if (result.isConfirmed) { 
+          Meteor.call('deleteModel', id[0], paramId, function (err, res) { 
+            successAlertBack()
+          })
+        }
       })
+      
     },
   })
   
@@ -767,7 +813,7 @@ Template.itemsHome.onCreated(function () {
           const value = $('#model-value-' + x.slug).val();
           const slug = $('#model-slug-' + x.slug).val();
           if (!label || !slug || !value) {
-            failAlert("something wrong with specification in field " + (ctr))
+            failAlert("specification field can't be empty " )
           }else{
             return {
               label,
@@ -785,9 +831,20 @@ Template.itemsHome.onCreated(function () {
           stock:stock,
           specification:specification
         }
-        Meteor.call('updateModel', id[0], paramId, data, function (err, res) {
-          console.log(res);
+        Swal.fire({
+          title: 'Are you sure you want to update this item model',
+          icon: 'warning', 
+          showCancelButton: true,
+          confirmButtonText: 'OK', 
+        }).then((result) => {  
+          if (result.isConfirmed) { 
+            Meteor.call('updateModel', id[0], paramId, data, function (err, res) {
+              console.log(res);
+              successAlertBack('Success Update')
+            })
+          }
         })
+        
       }
     },
   })
