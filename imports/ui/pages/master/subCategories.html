@@ -64,7 +64,7 @@
                         <td> {{subCategory.name}} </td>
                       </tr> 
                       <tr>
-                        <th>Satus</th>
+                        <th>Status</th>
                         <td>
                           {{#if equals subCategory.status true}}
                             Active
@@ -73,6 +73,17 @@
                           {{/if}}
                         </td>
                       </tr> 
+                      <tr>
+                        <th>Specification</th> 
+                        <td>
+                          <ul>
+                            {{#each subCategory.specification}}
+                            <li>{{label}}</li>
+                            {{/each}}
+                          </ul>
+                        </td>
+                      </tr>
+                      
                     </tbody> 
                   </table>
                 </div>
@@ -147,9 +158,9 @@
                       </tbody>
                     </table>
                     <div class="d-flex justify-content-end mt-2">
-                      <button class="btn btn-primary" id="model-more">+ add more fields</button>
+                      <button class="btn btn-primary" id="model-more">+ add more specification name</button>
                     </div>
-                    <button id="submit" type="submit" class="btn btn-primary me-2">Submit</button> 
+                    <button id="submit" type="submit" class="btn btn-success me-2">Save</button> 
                 </div>
             </div>
         </div>
@@ -201,7 +212,7 @@
                     </tbody>
                   </table>
                   <div class="d-flex justify-content-end mt-2">
-                    <button class="btn btn-primary" id="model-more">+ add more fields</button>
+                    <button class="btn btn-primary" id="model-more">+ add more specification name</button>
                   </div>
                   <button id="submit" type="submit" class="btn btn-primary me-2">Submit</button> 
               </div>

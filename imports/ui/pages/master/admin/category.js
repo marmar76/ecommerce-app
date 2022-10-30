@@ -280,7 +280,7 @@ Template.categoriesHome.onCreated(function () {
             slug += i + ""
           } 
           if (!label || !slug ) {
-            failAlert("something wrong with item number " + (x.id + 1))
+            failAlert("something wrong with specification field number " + (x.id + 1))
             valid = false
           }else{
             return {
@@ -505,15 +505,16 @@ Template.categoriesHome.onCreated(function () {
       const click = $(e.target).val();
       const models = t.models.get()
       const items= t.item.get()
-      let status = true
+      let status = true 
       const thisModel = models.find((x) => x.id == click) ? models.find((x) => x.id == click) : models.find((x) => x.slug == click)
       //pengechekan item dan model yang terakhir diinput
       //nampilin item terbaru dengan model terbaru
-      const spec = items[items.length-1].models[items[items.length-1].models.length-1].specification 
-      for (const i of spec) { 
-        if(i.label == thisModel.label)status = false
+      if(items.length > 0){
+        const spec = items[items.length-1].models[items[items.length-1].models.length-1].specification 
+        for (const i of spec) { 
+          if(i.label == thisModel.label)status = false
+        }
       }
-      console.log(models);
       console.log(thisModel.label);
       if(status){
         thisModel.status = false
