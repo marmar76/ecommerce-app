@@ -74,14 +74,14 @@ Template.categoriesHome.onCreated(function () {
   
   Template.categoriesCreatePage.events({
     'click #submit'(e, t) {
-      const name = $(categoryName).val();
+      const name = $(categoryName).val().trim();
       const status = true;
       const data = {
         name,
         status
       };
       if (name.length === 0) {
-        failAlert("Nama tidak boleh kosong!")
+        failAlert("Name can't be empty!")
       } else {
         Meteor.call('createCategory', data, function (error, res) {
           console.log(error);
