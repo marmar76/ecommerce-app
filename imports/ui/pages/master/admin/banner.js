@@ -84,7 +84,35 @@ Template.bannersHomePage.onCreated(function () {
         else{
             failAlert("something wrong with the user input")
         }
-    }
+    },
+    'change .filtering'(e, t) {
+      const filter = $('#filter').val();
+      const sort = $('#sort').val();
+      t.filtering.set({
+        filter,
+        sort
+      })
+      Meteor.call('getAllBanner', {
+        filter,
+        sort
+      }, function (err, res) {  
+        t.banner.set(res)
+      }) 
+    },
+    'input #filter'(e, t) {
+      const filter = $('#filter').val();
+      const sort = $('#sort').val();
+      t.filtering.set({
+        filter,
+        sort
+      })
+      Meteor.call('getAllBanner', {
+        filter,
+        sort
+      }, function (err, res) {  
+        t.banner.set(res)
+      }) 
+    },
   })
   
   
@@ -127,23 +155,22 @@ Template.bannersHomePage.onCreated(function () {
       console.log($('#checkBanner').is(':checked'));
     },
     'click #submit'(e, t){ 
-        const name = $("#bannersName").val(); 
-        const description = $("#bannersDescription").val();
+        const name = $("#bannersName").val().trim(); 
+        const description = $("#bannersDescription").val().trim();
         const check = $('#checkBanner').is(':checked')
         const data = {name, description, check}
-        if(name || description){
-            $("#uploadImageProfile").trigger("change");
-            const imageList = t.imageList.get()
-            let thisFile, getExt
-            if(imageList){
-                thisFile = imageList
-                getExt = thisFile.type.split('/')[1]
-                getExt = '.' + getExt
-                data.ext = getExt
-                console.log(data);
-                // data.profilePicture = Meteor.userId() + getExt
-            }
-            Meteor.call('createBanner', data, function (error, res) {  
+        if(name && description){ 
+          $("#uploadImageProfile").trigger("change");
+          const imageList = t.imageList.get()
+          let thisFile, getExt
+          if(imageList){
+              thisFile = imageList
+              getExt = thisFile.type.split('/')[1]
+              getExt = '.' + getExt
+              data.ext = getExt
+              // console.log(data);
+              // data.profilePicture = Meteor.userId() + getExt 
+              Meteor.call('createBanner', data, function (error, res) {  
                 if(error){
                   failAlert(error)
                 } else {
@@ -163,6 +190,10 @@ Template.bannersHomePage.onCreated(function () {
                 }
                 // exitLoading()
               })
+            }else{
+              failAlert("You must input your image") 
+            }
+            
         }
         else{
             failAlert("something wrong with the user input")
@@ -232,7 +263,7 @@ Template.bannersHomePage.onCreated(function () {
         const description = $("#bannersDescription").val();
         const check = $('#checkBanner').is(':checked')
         const data = {name, description, check}
-        if(name || description){
+        if(name && description){
             $("#uploadImageProfile").trigger("change");
             const imageList = t.imageList.get()
             let thisFile, getExt
@@ -247,25 +278,26 @@ Template.bannersHomePage.onCreated(function () {
               data.ext = banner.ext 
             }
             Meteor.call('updateBanner', paramId, data, function (error, res) {  
-                if(error){
-                  failAlert(error)
+              if(error){
+                failAlert(error)
+              } else {
+                console.log(res);
+                if(imageList){
+                  const fileName = res + getExt
+                  uploadImageFile(imageList, 'banners/picture', fileName).then((snapshot) => { 
+                    console.log('Image Uploaded Successfully'); 
+                    successAlert() 
+                  }).catch((error) => { 
+                    console.error(error); 
+                    failAlert(error) 
+                  });
                 } else {
-                  console.log(res);
-                  if(imageList){
-                    const fileName = res + getExt
-                    uploadImageFile(imageList, 'banners/picture', fileName).then((snapshot) => { 
-                      console.log('Image Uploaded Successfully'); 
-                      successAlert() 
-                    }).catch((error) => { 
-                      console.error(error); 
-                      failAlert(error) 
-                    });
-                  } else {
-                    // exitLoading() 
-                  }
+                  successAlert()
+                  // exitLoading() 
                 }
-                // exitLoading()
-              })
+              }
+              // exitLoading()
+            })
         }
         else{
             failAlert("something wrong with the user input")

@@ -18,19 +18,18 @@ Meteor.methods({
       const thisFilter = {}
       const sort = {} 
       if(filtering){
-            
-            if((+filtering.sort) === 3){ 
-              sort.startDate = 1
-            }
-            else if((+filtering.sort) === 4){ 
-              sort.startDate = -1
-            }
-            else if((+filtering.sort) === 5){ 
-              sort.expiredDate = 1
-            }
-            else if((+filtering.sort) === 6){ 
-              sort.expiredDate = -1
-            } 
+          if((+filtering.sort) === 3){ 
+            sort.startDate = 1
+          }
+          else if((+filtering.sort) === 4){ 
+            sort.startDate = -1
+          }
+          else if((+filtering.sort) === 5){ 
+            sort.expiredDate = 1
+          }
+          else if((+filtering.sort) === 6){ 
+            sort.expiredDate = -1
+          } 
           if(filtering.filterstartdate || filtering.filterexpireddate){
             thisFilter[filtering.dateOption] = {}
           }
