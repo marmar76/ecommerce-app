@@ -300,7 +300,7 @@ Template.itemsHome.onCreated(function () {
                 const fileName = res + getExt
                 uploadImageFile(imageList, 'items/picture', fileName).then((snapshot) => { 
                   console.log('Image Uploaded Successfully'); 
-                  successAlert() 
+                  // successAlert() 
                 }).catch((error) => { 
                   console.error(error); 
                   failAlert(error) 
@@ -308,7 +308,7 @@ Template.itemsHome.onCreated(function () {
               } else {
                 // exitLoading() 
               }
-              successAlertBack();
+              successAlertGo('Success add new item', '/master-items');
             }
           }) 
         }
@@ -681,7 +681,7 @@ Template.itemsHome.onCreated(function () {
             if (err) {
               failAlert(err);
             } else {
-              successAlertBack();
+              successAlertGo('Success delete item', '/master-items');
             }
           });
         }

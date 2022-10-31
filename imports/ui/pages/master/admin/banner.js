@@ -70,7 +70,7 @@ Template.bannersHomePage.onCreated(function () {
                     const fileName = res + getExt
                     uploadImageFile(imageList, 'banners/picture', fileName).then((snapshot) => { 
                       console.log('Image Uploaded Successfully'); 
-                      successAlert() 
+                      successAlertGo('Success add new banner', '/master-banner');
                     }).catch((error) => { 
                       console.error(error); 
                       failAlert(error) 
@@ -294,13 +294,13 @@ Template.bannersHomePage.onCreated(function () {
                       const fileName = res + getExt
                       uploadImageFile(imageList, 'banners/picture', fileName).then((snapshot) => { 
                         console.log('Image Uploaded Successfully'); 
-                        successAlert() 
+                        successAlertBack() 
                       }).catch((error) => { 
                         console.error(error); 
                         failAlert(error) 
                       });
                     } else {
-                      successAlert()
+                      successAlertBack()
                       // exitLoading() 
                     }
                   }
@@ -327,7 +327,8 @@ Template.bannersHomePage.onCreated(function () {
             if(err){
               failAlert(err)
             }else{
-              successAlertBack()
+              // successAlertBack()
+              successAlertGo('Success delete banners', '/master-banner');
             }
           })
         }

@@ -9,7 +9,7 @@ Template.categoriesHome.onCreated(function () {
     // const getUser = () => Meteor.user();
     const getUser =  Meteor.user();
     console.log(getUser) 
-    console.log(Meteor.user().role) 
+    // console.log(Meteor.user().role) 
     self.category = new ReactiveVar();
     self.subcategory = new ReactiveVar([]);
     Meteor.call('getAllCategory', this.filtering.get(), function (err, res) {
@@ -33,27 +33,6 @@ Template.categoriesHome.onCreated(function () {
   })
   
   Template.categoriesHome.events({
-    'click #submit'(e, t) {
-      const name = $(categoryName).val();
-      const status = true;
-      const data = {
-        name,
-        status
-      };
-      if (name.length === 0) {
-        failAlert("Nama tidak boleh kosong!")
-      } else {
-        Meteor.call('createCategory', data, function (error, res) {
-          console.log(error);
-          console.log(res);
-          if (error) {
-            failAlert(error);
-          } else {
-            successAlertBack();
-          }
-        })
-      }
-    }, 
     'input #filter'(e, t){
       const filter = $('#filter').val()
       t.filtering.set({
@@ -94,7 +73,7 @@ Template.categoriesHome.onCreated(function () {
           if (error) {
             failAlert(error);
           } else {
-            successAlertBack();
+            successAlertGo('Success add new category', '/master-categories');
           }
         })
       }
@@ -145,7 +124,7 @@ Template.categoriesHome.onCreated(function () {
         }).then((result) => {  
           if (result.isConfirmed) { 
             Meteor.call('deleteCategory', paramId, function (err, res) {
-              successAlertBack()
+              successAlertGo('Success delete category', '/master-categories')
             })
           }
         })
@@ -190,7 +169,7 @@ Template.categoriesHome.onCreated(function () {
         }).then((result) => {  
           if (result.isConfirmed) { 
             Meteor.call('updateCategory', paramId, name, function (err, res) {
-              successAlertBack()
+              successAlertBack('Success update category')
             })
           }
         })
@@ -228,28 +207,6 @@ Template.categoriesHome.onCreated(function () {
   })
   
   Template.subCategoriesHome.events({
-    'click #submit'(e, t) {
-      const name = $(categoryName).val();
-      const status = true;
-      const data = {
-        name,
-        status
-      };
-      if (name.length === 0) {
-        failAlert("Nama tidak boleh kosong!")
-      } else {
-        Meteor.call('createCategory', data, function (error, res) {
-          console.log(error);
-          console.log(res);
-          if (error) {
-            failAlert(error);
-          } else {
-            successAlertBack();
-          }
-        })
-      }
-  
-    },
     'click .category_filter'(e, t) {
       const id = $(e.target).val();
       for (const key of t.category.curValue) {
@@ -329,7 +286,8 @@ Template.categoriesHome.onCreated(function () {
             if (error) {
               failAlert(error);
             } else {
-              successAlertBack();
+              successAlertGo('Success add new category', '/master-subcategories')
+              
             }
           })
         } 
@@ -401,7 +359,7 @@ Template.categoriesHome.onCreated(function () {
         }).then((result) => {  
           if (result.isConfirmed) { 
             Meteor.call('deleteSubCategory', paramId, function (err, res) {
-              successAlertBack('Berhasil Delete')
+              successAlertGo('Success delete subcategory', '/master-subcategories')
             })
           }
         })

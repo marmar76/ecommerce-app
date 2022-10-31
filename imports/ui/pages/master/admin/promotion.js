@@ -107,8 +107,8 @@ Template.promotionsHome.onCreated(function () {
           console.log(res);
           if (error) {
             failAlert(error);
-          } else {
-            successAlertBack();
+          } else { 
+            successAlertGo('Success add new promotion', '/master-promotions');
           }
         })
       }
@@ -140,8 +140,8 @@ Template.promotionsHome.onCreated(function () {
       Meteor.call('deletePromotion', param, function (err, res) {
         if (err) {
           failAlert(err);
-        } else {
-          successAlertBack();
+        } else { 
+          successAlertGo('Success delete promotion', '/master-promotions');
         }
       });
     }
@@ -198,7 +198,7 @@ Template.promotionsHome.onCreated(function () {
           if (err) {
             failAlert(err);
           } else {
-            successAlertBack();
+            successAlertBack('Success Edit Promotion');
           }
         });
       }

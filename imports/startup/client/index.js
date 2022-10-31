@@ -1,5 +1,5 @@
 // import 'bootstrap/dist/css/bootstrap.css'
-
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import Swal from 'sweetalert2';
 import '../../../imports/ui/stylesheets/global/googleapis.css'
 import '../../../imports/ui/stylesheets/global/owl.carousel.min.css'
@@ -116,6 +116,14 @@ successAlertBack = function (message) {
     Swal.fire(basicStyle(message, 'success'));
     // basicStyle(message, 'success')
     history.back();
+}
+successAlertGo = function (message, route) {
+    if (typeof message === 'undefined') {
+        message = 'Berhasil!';
+    }
+    Swal.fire(basicStyle(message, 'success'));
+    // basicStyle(message, 'success') 
+    FlowRouter.go(route)
 }
 
 
