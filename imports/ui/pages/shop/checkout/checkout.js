@@ -80,7 +80,13 @@ Template.checkout.helpers({
         const ongkir = Template.instance().ongkir.get()
         const discount = Template.instance().discount.get()
         if(cart){
-            let grandtotal = cart.grandtotal
+            let grandtotal = cart.reduce(function (prev, curr) {  
+                if(curr.status){
+                    return prev + +curr.qty * +curr.price
+                }
+                return prev
+            }, 0)
+            $("#total-purchase").html(grandtotal);
             let disc = discount * grandtotal / 100
             grandtotal += ongkir - disc
             return grandtotal
@@ -147,13 +153,18 @@ Template.checkout.events({
         const ongkir = Template.instance().ongkir.get()
         const discount = Template.instance().discount.get()
         const promotion = Template.instance().promotion.get()
-        let grandtotal = cart.grandtotal
+        let grandtotal = cart.reduce(function (prev, curr) {  
+            if(curr.status){
+                return prev + +curr.qty * +curr.price
+            }
+            return prev
+        }, 0)
         let disc = discount * grandtotal / 100
         grandtotal += ongkir - disc
 
         console.log(user._id);
         console.log(user.username);
-        console.log(cart.items);
+        console.log(cart);
         console.log(+grandtotal);
         console.log(+discount);
         console.log(promotion._id);
@@ -163,7 +174,14 @@ Template.checkout.events({
         const data = {
             userId: user._id,
             userUsername: user.username,
-            items: cart.items,
+            items: cart.map(function (x) {  
+                return {
+                    id: x.itemId,
+                    price: +x.price,
+                    name: x.name,
+                    quantity: x.qty
+                }
+            }),
             totalPurchase: +grandtotal,
             discount: +discount,
             // address:user.address[0],
@@ -171,7 +189,7 @@ Template.checkout.events({
             promotionCode: promotion.code,
             // createdBy: user._id,
         }
-        const items = cart.items.map(function (x) {  
+        const items = cart.filter((x) => x.status).map(function (x) {  
             return {
                 id: x.itemId,
                 price: x.price,
