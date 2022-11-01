@@ -47,45 +47,6 @@ Template.bannersHomePage.onCreated(function () {
         template.imageList.set(checkFile[0])
       }
     },
-    'click #submit'(e, t){
-        const name = $("#bannersName").val();
-        const description = $("#bannersDescription").val();
-        const data = {name, description}
-        if(name || description){
-            const imageList = t.imageList.get()
-            let thisFile, getExt
-            if(imageList){
-                thisFile = imageList
-                getExt = thisFile.type.split('/')[1]
-                getExt = '.' + getExt
-                data.ext = getExt
-                // data.profilePicture = Meteor.userId() + getExt
-            }
-            Meteor.call('createBanner', data, function (error, res) {  
-                if(error){
-                  failAlert(error)
-                } else {
-                  console.log(res);
-                  if(imageList){
-                    const fileName = res + getExt
-                    uploadImageFile(imageList, 'banners/picture', fileName).then((snapshot) => { 
-                      console.log('Image Uploaded Successfully'); 
-                      successAlertGo('Success add new banner', '/master-banner');
-                    }).catch((error) => { 
-                      console.error(error); 
-                      failAlert(error) 
-                    });
-                  } else {
-                    // exitLoading() 
-                  }
-                }
-                // exitLoading()
-              })
-        }
-        else{
-            failAlert("something wrong with the user input")
-        }
-    },
     'change .filtering'(e, t) {
       const filter = $('#filter').val();
       const sort = $('#sort').val();
@@ -197,7 +158,7 @@ Template.bannersHomePage.onCreated(function () {
             
         }
         else{
-            failAlert("something wrong with the user input")
+            failAlert("All field must be filled")
         }
     }
   })
