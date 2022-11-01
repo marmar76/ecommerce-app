@@ -57,8 +57,8 @@ Template.checkout.helpers({
         const cart = Template.instance().cart.get()
         if(cart){
             let qty = 0 
-            for (const i of cart.items) {
-                qty += +i.quantity
+            for (const i of cart.filter((x) => x.status)) {
+                qty += +i.qty
             }
             return qty
         }

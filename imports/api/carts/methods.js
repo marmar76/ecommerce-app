@@ -1,10 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check'; 
 import { Carts } from './carts';
+import { Items } from '../items/items';
 
 Meteor.methods({
     'insertCart'(data){
         const thisUser = Meteor.users.findOne({_id: Meteor.userId()})
+        data.status = true
         if(!thisUser.cart){
             thisUser.cart = [data]
         }
@@ -53,12 +55,14 @@ Meteor.methods({
                         }
                     }
                     return {
+                        itemId: x.itemId,
                         name: item.name + " - " + thisModel.name,
                         price: thisModel.price,
                         stock: thisModel.stock,
                         qty: x.qty,
                         weight: item.weight,
-                        link: item.link
+                        link: item.link,
+                        status: x.status
                     }
                 })
                 return await Promise.all(cart)
@@ -68,6 +72,12 @@ Meteor.methods({
             }
         }
         // return Carts.findOne({userId: Meteor.userId()})
+    },
+    'updateCartv2'(data){
+        const thisUser = Meteor.users.findOne({_id: Meteor.userId()})
+        thisUser.cart = data
+        Meteor.users.update({_id: Meteor.userId()}, {$set: thisUser})
+        // thisUser.cart
     },
     'updateCart'(id,data){ 
         check(id,String); 

@@ -169,23 +169,26 @@ Template.userAddress.onCreated(function () {
   Meteor.call('getMyself', async function (err, res) {
     self.thisUser.set(res)
     console.log(res);
-    const address = res.address.map(function (x, i) {
-      if(x.isDefault){
-        if(self.isSelectingAddress.get()){
-          self.isSelectingAddress.set(i)
+    if(res.address){
+      const address = res.address.map(function (x, i) {
+        if(x.isDefault){
+          if(self.isSelectingAddress.get()){
+            self.isSelectingAddress.set(i)
+          }
         }
-      }
-      return {
-        thisVal: JSON.stringify({
-          label: x.regency.label,
-          city_id: x.regency.city_id,
-          province_id: x.regency.province_id
-        }),
-        label: x.regency.label
-      }
-    })
-    self.addresses.set(address)
+        return {
+          thisVal: JSON.stringify({
+            label: x.regency.label,
+            city_id: x.regency.city_id,
+            province_id: x.regency.province_id
+          }),
+          label: x.regency.label
+        }
+      })
+      self.addresses.set(address)
+    }
     setTimeout(() => {
+      // console.log("tom");
       TomJerry = new TomSelect('#user-kecamatan', {
         valueField: 'thisVal',
         labelField: 'label',
@@ -425,14 +428,19 @@ Template.selectAddress.onCreated(function () {
   Meteor.call('getMyself', function (err, res) {  
     self.thisUser.set(res)
     // console.log(res);
-    self.selected.set(res.address.find((x) => x.isDefault))
+    if(res.address){
+      self.selected.set(res.address.find((x) => x.isDefault))
+    }
     // console.log(res.address.find((x) => x.isSelected));
   })
 })
 
 Template.selectAddress.helpers({
   address(){
-    return Template.instance().thisUser.get().address
+    const thisUser = Template.instance().thisUser.get()
+    if(thisUser && thisUser.address){
+      return thisUser.address
+    }
   },
   selected(){
     return Template.instance().selected.get()

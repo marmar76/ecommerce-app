@@ -21,7 +21,7 @@
         </div>
     </div>
     <div class="content d-flex justify-content-center">
-        <div class="d-flex flex-column w-75 ps-3">
+        <div class="d-flex flex-column ps-3" style="width: 90%;">
             <h3 class="text-start fw-bold">Check Out</h3>
             <!-- <hr> -->
             <div class="kontener d-flex justify-content-around gap-5 ">
@@ -57,7 +57,7 @@
                             </div>
                         </div> -->
                     </div>
-                    {{#each carts.items}}
+                    {{#each carts}}
                     <div class="card mb-3">
                         <div class="row g-0">
                             <div class="col-md-4">
@@ -76,7 +76,7 @@
                     {{/each}}
                 </div>
                 <div class="container" style="width: 40%;">
-                    <div class="card" style="width: 100%;">
+                    <div class="card" style="">
                         <div class="card-body text-start">
                             <label for="" class="text-start">Voucher Code</label><br><br>
                             <input type="text" style="width: 100%;" id="voucherCode" class="voucherDisabled" name="code"
@@ -86,7 +86,7 @@
                         </div>
                     </div>
                     <br>
-                    <div class="card" style="width: 100%;">
+                    <!-- <div class="card" style="width: 100%;">
                         <div class="card-body text-start">
                             <label for="" class="text-start">Data Penerima</label><br><br>
                             <h4 class="card-subtitle mb-2 text-start">{{address.recipient}}</h4>
@@ -98,7 +98,7 @@
                             <button class="btn btn-success w-100" type="submit" id="btnChangeAddress">Change
                                 Address</button>
                         </div>
-                    </div>
+                    </div> -->
                     <br>
                     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{clientKey}}"></script>
                     <div class="card" style="width: 100%;">
