@@ -10,6 +10,7 @@ import {
 import moment from 'moment';
 import './productPage.html';
 
+const TomJerry = []
 Template.productPage.onCreated(function () {
     const self = this;
     this.item = new ReactiveVar();
@@ -52,7 +53,7 @@ Template.productPage.onCreated(function () {
                 console.log(res);
                 setTimeout(() => {
                     for (const i of self.comparison.get()) {
-                        new TomSelect('#compare-'+i.id,{
+                        const thisSelect = new TomSelect('#compare-'+i.id,{
                             valueField: 'id',
                             labelField: 'name',
                             searchField: ['name'],
@@ -71,6 +72,7 @@ Template.productPage.onCreated(function () {
                                 }
                             },
                         });  
+                        TomJerry.push(thisSelect)
                     }
                     
                 }, 500);
@@ -174,6 +176,18 @@ Template.productPage.events({
         const itemId = $(e.target).val();
         const item = t.item.get()
         t.jenisItem.set(item.models.find((x) => itemId == x.itemId))
+
+        setTimeout(() => {
+            // const TomSelect = t.TomSelect.get()
+            TomJerry[0].setValue(itemId)
+            // setTimeout(() => {
+            //   console.log($('#user-kecamatan').val());
+            //   t.updateAlamat.set(click)
+      
+      
+            // }, 2000);
+          }, 200);
+
         // const paramId = FlowRouter.current().params._id
         // Meteor.call('getOneJenis', paramId, itemId, function (err, res) {
         //     if (err) {
