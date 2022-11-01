@@ -59,7 +59,7 @@ export const navbar = [{
       },
       {
         href: '/master-users-create',
-        title: 'Create User'
+        title: 'Create Admin'
       },
       // {
       //     href: 'pages/ui-features/typography.html',

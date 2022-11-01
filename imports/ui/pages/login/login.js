@@ -29,7 +29,7 @@ Template.login.events({
         failAlert(err.reason)
       }
       else{
-        if(Meteor.userId()){
+        if(Meteor.userId().isBanned == false){
           Meteor.call('getOneUser', Meteor.userId(), function (err, res) {  
             // console.log(res);
             const thisUser = res
@@ -41,6 +41,9 @@ Template.login.events({
               FlowRouter.go('homepage', {});
             }
           })
+        }else{
+          // akunnya terbanned
+          FlowRouter.go('forbidden')
         }
       }
     });
@@ -75,7 +78,7 @@ Template.register.events({
           failAlert(err.reason)
         }
         else{
-          successAlertBack("Success Register")
+          successAlertGo("Success Register",'/login')
         }
         // console.log(res);
       })

@@ -25,6 +25,22 @@ import '../../ui/pages/shop/productList/productList'
 //       this.render('base', 'App_notFound');
 //     }
 // });
+
+const checkAdmin = function (id) {
+    return new Promise(function (resolve, reject) {  
+        Meteor.call('getOneUser', id, function (err, res) {  
+            if(err){
+                reject(err)
+            }
+            else{
+                resolve(res.isAdmin)
+            }
+        })
+    })  
+        console.log(res);
+    // console.log(thisUser);
+    return true
+}
 FlowRouter.route('*', {
     name: 'forbidden',
     template: 'forbidden',
@@ -95,11 +111,18 @@ FlowRouter.route('/register', {
 FlowRouter.route('/master', {
     name: 'masterContainer',
     template: 'masterContainer',
-    action(){
+    async action(){
+        const isAdmin = await checkAdmin(Meteor.userId())
+        console.log(isAdmin);
         if(!Meteor.userId()){
             FlowRouter.go('login', {});
         }
-        this.render('masterContainer', 'contentExample')
+        else if(isAdmin){
+            this.render('masterContainer', 'contentExample')
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
     }
 })
 
@@ -135,6 +158,18 @@ FlowRouter.route('/master-users-:_id-details', {
             FlowRouter.go('login', {});
         }
         this.render('masterContainer', 'userDetailPage')
+        
+    },
+    
+})
+FlowRouter.route('/master-users-:_id-edit', {
+    name: 'userEditPage',
+    template: 'userEditPage',
+    action(){
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {});
+        }
+        this.render('masterContainer', 'userEditPage')
         
     },
     

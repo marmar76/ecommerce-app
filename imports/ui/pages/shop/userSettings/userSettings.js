@@ -55,7 +55,17 @@ Template.userSettings.helpers({
 
   thisUser() {
     // console.log(Meteor.user());
+    console.log(Template.instance().thisUser.get());
     return Template.instance().thisUser.get()
+  },
+  formatHTML(context) {
+    return moment(context).format("YYYY-MM-DD");
+  },
+  male(){
+    return 'male'
+  },
+  female(){
+    return 'female'
   },
   fotoProfile() {
     return Template.instance().fotoProfile.get()
@@ -102,12 +112,15 @@ Template.userSettings.events({
     const name = $("#user-name").val();
     const dob = new Date($("#user-dob").val());
     const phone = $("#user-phone").val();
+    const gender = $('input[name="gender"]:checked').val();
     const data = {
       name,
       dob,
-      phone
+      phone,
+      gender
     }
-    if (name || isValidDate(dob) || phone) {
+    console.log(data)
+    if (name && isValidDate(dob) && phone) {
       const imageList = t.imageList.get()
       let thisFile, getExt
       if (imageList) {
@@ -141,6 +154,7 @@ Template.userSettings.events({
               //   if(FlowRouter.current().path == "/agents/create")history.back()
             });
           } else {
+            successAlert()
             // exitLoading()
             // $(".trigger-addition").trigger("click");
             // $("#success-agent").val("true");

@@ -19,7 +19,7 @@ Meteor.methods({
             return Meteor.users.update({
                 "_id": userId
             }, {
-                $set: {isAdmin: false}
+                $set: {isAdmin: false, isBanned: false, status: true}
             });
         }
     },
@@ -33,19 +33,28 @@ Meteor.methods({
         check(profile.name, String)
         check(profile.gender, String)
         check(profile.dob, Date)
-        check(profile.address, String)
         
-        profile.status = true
-        profile.createdAt = new Date()
-        profile.createtBy = Meteor.userId()
-        profile.isAdmin = true
+        // profile.createdAt = new Date()
+        // profile.createtBy = Meteor.userId()
+        // profile.isAdmin = true
         // Pa$$w0rd!
         const userId = Accounts.createUser(data)
         if(userId){
             return Meteor.users.update({
                 "_id": userId
             }, {
-                $set: profile
+                $set: 
+                {
+                    name: profile.name, 
+                    gender: profile.gender,
+                    dob: profile.dob,
+                    phone: profile.phone,
+                    createdAt: new Date(),
+                    createdBy:Meteor.userId(),
+                    isAdmin: true,
+                    isBanned: false,
+                    status: true
+                }
             });
         }
     },
@@ -66,6 +75,13 @@ Meteor.methods({
     'updateMyself'(data){
         return Meteor.users.update({
             _id: Meteor.userId()
+        }, {
+            $set: data
+        })
+    },
+    'updateUser'(id, data){
+        return Meteor.users.update({
+            _id: id
         }, {
             $set: data
         })
@@ -119,7 +135,22 @@ Meteor.methods({
     'bannedUser'(id){
         check(id,String);
         return Meteor.users.update({_id: id},{$set: {
+            isBanned: true
+        }})
+    },
+    'unbannedUser'(id){
+        check(id,String);
+        return Meteor.users.update({_id: id},{$set: {
+            isBanned: false
+        }})
+    },
+    'deleteUser'(id){
+        check(id,String);
+        return Meteor.users.update({_id: id},{$set: {
             status: false
         }})
+    },
+    'setPasswordAsAdmin'(userid, password){
+        Accounts.setPassword(userid, password, {logout: false})
     }
 })
