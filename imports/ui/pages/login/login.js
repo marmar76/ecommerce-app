@@ -23,28 +23,33 @@ Template.login.events({
 
     const username = target.username.value;
     const password = target.password.value;
-
+    let statusLogin = true
     Meteor.loginWithPassword(username, password, function (err, res) {  
       if(err){
         failAlert(err.reason)
       }
-      else{
-        if(Meteor.userId().isBanned == false){
-          Meteor.call('getOneUser', Meteor.userId(), function (err, res) {  
-            // console.log(res);
-            const thisUser = res
+      else{ 
+        Meteor.call('getOneUser', Meteor.userId(), function (err, res) {  
+          // console.log(res);
+          const thisUser = res
+          if(thisUser.isBanned == false){
             successAlert("Welcome "+ thisUser.username)
             if(thisUser.isAdmin){
-              FlowRouter.go('masterContainer', {});
+              FlowRouter.go('/master');
             }
             else{
               FlowRouter.go('homepage', {});
             }
-          })
-        }else{
-          // akunnya terbanned
-          FlowRouter.go('forbidden')
-        }
+          }else{
+            // akunnya terbanned
+            statusLogin = false 
+            failAlert('Your account is banned')
+            Meteor.logout();
+            FlowRouter.go('forbidden')
+          }
+        }) 
+          
+        
       }
     });
   },

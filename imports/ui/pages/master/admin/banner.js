@@ -1,5 +1,6 @@
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import Swal from 'sweetalert2';
+import moment from 'moment';
 Template.bannersHomePage.onCreated(function () {
     const self = this;
     this.filtering = new ReactiveVar({
@@ -18,6 +19,9 @@ Template.bannersHomePage.onCreated(function () {
         self.banner.set(res)
       }
     }) 
+    Meteor.call('refreshAllBanner', function (err, res) {  
+      console.log(res);
+    })
   })
   
   Template.bannersHomePage.helpers({
@@ -112,17 +116,22 @@ Template.bannersHomePage.onCreated(function () {
         template.fotoProfile.set(URL.createObjectURL(checkFile[0]))
         template.imageList.set(checkFile[0])
       }
-    },
-    'change #checkBanner'(e, t){
-      console.log($('#checkBanner').is(':checked'));
-    },
+    }, 
     'click #submit'(e, t){ 
         const name = $("#bannersName").val().trim(); 
         const description = $("#bannersDescription").val().trim();
-        const check = $('#checkBanner').is(':checked')
-        const data = {name, description, check}
+        const startDate = moment($("#startDate").val(), 'YYYY-MM-DD').toDate();
+        const expiredDate = moment($("#expiredDate").val(), 'YYYY-MM-DD').toDate(); 
+        console.log(startDate);
+        console.log(expiredDate);
+        // const check = $('#checkBanner').is(':checked')
+        // const data = {name, description, check}
+        const data = {name, description, startDate, expiredDate}
         if(name && description){ 
-          $("#uploadImageProfile").trigger("change");
+          if (!(startDate < expiredDate)) {
+            failAlert("Tanggal Start harus kurang dari tanggal Expired")
+          }else{
+            $("#uploadImageProfile").trigger("change");
           const imageList = t.imageList.get()
           let thisFile, getExt
           if(imageList){
@@ -130,8 +139,8 @@ Template.bannersHomePage.onCreated(function () {
               getExt = thisFile.type.split('/')[1]
               getExt = '.' + getExt
               data.ext = getExt
-              // console.log(data);
-              // data.profilePicture = Meteor.userId() + getExt 
+              console.log(data);
+              data.profilePicture = Meteor.userId() + getExt 
               Meteor.call('createBanner', data, function (error, res) {  
                 if(error){
                   failAlert(error)
@@ -155,6 +164,8 @@ Template.bannersHomePage.onCreated(function () {
             }else{
               failAlert("You must input your image") 
             }
+          }
+          
             
         }
         else{
@@ -223,9 +234,16 @@ Template.bannersHomePage.onCreated(function () {
         const name = $("#bannersName").val();
         const paramId = FlowRouter.current().params._id
         const description = $("#bannersDescription").val();
-        const check = $('#checkBanner').is(':checked')
-        const data = {name, description, check}
+        const startDate = moment($("#startDate").val(), 'YYYY-MM-DD').toDate();
+        const expiredDate = moment($("#expiredDate").val(), 'YYYY-MM-DD').toDate(); 
+        // const check = $('#checkBanner').is(':checked')
+        // const data = {name, description, check}
+        
+        const data = {name, description, startDate, expiredDate}
         if(name && description){
+          if (!(startDate < expiredDate)) {
+            failAlert("Tanggal Start harus kurang dari tanggal Expired")
+          }else{
             $("#uploadImageProfile").trigger("change");
             const imageList = t.imageList.get()
             let thisFile, getExt
@@ -269,7 +287,7 @@ Template.bannersHomePage.onCreated(function () {
                 })
               }
             })
-            
+          }
         }
         else{
             failAlert("something wrong with the user input")

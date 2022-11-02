@@ -31,6 +31,8 @@
                                   <th>Description</th>   
                                   <th>Picture</th>
                                   <th>Appear on Home</th>
+                                  <th>Start Date</th>
+                                  <th>End Date</th>
                                   <th>Action</th> 
                               </tr>
                           </thead>
@@ -45,6 +47,8 @@
                                   {{else}}
                                   <td>No</td>
                                   {{/if}}
+                                  <td>{{formatDateIDN startDate}}</td>
+                                  <td>{{formatDateIDN expiredDate}}</td>
                                   <td><a href="/master-banner-{{_id}}-edit"><button class="btn btn-primary">Details</button></a></td>
                               </tr>
                               {{/each}}
@@ -83,11 +87,19 @@
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
                         <input type="text" class="form-control" id="bannersDescription" required>
-                    </div>  
-                    <div class="mb-3"> 
+                    </div>
+                    <div class="form-group"> 
+                        <label for="">Start Date</label>
+                        <input type="date" class="form-control filtering" id="startDate">
+                    </div>
+                    <div class="form-group"> 
+                        <label for="">Expired Date</label>
+                        <input type="date" class="form-control filtering" id="expiredDate">
+                    </div><br>
+                    <!-- <div class="mb-3"> 
                         <input type="checkbox" class="form-check-input check-banner"  id="checkBanner">
                         <label for="checklist" class="form-label">Appear on Homepage </label> 
-                    </div> 
+                    </div>  -->
                     <button id="submit" type="submit" class="btn btn-primary me-2">Submit</button> 
                 </div>
             </div>
@@ -159,15 +171,23 @@
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
                         <input type="text" class="form-control" id="bannersDescription" value="{{banners.description}}" required>
-                    </div>  
-                    <div class="mb-3"> 
+                    </div>
+                    <div class="form-group"> 
+                        <label for="">Start Date</label>
+                        <input type="date" class="form-control filtering" id="startDate" value="{{formatHTML banners.startDate}}">
+                    </div>
+                    <div class="form-group"> 
+                        <label for="">Expired Date</label>
+                        <input type="date" class="form-control filtering" id="expiredDate" value="{{formatHTML banners.expiredDate}}">
+                    </div><br>
+                    <!-- <div class="mb-3"> 
                         {{#if equals banners.check true}}
                         <input type="checkbox" class="form-check-input check-banner"  id="checkBanner" checked>
                         {{else}}
                         <input type="checkbox" class="form-check-input check-banner"  id="checkBanner">
                         {{/if}}
                         <label for="checklist" class="form-label">Appear on Homepage </label> 
-                    </div> 
+                    </div>  -->
                     <button type="submit" class="btn btn-success me-2" id="btnSave">Save</button> 
                     <button type="submit" class="btn btn-warning me-2" id="btnDelete">Delete</button> 
                 </div>

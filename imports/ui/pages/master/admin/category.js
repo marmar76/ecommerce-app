@@ -49,6 +49,14 @@ Template.categoriesHome.onCreated(function () {
   
   Template.categoriesCreatePage.onCreated(function () {
     const self = this;
+    this.filtering = new ReactiveVar({
+      filter: '',
+      sort: '1',
+    })
+    self.allCategory = new ReactiveVar([]);
+    Meteor.call('getAllCategory', this.filtering.get(), function (err, res) {
+      self.allCategory.set(res); 
+    });
     this.category = new ReactiveVar();
   })
   
@@ -67,15 +75,26 @@ Template.categoriesHome.onCreated(function () {
       if (name.length === 0) {
         failAlert("Name can't be empty!")
       } else {
-        Meteor.call('createCategory', data, function (error, res) {
-          console.log(error);
-          console.log(res);
-          if (error) {
-            failAlert(error);
-          } else {
-            successAlertGo('Success add new category', '/master-categories');
+        let allCategory = t.allCategory.get()
+        let status = true 
+        allCategory.map(function (x) {
+          if(x.name.toLowerCase() == name.toLowerCase()){
+            status = false  
           }
-        })
+        }) 
+        if(status){
+          Meteor.call('createCategory', data, function (error, res) {
+            console.log(error);
+            console.log(res);
+            if (error) {
+              failAlert(error);
+            } else {
+              successAlertGo('Success add new category', '/master-categories');
+            }
+          })
+        }else{
+          failAlert('Category name must be unique')
+        }
       }
   
     }
@@ -140,7 +159,15 @@ Template.categoriesHome.onCreated(function () {
   
   Template.categoriesEditPage.onCreated(function () {
     const self = this;
+    this.filtering = new ReactiveVar({
+      filter: '',
+      sort: '1',
+    })
     self.category = new ReactiveVar(); 
+    self.allCategory = new ReactiveVar([]);
+    Meteor.call('getAllCategory', this.filtering.get(), function (err, res) {
+      self.allCategory.set(res); 
+    });
     const paramId = FlowRouter.current().params._id
     Meteor.call('getOneCategory', paramId, function (err, res) { 
       self.category.set(res); 
@@ -160,6 +187,13 @@ Template.categoriesHome.onCreated(function () {
     'click #save'(e, t) {
       const paramId = FlowRouter.current().params._id  
       const name = $('#categoryName').val();
+      let allCategory = t.allCategory.get()
+      let status = true 
+      allCategory.map(function (x) {
+        if(x.name.toLowerCase() == name.toLowerCase()){
+          status = false  
+        }
+      }) 
       if(name){ 
         Swal.fire({
           title: 'Are you sure you want to update this category',
@@ -168,9 +202,13 @@ Template.categoriesHome.onCreated(function () {
           confirmButtonText: 'OK', 
         }).then((result) => {  
           if (result.isConfirmed) { 
-            Meteor.call('updateCategory', paramId, name, function (err, res) {
-              successAlertBack('Success update category')
-            })
+            if(status){
+              Meteor.call('updateCategory', paramId, name, function (err, res) {
+                successAlertBack('Success update category')
+              })
+            }else{
+              failAlert('Category Name must be unique')
+            }
           }
         })
       }else{
@@ -512,13 +550,15 @@ Template.categoriesHome.onCreated(function () {
       const modelStatus = models.filter((x) => x.status == true)
       //penjagaan agar tidak semua model bisa didelete
       let status = modelStatus.length > 1 ? 0 : -1
+      console.log(modelStatus);
+      console.log(status);
       const thisModel = models.find((x) => x.id == click) ? models.find((x) => x.id == click) : models.find((x) => x.slug == click)
       //pengechekan item dan model yang terakhir diinput
       //nampilin item terbaru dengan model terbaru
       if(items.length > 0){
         const spec = items[items.length-1].models[items[items.length-1].models.length-1].specification 
         for (const i of spec) { 
-          if(i.label == thisModel.label)status = false
+          if(i.label == thisModel.label)status = 1
         }
       }
       console.log(thisModel.label);

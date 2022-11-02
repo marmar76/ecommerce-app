@@ -1,14 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check'; 
 import { Banner, Banners } from './banners';
-
+import moment from 'moment';
 Meteor.methods({
     'updateBanner'(id,data){
         console.log(data);
         check(data.name, String)
         check(data.description, String)
-        // check(data.ext, String)
-        check(data.check, Boolean)
+        // check(data.ext, String) 
         data.picture = id +data.ext
         console.log(data);
         Banners.update({_id: id},{$set: data})
@@ -21,8 +20,7 @@ Meteor.methods({
     'createBanner'(data){
         check(data.name, String)
         check(data.description, String)
-        // check(data.ext, String)
-        check(data.check, Boolean)
+        // check(data.ext, String) 
 
         const id = Banners.insert(data) 
         Banners.update({_id: id}, {$set: {
@@ -30,6 +28,23 @@ Meteor.methods({
             status: true
         }})
         return id 
+    },
+    'refreshAllBanner'(){
+        let banner = Banners.find({status: true}).fetch();
+        banner = banner.map(function (x) {
+            let check 
+            if( moment(x.startDate).format('LL') <= moment(new Date()).format('LL') && moment(x.expiredDate).format('LL')  >= moment(new Date()).format('LL') ){
+                check = true
+            }
+            else{
+                check = false 
+            }
+            Banners.update({_id: x._id}, {$set: {
+                check
+            }})
+            return x
+        })
+        return banner
     },
     async 'getAllBanner'(filtering){
         const thisFilter = {}

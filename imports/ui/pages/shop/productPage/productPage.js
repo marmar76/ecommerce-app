@@ -179,6 +179,7 @@ Template.productPage.events({
 
         setTimeout(() => {
             // const TomSelect = t.TomSelect.get()
+            console.log(itemId);
             TomJerry[0].setValue(itemId)
             // setTimeout(() => {
             //   console.log($('#user-kecamatan').val());

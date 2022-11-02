@@ -63,7 +63,7 @@ Template.itemsHome.onCreated(function () {
       if (items) {
         return items;
       }
-    }
+    },
   })
   Template.itemsHome.events({
     'change .selectedCategory'(e, t) {
@@ -136,7 +136,9 @@ Template.itemsHome.onCreated(function () {
     this.imageList = new ReactiveVar(null)
     this.fotoItem = new ReactiveVar()
     Meteor.call('getAllCategory', this.filtering.get() , function (err, res) {
-      self.category.set(res);
+      self.category.set(res.filter(function (x) {
+        return x.subcategory.length != 0
+        }));
     });
     Meteor.call('getAllSubCategory',this.filtering.get(), function (err, res) {
       self.subcategory.set(res);
@@ -159,6 +161,7 @@ Template.itemsHome.onCreated(function () {
     },
     
     models() {
+      console.log(Template.instance().models.get());
       return Template.instance().models.get()
     },
     categories() {
@@ -213,14 +216,11 @@ Template.itemsHome.onCreated(function () {
       const models = t.models.get()
       const canCompare = t.comparison.get()
       const name = $("#itemsName").val();
-      console.log(name);
       const category = $("#categories").val();
       const subcategory = $("#subcategories").val();
       const weight = $("#weight").val();
       const description = $("#itemsDescription").val();
       let valid = models.length > 0
-      console.log(models);
-      console.log("lenght" + models.length);
       const thisModels = models.filter((p) => p.status).map(function (x) {
         if (valid) {
           const name = $('#model-name-' + x.id).val();
@@ -235,15 +235,13 @@ Template.itemsHome.onCreated(function () {
               let specValid = true
               const specification = canCompare.specification.map(function (y) {
                 if (specValid && valid) {
-                  const thisValue = $(`#${y.slug}-${x.id}`).val();
-                  console.log(thisValue);
+                  const thisValue = $(`#${y.slug}-${x.id}`).val()
                   if (!thisValue) {
                     failAlert("something wrong with specification input on " + y.label + " at item number " + (x.id + 1))
                     specValid = false
                     valid = false
                   } else {
                     y.value = thisValue
-                    console.log(y);
                     return y
                   }
                 }
@@ -265,7 +263,6 @@ Template.itemsHome.onCreated(function () {
           }
         }
       })
-      console.log(thisModels);
       if (valid) {
         if (!name || !category || !subcategory || !weight || !description) {
           failAlert("something missing with this item")
@@ -278,39 +275,44 @@ Template.itemsHome.onCreated(function () {
             description
           }
           $("#uploadImageItem").trigger("change");
-            const imageList = t.imageList.get()
-            let thisFile, getExt
-            if(imageList){
-              thisFile = imageList
-              getExt = thisFile.type.split('/')[1]
-              getExt = '.' + getExt
-              data.ext = getExt
-              console.log(data);
-              // data.profilePicture = Meteor.userId() + getExt
-          }
-          Meteor.call('createItem', data, thisModels, function (error, res) {  
-            console.log(error);
-            console.log(res);
-            if(error){
-              failAlert(error);
-            }
-            else{
-              if(imageList){
-                console.log(res);
-                const fileName = res + getExt
-                uploadImageFile(imageList, 'items/picture', fileName).then((snapshot) => { 
-                  console.log('Image Uploaded Successfully'); 
-                  // successAlert() 
-                }).catch((error) => { 
-                  console.error(error); 
-                  failAlert(error) 
-                });
-              } else {
-                // exitLoading() 
+          const imageList = t.imageList.get()
+          let thisFile, getExt
+          console.log(imageList);
+          if(imageList){
+            thisFile = imageList
+            getExt = thisFile.type.split('/')[1]
+            getExt = '.' + getExt
+            data.ext = getExt
+            console.log('why?');
+            console.log(data);
+            data.profilePicture = Meteor.userId() + getExt
+            Meteor.call('createItem', data, thisModels, function (error, res) {  
+              console.log(error);
+              console.log(res);
+              if(error){
+                failAlert(error);
               }
-              successAlertGo('Success add new item', '/master-items');
-            }
-          }) 
+              else{
+                if(imageList){
+                  console.log(res);
+                  const fileName = res + getExt
+                  uploadImageFile(imageList, 'items/picture', fileName).then((snapshot) => { 
+                    console.log('Image Uploaded Successfully'); 
+                    // successAlert() 
+                  }).catch((error) => { 
+                    console.error(error); 
+                    failAlert(error) 
+                  });
+                } else {
+                  // exitLoading() 
+                }
+                successAlertGo('Success add new item', '/master-items');
+              }
+            }) 
+          }else{
+            failAlert('Please insert picture')
+          }
+          
         }
       }
   
@@ -472,6 +474,8 @@ Template.itemsHome.onCreated(function () {
       return [];
     },
     models() {
+
+      console.log( Template.instance().models.get() )
       return Template.instance().models.get()
     },
     equals(a, b){
@@ -517,8 +521,7 @@ Template.itemsHome.onCreated(function () {
       const description = $("#itemsDescription").val();
       const paramId = FlowRouter.current().params._id
       let valid = models.length > 0
-      const arr = []
-      console.log(canCompare.specification);
+      const arr = [] 
       // const thisSubcategory = Meteor.call('getOneSubcategory', function (err, res) {
       //   console.log(specification);
       //   return res.specification
@@ -574,24 +577,30 @@ Template.itemsHome.onCreated(function () {
           }
         }
       })
+      let statusModel = true 
       for (const i of thisModels) {
+        i.specification.map(function (x) {
+          if(x.value == null || x.value.length == 0){
+            statusModel == false 
+          }
+        })
         arr.push(i)
       }
       console.log(arr);
+      console.log(statusModel);
       if (valid) {
         if (!name || !category || !subcategory || !weight || !description || !picture) {
           failAlert("something missing with this item")
         } else {
-          
-          const data = {
-            name,
-            category,
-            subcategory,
-            weight,
-            picture,
-            description,
-            models: arr
-          }
+            const data = {
+              name,
+              category,
+              subcategory,
+              weight,
+              picture,
+              description,
+              models: arr
+            }
           // $("#uploadImageItem").trigger("change");
             const imageList = t.imageList.get()
             let thisFile, getExt
@@ -603,8 +612,15 @@ Template.itemsHome.onCreated(function () {
               // console.log(data);
               data.picture = paramId + getExt
           }
+          let message=''
+          if(subcategory != item.subcategory)
+          {
+            message='Are you sure you want to update this item? this may cause formating the item specification'
+          }else{
+            message='Are you sure you want to update this item'
+          }
           Swal.fire({
-            title: 'Are you sure you want to update this item',
+            title: message,
             icon: 'warning', 
             showCancelButton: true,
             confirmButtonText: 'OK', 
@@ -706,7 +722,43 @@ Template.itemsHome.onCreated(function () {
       // console.log(models);
       t.models.set(models)
     },
-  
+    'click .specSave'(e,t){
+      const paramId = FlowRouter.current().params._id;
+      const click = $(e.target).val()
+      let models = t.models.get()
+      const thisModel = models.find((x) => x.id == click) 
+      const itemId = thisModel.itemId
+      const name = thisModel.name
+      const price = thisModel.price
+      const stock = thisModel.stock 
+      let status = true 
+      const specification = thisModel.specification.map(function (x) { 
+        const value = $('#'+x.slug+'-'+click).val();
+        if (!value) {
+          status = false
+        }else{
+          x.value = value
+          return x
+        }
+      }) 
+      const data = {
+        name,
+        price,
+        stock,
+        specification
+      } 
+      // console.log(models[click].specification);
+      // models[click].specification = specification
+      if(status){
+        t.models.set(models) 
+        Meteor.call('updateModel', paramId, itemId, data, function (err, res) {  
+          successAlert('Success Update Model')
+        })
+      }else{
+        failAlert("value can't be empty " )
+      }
+      
+    },
   })
 
   

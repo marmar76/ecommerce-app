@@ -9,7 +9,8 @@ Template.usersHome.onCreated(function () {
     this.filtering = new ReactiveVar({
       search: '',
       sort: '1',
-      status: true
+      isBanned: false
+      // status: true
     })
   })
   
@@ -59,7 +60,8 @@ Template.usersHome.onCreated(function () {
       }
       // console.log(sort);
       const users = Meteor.users.find({
-        status: filtering.status,
+        isBanned: filtering.isBanned,
+        // status: filtering.status,
         $or
       }, {
         sort: sort()
@@ -78,7 +80,8 @@ Template.usersHome.onCreated(function () {
     'change .filtering'(e, t) {
       const search = $('#search').val();
       const sort = $('#sort').val();
-      const status = $('#is-active').is(':checked');
+      const isBanned = $('#is-active').is(':checked');
+      // const status = $('#is-active').is(':checked');
       // console.log({
       //   search,
       //   sort,
@@ -87,13 +90,15 @@ Template.usersHome.onCreated(function () {
       t.filtering.set({
         search,
         sort,
-        status
+        isBanned,
+        // status,
       })
     },
     'input .filtering'(e, t) {
       const search = $('#search').val();
       const sort = $('#sort').val();
-      const status = $('#is-active').is(':checked');
+      const isBanned = $('#is-active').is(':checked');
+      // const status = $('#is-active').is(':checked');
       // console.log({
       //   search,
       //   sort,
@@ -102,7 +107,8 @@ Template.usersHome.onCreated(function () {
       t.filtering.set({
         search,
         sort,
-        status
+        isBanned,
+        // status,
       })
     },
   
@@ -275,19 +281,24 @@ Template.usersHome.onCreated(function () {
     },
     'click #change-password'(e, t){
       const paramId = FlowRouter.current().params._id
-      const user_password = $("#password").val();
+      const user_password = $("#password").val()
       if(user_password.length == 0){
         failAlert("password cannnot be null")
       }
       else{
-        Meteor.call('setPasswordAsAdmin', paramId, user_password, function (err, res) {  
-          if(err){
-            failAlert(err)
-          }
-          else{
-            successAlert()
+        Swal.fire({
+          title: 'Are you sure you want to change password',
+          icon: 'warning', 
+          showCancelButton: true,
+          confirmButtonText: 'OK', 
+        }).then((result) => {  
+          if (result.isConfirmed) { 
+            Meteor.call('setPasswordAsAdmin', paramId, user_password, function (err, res) {  
+              successAlert('Success change password') 
+            })
           }
         })
+        
       }
 
     }

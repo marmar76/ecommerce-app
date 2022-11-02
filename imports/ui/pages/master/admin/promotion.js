@@ -1,5 +1,6 @@
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import Swal from 'sweetalert2';
+import moment from 'moment';
 Template.promotionsHome.onCreated(function () {
     const self = this;
     self.filtering = new ReactiveVar({
@@ -84,6 +85,8 @@ Template.promotionsHome.onCreated(function () {
       const status = true;
       const startDate = moment($("#start").val(), 'YYYY-MM-DD').toDate();
       const expiredDate = moment($("#end").val(), 'YYYY-MM-DD').toDate(); 
+      console.log(startDate);
+      console.log(expiredDate);
       const data = {
         name,
         code,

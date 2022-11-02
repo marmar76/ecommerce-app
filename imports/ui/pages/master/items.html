@@ -352,6 +352,7 @@
           </div>
           <hr>
           <h3>Item models</h3>
+          
           <table class="table table-striped">
             <thead>
               <tr> 
@@ -363,6 +364,61 @@
             </thead>
             <tbody>
               {{#each i in models}}
+                {{#if i.status}}
+                    <tr> 
+                      {{#if equals i.isNew true}}
+                      <td><input type="text" class="form-control" id="model-name-{{i.id}}" required placeholder="Model Name"></td>
+                      <td><input type="number" class="form-control" id="model-price-{{i.id}}" required placeholder="Price"></td>
+                      <td><input type="number" class="form-control" id="model-stock-{{i.id}}" required placeholder="Stock"></td>
+                      <td></td>
+                      <td><button class="btn btn-danger model-delete" value="{{i.id}}">Delete</button></td>
+                      {{else}}
+                      <input type="hidden" class="form-control" id="model-itemId-{{i.id}}" value="{{i.itemId}}">
+                      <td><input type="text" class="form-control" id="model-name-{{i.id}}" required placeholder="Model Name" value="{{i.name}}" disabled></td>
+                      <td><input type="number" class="form-control" id="model-price-{{i.id}}" required placeholder="Price" value="{{i.price}}" disabled></td>
+                      <td><input type="number" class="form-control" id="model-stock-{{i.id}}" required placeholder="Stock" value="{{i.stock}}" disabled></td>
+                      <td class="fs-5"><a href="/master-models-{{i.itemId}}-details"><button class="btn btn-primary">Detail</button></a></td> 
+                      <td><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{i.id}}" aria-expanded="false" aria-controls="flush-collapseOne"></button></td>
+                      {{/if}}
+                    </tr>
+                    {{#if equals i.isNew false}}
+                    <tr>
+                      <td colspan="5">
+                        <div id="flush-collapse{{i.id}}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                          <tr>
+                            <td colspan="5"><h4>{{i.name}} Specification</h4></td>
+                          </tr>
+                          {{#each j in i.specification}}
+                          <tr>
+                            <td scope="col">{{j.label}}</td>
+                            <td colspan="4"><input type="text" class="form-control" id="{{j.slug}}-{{i.id}}" required placeholder="{{j.name}}" value="{{j.value}}"></td>
+                          </tr>
+                          {{/each}}
+                          <button type="submit" class="btn btn-success me-2 specSave" value="{{i.id}}">Save</button>
+                        </div>
+                      </td>
+                    </tr>
+                    
+                    {{/if}}
+                    {{#if comparison}}
+                      {{#if i.isNew}}
+                      <tr>
+                        <td colspan="5"><h2>{{comparison.name}} Specification</h2></td>
+                      </tr>
+                      {{#each j in comparison.specification}}
+                        <tr>
+                          <td scope="col">{{j.label}}</td>
+                          <td colspan="4"><input type="text" class="form-control" id="{{j.slug}}-{{i.id}}" required placeholder="{{j.name}}"></td>
+                        </tr>
+                      {{/each}}
+                      <td>
+                        <td colspan="5"><hr></td>
+                      </td>
+                      {{/if}}
+                    {{/if}}
+                  {{/if}}
+              {{/each}}
+              <!-- {{#each i in models}}
                 {{#if i.status}}
                     <tr> 
                       {{#if equals i.isNew true}}
@@ -395,9 +451,11 @@
                       {{/if}}
                     {{/if}}
                   {{/if}}
-              {{/each}}
+              {{/each}} -->
+              
             </tbody>
           </table>
+
           <div class="d-flex justify-content-end mt-2">
             <button class="btn btn-primary" id="btnAddModel">Add models</button>
           </div>
