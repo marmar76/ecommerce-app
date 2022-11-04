@@ -7,11 +7,120 @@ import {
 import {
     Invoices
 } from './invoices';
-const midtransClient = require('midtrans-client');
+import { fetch, Headers } from 'meteor/fetch';
+import moment from 'moment';
+moment.locale('id'); 
+const origin = "444" //surabaya
 
+const midtransClient = require('midtrans-client');
+const kurir = [
+    {
+        name: 'jne',
+        label: "JNE",
+        getDate: function (x) {
+            function showEstimation(param) {  
+                const day = param.split('-')
+                const early = moment().add({days: day[0]}).format('LL')
+                const latest = moment().add({days: day[1]}).format('LL')
+                return {label: early + "-" + latest, jsDate: moment().add({days: day[0]}).toDate()}
+            }
+            const thisCourier = []  
+            for (const i of x.rajaongkir.results) {
+                for (const j of i.costs) {
+                    for (const k of j.cost) {
+                        const estimation = showEstimation(k.etd)
+                        thisCourier.push({
+                            code: j.service,
+                            desc: j.description,
+                            value: k.value,
+                            estimation: estimation.label,
+                            jsDate: estimation.jsDate
+                        })
+                        
+                    }
+                }
+            }
+            return thisCourier
+        },
+        
+    },{
+        name: 'pos',
+        label: "Pos Indonesia",
+        getDate: function (x) {
+            function showEstimation(param) {  
+                let day = param.split(' ')[0]
+                if(day.includes('-')){
+                    day = day.split('-')
+                    const early = moment().add({days: day[0]}).format('LL')
+                    const latest = moment().add({days: day[1]}).format('LL')
+
+                    const jsDate = moment().add({days: day[0]}).toDate()
+                    // return early + "-" + latest
+                    return {label: early + "-" + latest, jsDate}
+                    return {label: early + "-" + latest, jsDate: moment().add({days: day[0]})}
+                }
+                else{
+                    return {label: moment().add({days: day}).format('LL'), jsDate: moment().add({days: day}).toDate()}
+                    return {label: moment().add({days: day}).format('LL'), jsDate: null}
+                    // return moment().add({days: day}).format('LL')
+                }
+            }
+            const thisCourier = []  
+            for (const i of x.rajaongkir.results) {
+                for (const j of i.costs) {
+                    for (const k of j.cost) {
+                        const estimation = showEstimation(k.etd)
+                        thisCourier.push({
+                            // code: j.service,
+                            desc: j.service,
+                            value: k.value,
+                            estimation: estimation.label,
+                            jsDate: estimation.jsDate
+                        })   
+                    }
+                }
+            }
+            return thisCourier
+        }
+    },{
+        name: 'tiki',
+        label: "Tiki",
+        getDate: function (x) {
+            function showEstimation(param) {
+                return {label:moment().add({days: param}).format('LL'), jsDate: moment().add({days: param}).toDate()}
+                return moment().add({days: param}).format('LL') 
+                // const day = param.split(' ')[0]
+                // if(day.includes('-')){
+                //     const early = moment().add({days: day[0]}).format('LL')
+                //     const latest = moment().add({days: day[0]}).format('LL')
+                //     return early + " - " + latest
+                // }
+                // else{
+                //     return moment().add({days: day}).format('LL')
+                // }
+            }
+            const thisCourier = []  
+            for (const i of x.rajaongkir.results) {
+                for (const j of i.costs) {
+                    for (const k of j.cost) {
+                        const estimation = showEstimation(k.etd)
+                        thisCourier.push({
+                            code: j.service,
+                            desc: j.description,
+                            value: k.value,
+                            estimation: estimation.label,
+                            jsDate: estimation.jsDate
+                        })   
+                    }
+                }
+            }
+            return thisCourier
+        } 
+    }
+]
+const settings = Meteor.settings.public
 function getToken(parameter) {
     return new Promise(function (resolve, reject) {
-        const settings = Meteor.settings.public
         let snap = new midtransClient.Snap({
             isProduction: false,
             serverKey: settings.MIDTRANS_SERVERKEY,
@@ -110,6 +219,82 @@ Meteor.methods({
             })
 
 
+    },
+    async 'getOngkir'(destination, weight){
+        // console.log({
+        //     key: settings.RAJAONGKIR_KEY,
+        //     origin,
+        //     destination,
+        //     weight
+        //     // 'Content-Type': 'application/json'
+        // });
+        const allOngkir = []
+        const ongkir = kurir.map(async function (x) {  
+            const thisOngkir = await fetch(`https://api.rajaongkir.com/starter/cost`, {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                // mode: 'cors', // no-cors, *cors, same-origin
+                // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                // credentials: 'same-origin', // include, *same-origin, omit
+                headers: new Headers({
+                    key: settings.RAJAONGKIR_KEY,
+                    'Content-Type': 'application/json'
+                }),
+                // redirect: 'follow', // manual, *follow, error
+                // referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                body: JSON.stringify({
+                    origin: origin,
+                    destination,
+                    weight,
+                    courier: x.name
+                }) // body data type must match "Content-Type" header
+            });
+            const result = await thisOngkir.json()
+            // return {converted: x.getDate(result), result}
+            const thisDate = x.getDate(result)
+            try {
+                for (const i of thisDate) {
+                    let label = ''
+                    if(i){
+                        if(i.estimation.includes('-')){
+                            label = i.estimation.split('-')[0]
+                        }
+                        else{
+                            label = i.estimation
+                        }
+                        const findSimiliar = allOngkir.find(function (u) {
+                            return u.label == label
+                        })
+                        if(findSimiliar){
+                            findSimiliar.data.push(i)
+                        }
+                        else{
+                            allOngkir.push({
+                                label,
+                                data: [i],
+                                jsDate: i.jsDate
+                            })
+                        }
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+                return thisDate
+            }
+            
+            return thisDate
+
+        })
+        
+        const something = await Promise.all(ongkir)
+        // console.log(something);
+        return allOngkir.sort(function (a, b) {  
+            return a.jsDate - b.jsDate
+        }).map(function (r) {  
+            r.data = r.data.sort(function (a, b) {  
+                return a.value - b.value
+            })
+            return r
+        })
     }
 
 })

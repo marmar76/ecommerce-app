@@ -443,7 +443,13 @@ Template.selectAddress.onCreated(function () {
     self.thisUser.set(res)
     // console.log(res);
     if(res.address){
-      self.selected.set(res.address.find((x) => x.isDefault))
+      const defaultAlamat = res.address.find((x) => x.isDefault)
+      if(defaultAlamat){
+        self.selected.set(defaultAlamat)
+        // console.log(defaultAlamat);
+        $("#select-address").val(JSON.stringify(defaultAlamat));
+        $("#triger-change-alamat").trigger("click");
+      }
     }
     // console.log(res.address.find((x) => x.isSelected));
   })
@@ -470,9 +476,11 @@ Template.selectAddress.events({
       return x
     })
     userAddress[click].isDefault = true
+    $("#select-address").val(JSON.stringify(userAddress[click]));
     t.selected.set(thisUser.address[click])
     t.thisUser.set(thisUser)
     $('.btn-close').trigger('click');
+    $("#triger-change-alamat").trigger("click");
   },
   'click .add-alamat'(e, t){
     FlowRouter.go('userSettings')

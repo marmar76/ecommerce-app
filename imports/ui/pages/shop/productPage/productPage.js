@@ -10,7 +10,7 @@ import {
 import moment from 'moment';
 import './productPage.html';
 
-const TomJerry = []
+let TomJerry = null
 Template.productPage.onCreated(function () {
     const self = this;
     this.item = new ReactiveVar();
@@ -54,9 +54,10 @@ Template.productPage.onCreated(function () {
                 setTimeout(() => {
                     for (const i of self.comparison.get()) {
                         const thisSelect = new TomSelect('#compare-'+i.id,{
-                            valueField: 'id',
+                            valueField: 'itemId',
                             labelField: 'name',
                             searchField: ['name'],
+                            plugins: ['change_listener'],
                             // fetch remote data
                             options: res,
                             // custom rendering function for options
@@ -71,8 +72,11 @@ Template.productPage.onCreated(function () {
                                             </div>`;
                                 }
                             },
-                        });  
-                        TomJerry.push(thisSelect)
+                        });
+                        if(!TomJerry){
+                            TomJerry = thisSelect
+                        }  
+                        // TomJerry.push(thisSelect)
                     }
                     
                 }, 500);
@@ -166,7 +170,7 @@ Template.productPage.events({
         // console.log(position);
         const value = thisDiv.val()
         // console.log(value);
-        const thisProduct = t.subcategoryItem.get().find((x) => x.id == value)
+        const thisProduct = t.subcategoryItem.get().find((x) => x.itemId == value)
         const thisComparison = comparison.find((x) => x.id == position)
         thisComparison.product = thisProduct
         t.comparison.set(comparison)
@@ -176,11 +180,11 @@ Template.productPage.events({
         const itemId = $(e.target).val();
         const item = t.item.get()
         t.jenisItem.set(item.models.find((x) => itemId == x.itemId))
-
+        console.log(TomJerry);
         setTimeout(() => {
             // const TomSelect = t.TomSelect.get()
             console.log(itemId);
-            TomJerry[0].setValue(itemId)
+            TomJerry.setValue(itemId)
             // setTimeout(() => {
             //   console.log($('#user-kecamatan').val());
             //   t.updateAlamat.set(click)

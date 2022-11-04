@@ -27,3 +27,4 @@ hot-module-replacement@0.5.1
 blaze-hot
 dev-error-overlay@0.1.1
 ostrio:flow-router-extra
+fetch

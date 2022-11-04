@@ -3,7 +3,7 @@ import { Template } from 'meteor/templating';
 import {FlowRouter} from 'meteor/ostrio:flow-router-extra';
 import moment from 'moment';
 import './checkout.html'; 
-import { Snap } from 'midtrans-client';
+// import { Snap } from 'midtrans-client';
 
 Template.checkout.onCreated(function () {
     const self = this
@@ -13,6 +13,8 @@ Template.checkout.onCreated(function () {
     this.ongkir = new ReactiveVar(0)
     this.promotion = new ReactiveVar();
     this.user = new ReactiveVar()
+    this.courier = new ReactiveVar([])
+    this.selectedCourier = new ReactiveVar(null)
     const currentDt = moment().startOf('day').toDate() 
     Meteor.call('getTodayPromotion', currentDt, function (err, res) {
         console.log(res);
@@ -24,6 +26,8 @@ Template.checkout.onCreated(function () {
         }else{
             console.log(res);
             self.cart.set(res)
+            $("#triger-change-alamat").trigger("click");
+
         }
     })
     Meteor.call('getMyself', async function (err,res) {  
@@ -31,6 +35,8 @@ Template.checkout.onCreated(function () {
             console.log(err);
         }else{
             self.user.set(res)
+            // $("#triger-change-alamat").trigger("click");
+
         }
     })
     this.clientKey = new ReactiveVar()
@@ -72,7 +78,7 @@ Template.checkout.helpers({
     ongkir(){
         const ongkir = Template.instance().ongkir.get() 
         if(ongkir){
-            return ongkir
+            return ongkir.value
         }
     },
     totalPurchase(){
@@ -113,10 +119,66 @@ Template.checkout.helpers({
             return clientKey
         }
         return ''
+    },
+    multiply(a, b){
+        return parseInt(a) * parseInt(b)
+    },
+    courier(){
+        return Template.instance().courier.get()
+    },
+    selectedCourier(){
+        return Template.instance().selectedCourier.get()
     }
 })
 
 Template.checkout.events({
+    'change #select-duration'(e, t){
+        const courier = t.courier.get()
+        const value = e.target.value
+        const thisCourier = courier.find((x) => x.label == value)
+        if(thisCourier){
+            t.selectedCourier.set(thisCourier.data.map(function (x, i) {  
+                x.index = i + 1
+                return x
+            }))
+        }
+        else{
+            t.selectedCourier.set(null)
+        }
+    },
+    'change #select-courier'(e, t){
+        const value = e.target.value
+        const selectedCourier = t.selectedCourier.get()
+        if(selectedCourier){
+            const thisCourier = selectedCourier.find((x) => x.index == value)
+            if(thisCourier){
+                t.ongkir.set(thisCourier)
+                // console.log(selectedCourier);
+            }
+            else t.ongkir.set(null)
+        }
+    },
+    'click #triger-change-alamat'(e, t){
+        const address = JSON.parse($("#select-address").val());
+        const cart = t.cart.get()
+        if(address && cart){
+            const weight = cart.reduce(function (prev, curr) {  
+                return prev + (((+curr.qty) * (+curr.weight)) * 1000)
+            },0)
+            console.log(cart);
+            console.log(address);
+            Meteor.call('getOngkir', address.regency.city_id, weight, function (err, res) {  
+                if(err){
+                    failAlert(err)
+                }
+                else{
+                    t.courier.set(res)
+                    console.log(res);
+                }
+            })
+            
+        }
+    },
     'click #btnVoucher'(e, t){
         const code = $('#voucherCode').val(); 
         const promotions = Template.instance().promotion.get()

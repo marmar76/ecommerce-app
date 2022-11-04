@@ -27,7 +27,8 @@
             <div class="kontener d-flex justify-content-around gap-5 ">
                 <div class="container w-100">
                     <div class="my-3">
-                        <input type="hidden" id="select-address" value="true">
+                        <input type="hidden" id="select-address" value="null">
+                        <button type="button" id="triger-change-alamat" style="display: none;"></button>
                         <h4>Alamat Pengiriman</h4>
                         <hr>
                         {{ > selectAddress }}
@@ -67,8 +68,8 @@
                                 <div class="card-body">
                                     <h3 class="text-start ">{{name}}</h3> <br>
                                     <h4 class="mb-2 text-start fw-bold">Rp. {{price}}</h4>
-                                    <h4 class="mb-2 text-start fw-bold">{{quantity}} pcs</h4>
-                                    <h4 class="mb-2 text-start fw-bold">Subtotal: Rp. {{subtotal}}</h4>
+                                    <h4 class="mb-2 text-start fw-bold">{{qty}} pcs</h4>
+                                    <h4 class="mb-2 text-start fw-bold">Subtotal: Rp. {{multiply price qty}}</h4>
                                 </div>
                             </div>
                         </div>
@@ -86,19 +87,29 @@
                         </div>
                     </div>
                     <br>
-                    <!-- <div class="card" style="width: 100%;">
+                    <div class="card" style="width: 100%;">
                         <div class="card-body text-start">
-                            <label for="" class="text-start">Data Penerima</label><br><br>
-                            <h4 class="card-subtitle mb-2 text-start">{{address.recipient}}</h4>
-                            <h4 class="card-subtitle mb-2 text-start">{{address.street}}</h4>
-                            <h4 class="card-subtitle mb-2 text-start">{{address.province}}</h4>
-                            <h4 class="card-subtitle mb-2 text-start">{{address.city}}</h4>
-                            <h4 class="card-subtitle mb-2 text-start">{{address.postalCode}}</h4>
-                            <h4 class="card-subtitle mb-2 text-start">{{address.phone}}</h4>
-                            <button class="btn btn-success w-100" type="submit" id="btnChangeAddress">Change
-                                Address</button>
+                            <h3>Pilih Durasi</h3>
+                            <div class="form-group">
+                                <select class="form-control" name="" id="select-duration">
+                                    <option value="0">Pilih Durasi</option>
+                                    {{#each courier}}
+                                        <option value="{{label}}">Estimasi Tiba {{label}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            {{#if selectedCourier}}
+                            <div class="form-group mt-3">
+                                <select class="form-control" name="" id="select-courier">
+                                    <option value="0">Pilih Kurir</option>
+                                    {{#each selectedCourier}}
+                                        <option value="{{index}}">{{desc}} ({{value}})</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            {{/if}}
                         </div>
-                    </div> -->
+                    </div>
                     <br>
                     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{clientKey}}"></script>
                     <div class="card" style="width: 100%;">
@@ -107,7 +118,7 @@
                             <h4 class="card-subtitle mb-2 text-start">Total Price ({{totalItem}} product)
                                 Rp.<span id="total-purchase"></span></h4>
                             <h4 class="card-subtitle mb-2 text-start">Shipment Fee {{ongkir}}</h4>
-                            <h4 class="card-subtitle mb-2 text-start">Discount {{discount}}%</h4>
+                            <!-- <h4 class="card-subtitle mb-2 text-start">Discount {{discount}}%</h4> -->
                             <hr>
                             <h4 class="text-start fw-bold">Grand Total {{totalPurchase}}</h4> <br>
                             <button class="btn btn-success w-100" type="submit" id="btnCheckOut">Check Out</button>
