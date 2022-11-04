@@ -35,9 +35,11 @@
             </form>
             <div class="mx-3 d-flex align-items-center">
               {{#if isLogin}}
+              {{#if equals thisUser.isAdmin false}}
               <a href="/cart">
                 <i class="fa fa-shopping-cart fs-3 mx-3 text-white" aria-hidden="true"></i>
               </a>
+              {{/if}}
               <ul class="navbar-nav me-auto mb-2 mb-lg-0 text-white">
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle text-dark fs-5" href="#" id="navbarProfile" role="button"
@@ -47,8 +49,13 @@
                       class="text-white fs-4 fw-bold">{{thisUser.username}}</span>
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="navbarProfile">
+                    {{#if equals thisUser.isAdmin false}}      
                     <li><a class="dropdown-item fs-4" href="#"><i class="fa fa-truck me-3"
                           aria-hidden="true"></i>Pembelian</a></li>
+                    {{else}}
+                    <li><a class="dropdown-item fs-4" href="/master"><i class="fa fa-desktop me-3"
+                      aria-hidden="true"></i>Master</a></li>
+                    {{/if}}
                     <!-- <li><a class="dropdown-item fs-4" href="#"><i class="fa fa-bookmark me-4"
                           aria-hidden="true"></i>Wishlist</a></li> -->
                     <li><a class="dropdown-item fs-4" href="{{ pathFor route='userSettings' }}"><i

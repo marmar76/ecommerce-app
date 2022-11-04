@@ -20,6 +20,7 @@ Template.productPage.onCreated(function () {
     this.subcategory = new ReactiveVar(null)
     this.subcategoryItem = new ReactiveVar(null)
     this.quantity = new ReactiveVar(1)
+    this.user = new ReactiveVar()
     this.comparison = new ReactiveVar([
         {
             id: 1,
@@ -83,6 +84,13 @@ Template.productPage.onCreated(function () {
             })
         }
     })
+    Meteor.call('getMyself', async function (err,res) {  
+        if(err){
+            console.log(err);
+        }else{
+            self.user.set(res)
+        }
+    })
     // Meteor.call('getOneJenis', paramId, paramId + "-0", function (err, res) {
     //     if (err) {
     //         console.log(err);
@@ -131,6 +139,15 @@ Template.productPage.helpers({
         if(item){
             return item.find((x) => x.slug == slug).value
         }
+    },
+    user(){
+        const user = Template.instance().user.get()
+        if(user){
+            return user
+        }
+    },
+    equals(a, b){
+        return a == b
     }
 })
 

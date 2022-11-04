@@ -6,7 +6,7 @@ import {
 } from 'meteor/check';
 
 Meteor.methods({
-    'registerUser'(username, email, password) {
+    'registerUser'(username, email, password, data) {
         check(username, String)
         check(email, String)
         check(password, String)
@@ -19,7 +19,15 @@ Meteor.methods({
             return Meteor.users.update({
                 "_id": userId
             }, {
-                $set: {isAdmin: false, isBanned: false, status: true}
+                $set: {
+                    isAdmin: false,
+                    isBanned: false, 
+                    status: true,
+                    name: data.name,
+                    dob: data.dob,
+                    gender: data.gender,
+                    phone: data.phone,
+                }
             });
         }
     },

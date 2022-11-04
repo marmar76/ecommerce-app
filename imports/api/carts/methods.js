@@ -92,28 +92,47 @@ Meteor.methods({
             }
         })
     },
-    'deleteOneItemCart'(id,itemId){
-        check(id,String)
-        check(itemId,String) 
-        const cart = Carts.findOne({userId: id})
-        const items = cart.items
-        const arrItems = []
-        let index=-1
-        let grandtotal = 0
-        for (let i = 0; i < items.length; i++) {
-            if(items[i].itemId != itemId) {
-                arrItems.push(items[i])
-                grandtotal += items[i].subtotal
+    // 'deleteOneItemCart'(id,itemId){
+    //     check(id,String)
+    //     check(itemId,String) 
+    //     const cart = Carts.findOne({userId: id})
+    //     const items = cart.items
+    //     const arrItems = []
+    //     let index=-1
+    //     let grandtotal = 0
+    //     for (let i = 0; i < items.length; i++) {
+    //         if(items[i].itemId != itemId) {
+    //             arrItems.push(items[i])
+    //             grandtotal += items[i].subtotal
+    //         }
+    //     }  
+    //     return Carts.update({
+    //         userId:id 
+    //     },{
+    //         $set: {
+    //             items:arrItems,
+    //             grandtotal
+    //         }
+    //     })
+    // },
+    'deleteOneItemCart'(itemId){
+        check(itemId,String)
+        const user = Meteor.users.findOne({_id: Meteor.userId() })
+        let cart = user.cart 
+        for (let i = 0; i < cart.length; i++) {
+            if(itemId == cart[i].itemId)
+            {
+                cart.splice(i,1)
             }
-        }  
-        return Carts.update({
-            userId:id 
-        },{
+        }
+        return Meteor.users.update({
+            "_id": Meteor.userId()
+        }, {
             $set: {
-                items:arrItems,
-                grandtotal
+                cart
             }
-        })
+        }); 
+
     },
     // 'getDetailSubCategory'(id){
 

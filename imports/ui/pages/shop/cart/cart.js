@@ -122,19 +122,13 @@ Template.cart.events({
         }
     },
     'click .btnDelete'(e, t){
-        const item = $(e.target)
         const itemId = $(e.target).val();
-        const id = FlowRouter.current().params._id 
-        Meteor.call('deleteOneItemCart', id, itemId, function (err, res) {
-            if(err){
-                console.log(err);
+        Meteor.call('deleteOneItemCart', itemId, function (error, result) {
+            if(error){
+                console.log(error);
             }else{
-                Meteor.call('getOneCart', id, function (err, res) {  
-                    if(err){
-                        console.log(err);
-                    }else{
-                        t.cart.set(res)
-                    }
+                Meteor.call('getMyCart',function (err, res) {  
+                    t.cart.set(res)
                 })
             }
         })

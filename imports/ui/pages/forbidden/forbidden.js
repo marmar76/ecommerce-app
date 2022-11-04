@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import { Template } from 'meteor/templating'
 import { ReactiveVar } from 'meteor/reactive-var'
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import './forbidden.html'
 
 
@@ -16,6 +17,7 @@ Template.forbidden.helpers({
 })
 Template.forbidden.events({
     'click .getback'(e, t){
-        history.back()
+        // nanti diedit ke halaman homepage
+        FlowRouter.go('/')
     }
 })

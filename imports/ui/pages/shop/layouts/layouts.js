@@ -82,6 +82,9 @@ Template.layouts.helpers({
   formatHTML(context) {
     return moment(context).format("YYYY-MM-DD");
   },
+  equals(a, b){
+    return a == b
+  }
 }) 
 
 Template.layouts.events({

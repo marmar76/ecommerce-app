@@ -129,23 +129,34 @@ FlowRouter.route('/master', {
 FlowRouter.route('/master-users', {
     name: 'usersHome',
     template: 'userHome',
-    action(){
+    async action(){
+        const isAdmin = await checkAdmin(Meteor.userId())
         if(!Meteor.userId()){
-            FlowRouter.go('login', {});
+            FlowRouter.go('login', {})
         }
-        this.render('masterContainer', 'usersHome')
-        
+        else if(isAdmin){
+            this.render('masterContainer', 'usersHome')
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
     },
     
 })
 FlowRouter.route('/master-users-create', {
     name: 'userCreatePage',
     template: 'userCreatePage',
-    action(){
+    async action(){
+        const isAdmin = await checkAdmin(Meteor.userId())
         if(!Meteor.userId()){
-            FlowRouter.go('login', {});
+            FlowRouter.go('login', {})
         }
-        this.render('masterContainer', 'userCreatePage')
+        else if(isAdmin){
+            this.render('masterContainer', 'userCreatePage')
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
         
     },
     
@@ -153,11 +164,17 @@ FlowRouter.route('/master-users-create', {
 FlowRouter.route('/master-users-:_id-details', {
     name: 'userDetailPage',
     template: 'userDetailPage',
-    action(){
+    async action(){
+        const isAdmin = await checkAdmin(Meteor.userId())
         if(!Meteor.userId()){
-            FlowRouter.go('login', {});
+            FlowRouter.go('login', {})
         }
-        this.render('masterContainer', 'userDetailPage')
+        else if(isAdmin){
+            this.render('masterContainer', 'userDetailPage')
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
         
     },
     
@@ -165,11 +182,17 @@ FlowRouter.route('/master-users-:_id-details', {
 FlowRouter.route('/master-users-:_id-edit', {
     name: 'userEditPage',
     template: 'userEditPage',
-    action(){
+    async action(){
+        const isAdmin = await checkAdmin(Meteor.userId())
         if(!Meteor.userId()){
-            FlowRouter.go('login', {});
+            FlowRouter.go('login', {})
         }
-        this.render('masterContainer', 'userEditPage')
+        else if(isAdmin){
+            this.render('masterContainer', 'userEditPage')
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
         
     },
     
@@ -181,44 +204,85 @@ FlowRouter.route('/master-users-:_id-edit', {
 FlowRouter.route('/master-items', {
     name: 'itemsHome',
     template: 'itemsHome',
-    action(){
+    async action(){
+        const isAdmin = await checkAdmin(Meteor.userId())
         if(!Meteor.userId()){
-            FlowRouter.go('login', {});
-        } 
-        this.render('masterContainer', 'itemsHome')
-        
+            FlowRouter.go('login', {})
+        }
+        else if(isAdmin){
+            this.render('masterContainer', 'itemsHome')
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
     },
     
 })
 FlowRouter.route('/master-items-create', {
     name: 'itemsCreatePage',
     template: 'itemsCreatePage',
-    action() {
-      this.render('masterContainer','itemsCreatePage');
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(isAdmin){
+            this.render('masterContainer','itemsCreatePage');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
     },
 })
 
 FlowRouter.route('/master-items-:_id-details', {
     name: 'itemsDetailPage',
     template: 'itemsDetailPage',
-    action() {
-      this.render('masterContainer','itemsDetailPage');
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(isAdmin){
+            this.render('masterContainer','itemsDetailPage');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
     },
 })
 
 FlowRouter.route('/master-models-:_id-details', {
     name: 'modelDetailPage',
     template: 'modelDetailPage',
-    action() {
-      this.render('masterContainer','modelDetailPage');
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(isAdmin){
+            this.render('masterContainer','modelDetailPage');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
     },
 }) 
 
 FlowRouter.route('/master-models-:_id-edit', {
     name: 'modelEditPage',
     template: 'modelEditPage',
-    action() {
-      this.render('masterContainer','modelEditPage');
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(isAdmin){
+            this.render('masterContainer','modelEditPage');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
     },
 }) 
 
@@ -229,38 +293,83 @@ FlowRouter.route('/master-models-:_id-edit', {
 FlowRouter.route('/master-categories', {
     name: 'categoriesHome',
     template: 'categoriesHome',
-    action() {
-      this.render('masterContainer', 'categoriesHome');
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(isAdmin){
+            this.render('masterContainer', 'categoriesHome');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
     },
 })
 
 FlowRouter.route('/master-categories-create', {
     name: 'categoriesCreatePage',
     template: 'categoriesCreatePage',
-    action() {
-      this.render('masterContainer', 'categoriesCreatePage');
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(isAdmin){
+            this.render('masterContainer', 'categoriesCreatePage');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
     },
 })
 
 FlowRouter.route('/master-categories-:_id-details', {
     name: 'categoriesDetailPage',
     template: 'categoriesDetailPage',
-    action() {
-      this.render('masterContainer', 'categoriesDetailPage');
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(isAdmin){
+            this.render('masterContainer', 'categoriesDetailPage');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
     },
 })
 FlowRouter.route('/master-categories-:_id-edit', {
     name: 'categoriesEditPage',
     template: 'categoriesEditPage',
-    action() {
-      this.render('masterContainer', 'categoriesEditPage');
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(isAdmin){
+            this.render('masterContainer', 'categoriesEditPage');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
     },
 })
 FlowRouter.route('/master-subcategories', {
     name: 'subCategoriesHome',
     template: 'subCategoriesHome',
-    action() {
-      this.render('masterContainer', 'subCategoriesHome');
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(isAdmin){
+            this.render('masterContainer', 'subCategoriesHome');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
     },
 })
 
@@ -268,23 +377,50 @@ FlowRouter.route('/master-subcategories', {
 FlowRouter.route('/master-subcategories-create', {
     name: 'subCategoriesCreatePage',
     template: 'subCategoriesCreatePage',
-    action() {
-      this.render('masterContainer', 'subCategoriesCreatePage');
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(isAdmin){
+            this.render('masterContainer', 'subCategoriesCreatePage');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
     },
 })
 
 FlowRouter.route('/master-subcategories-:_id-edit', {
     name: 'subCategoriesEditPage',
     template: 'subCategoriesEditPage',
-    action() {
-      this.render('masterContainer', 'subCategoriesEditPage');
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(isAdmin){
+            this.render('masterContainer', 'subCategoriesEditPage');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
     },
 })
 FlowRouter.route('/master-subcategories-:_id-details', {
     name: 'subCategoriesDetailPage',
     template: 'subCategoriesDetailPage',
-    action() {
-      this.render('masterContainer', 'subCategoriesDetailPage');
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(isAdmin){
+            this.render('masterContainer', 'subCategoriesDetailPage');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
     },
 })
 
@@ -295,49 +431,94 @@ FlowRouter.route('/master-subcategories-:_id-details', {
 FlowRouter.route('/master-promotions', {
     name: 'promotionsHome',
     template: 'promotionsHome',
-    action() {
-      this.render('masterContainer', 'promotionsHome');
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(isAdmin){
+            this.render('masterContainer', 'promotionsHome');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
     },
 })
 
 FlowRouter.route('/master-promotions-create', {
     name: 'promotionsCreatePage',
     template: 'promotionsCreatePage',
-    action() {
-      this.render('masterContainer', 'promotionsCreatePage');
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(isAdmin){
+            this.render('masterContainer', 'promotionsCreatePage');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
     },
 })
 
 FlowRouter.route('/master-promotions-:_id-details', {
     name: 'promotionsDetailPage',
     template: 'promotionsDetailPage',
-    action() {
-      this.render('masterContainer', 'promotionsDetailPage');
+    async ction() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(isAdmin){
+            this.render('masterContainer', 'promotionsDetailPage');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
     },
 })
 
 FlowRouter.route('/master-promotions-:_id-edit', {
     name: 'promotionEditPage',
     template: 'promotionEditPage',
-    action() {
-      this.render('masterContainer', 'promotionEditPage');
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(isAdmin){
+            this.render('masterContainer', 'promotionEditPage');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
     },
 })
 
 FlowRouter.route('/master-subcategory-:_id-edit', {
     name: 'subCategoriesEditPage',
     template: 'subCategoriesEditPage',
-    action() {
-      this.render('masterContainer', 'subCategoriesEditPage');
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(isAdmin){
+            this.render('masterContainer', 'subCategoriesEditPage');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
     },
 })
-FlowRouter.route('/test', {
-    name: 'test',
-    template: 'test',
-    action() {
-      this.render('test');
-    },
-})
+// FlowRouter.route('/test', {
+//     name: 'test',
+//     template: 'test',
+//     action() {
+//       this.render('test');
+//     },
+// })
 
 //=====================================================
 //                  Master Banner     
@@ -345,16 +526,34 @@ FlowRouter.route('/test', {
 FlowRouter.route('/master-banner', {
     name: 'bannersHomePage',
     template: 'bannersHomePage',
-    action() {
-      this.render('masterContainer','bannersHomePage');
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(isAdmin){
+            this.render('masterContainer','bannersHomePage');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
     },
 })
 
 FlowRouter.route('/master-banner-create', {
     name: 'bannersCreatePage',
     template: 'bannersCreatePage',
-    action() {
-      this.render('masterContainer','bannersCreatePage');
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(isAdmin){
+            this.render('masterContainer','bannersCreatePage');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
     },
 })
 
@@ -369,8 +568,17 @@ FlowRouter.route('/master-banner-create', {
 FlowRouter.route('/master-banner-:_id-edit', {
     name: 'bannersEditPage',
     template: 'bannersEditPage',
-    action() {
-      this.render('masterContainer','bannersEditPage');
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(isAdmin){
+            this.render('masterContainer','bannersEditPage');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
     },
 })
 //=====================================================
@@ -380,22 +588,40 @@ FlowRouter.route('/productPage/:_id', {
     name: 'productPage',
     template: 'productPage',
     action() {
-      this.render('layouts','productPage');
+        this.render('layouts','productPage');
     },
 })
 //id dari cart adalah id user
 FlowRouter.route('/cart', {
     name: 'cart',
     template: 'cart',
-    action() {
-      this.render('layouts','cart');
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(!isAdmin){
+            this.render('layouts','cart');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+       }
     },
 })
 FlowRouter.route('/checkout', {
     name: 'checkout',
     template: 'checkout',
-    action() {
-      this.render('checkout');
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(!isAdmin){
+            this.render('checkout');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
     },
 })
 

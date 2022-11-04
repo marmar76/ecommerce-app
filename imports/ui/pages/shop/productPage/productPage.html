@@ -166,6 +166,7 @@
         <div class="d-flex justify-content-around w-25 px-1">
             <div class="card" style="width: 20rem; max-height:25rem">
                 <div class="card-body">
+                    {{#if equals user.isAdmin false}}
                     <p class="fw-bold fs-2" style="color :black">Atur Jumlah</p><br>
                     <div class="d-flex align-content-center">
                         <button class="btn fs-4 btn-min fw-bolder btn-quantity">-</button>
@@ -187,6 +188,7 @@
                     </div>
                     <!-- <button type="button" class="btn btn-outline-primary" value="{{jenis.itemId}}" id="buy">Buy
                         Now</button> -->
+                    {{/if}}
                 </div>
             </div>
         </div>

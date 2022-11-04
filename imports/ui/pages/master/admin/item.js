@@ -527,12 +527,20 @@ Template.itemsHome.onCreated(function () {
       //   return res.specification
       // })
       // console.log(thisSubcategory);
+      //ini masih belum bisa untuk menchek semua model specnya sudah diisi atau belum
+      let statusModel = true 
       const oldModels  = (item.subcategory == subcategory  && item.category == category) ? models.filter((p) => !p.isNew) : models.filter((p) => !p.isNew).map( function (x) {
-        // delete x.specification
+        // delete x.specification 
         x.specification = canCompare.specification
         return x
       })
       for (const i of oldModels) {
+        // console.log(i);
+        i.specification.map(function (x) {
+          if(x.value == null || x.value.length == 0){
+            statusModel = false 
+          }
+        })
         arr.push(i)
       }
       //thisModels ini new model yang di add manual(bukan model lama)
@@ -577,13 +585,8 @@ Template.itemsHome.onCreated(function () {
           }
         }
       })
-      let statusModel = true 
-      for (const i of thisModels) {
-        i.specification.map(function (x) {
-          if(x.value == null || x.value.length == 0){
-            statusModel == false 
-          }
-        })
+      
+      for (const i of thisModels) { 
         arr.push(i)
       }
       console.log(arr);
@@ -619,38 +622,43 @@ Template.itemsHome.onCreated(function () {
           }else{
             message='Are you sure you want to update this item'
           }
-          Swal.fire({
-            title: message,
-            icon: 'warning', 
-            showCancelButton: true,
-            confirmButtonText: 'OK', 
-          }).then((result) => { 
-            // console.log("tes1");
-            if (result.isConfirmed) {
-              // console.log("tes2");
-              Meteor.call('updateItem',paramId, data, function (error, result) {  
-                if(error){
-                  failAlert(error);
-                }
-                else{
-                  if(imageList){
-                    console.log(result);
-                    const fileName = paramId + getExt
-                    uploadImageFile(imageList, 'items/picture', fileName).then((snapshot) => { 
-                      console.log('Image Uploaded Successfully'); 
-                      // successAlert() 
-                    }).catch((error) => { 
-                      console.error(error); 
-                      failAlert(error) 
-                    });
-                  } else {
-                    // exitLoading() 
+          if(statusModel)
+          {
+            Swal.fire({
+              title: message,
+              icon: 'warning', 
+              showCancelButton: true,
+              confirmButtonText: 'OK', 
+            }).then((result) => { 
+              // console.log("tes1");
+              if (result.isConfirmed) {
+                // console.log("tes2");
+                Meteor.call('updateItem',paramId, data, function (error, result) {  
+                  if(error){
+                    failAlert(error);
                   }
-                  successAlertBack();
-                }
-              }) 
-            }
-          })
+                  else{
+                    if(imageList){
+                      console.log(result);
+                      const fileName = paramId + getExt
+                      uploadImageFile(imageList, 'items/picture', fileName).then((snapshot) => { 
+                        console.log('Image Uploaded Successfully'); 
+                        // successAlert() 
+                      }).catch((error) => { 
+                        console.error(error); 
+                        failAlert(error) 
+                      });
+                    } else {
+                      // exitLoading() 
+                    }
+                    successAlertBack();
+                  }
+                }) 
+              }
+            })
+          }else{
+            failAlert('All model specification must be filled')
+          }
           
         }
       }
