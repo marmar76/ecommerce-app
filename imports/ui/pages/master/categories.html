@@ -6,15 +6,16 @@
         <div class="card">
           <div class="card-body">
             <div class="d-flex flex-row">
-              <h4 class="card-title">List categories</h4>
+              <h2 class="" style="font-weight: bold;">List Category</h2>
             </div>
             <div class="d-flex flex-row-reverse">
               <a href="/master-categories-create"><button class="btn btn-primary">+ Add Category</button></a>
             </div>
+            <br>
             <div class="form-group">
-              <input class="form-control filtering" id="filter" type="text" placeholder="Search Name">
-            </div> 
-            <table class="table table-striped">
+              Search Category By Words <input class="form-control filtering" id="filter" type="text" placeholder="Search Name">
+            </div> <br>
+            <table class="table table-striped table-sm">
               <thead>
                 <tr>
                   <th class="fs-5">Category Name</th>
@@ -26,14 +27,14 @@
                 {{#each i in categories}}
                 <tr>
                   <td class="fs-5">{{i.name}}</td>
-                  <td class="fs-5">
+                  <td class="fs-6">
                     <ul>
                     {{#each j in subCategories i._id}} 
-                      <li class="fs-5">{{j.name}}</li>
+                      <li class="fs-6">{{j.name}}</li>
                     {{/each}}
                     </ul>
                   </td>
-                  <td class="fs-5"><a href="/master-categories-{{i._id}}-details"><button class="btn btn-primary">Details</button></a></td> 
+                  <td class="fs-6"><a href="/master-categories-{{i._id}}-details"><button class="btn btn-primary btn-sm">Details</button></a></td> 
                 </tr> 
                 {{/each}}
               </tbody>
@@ -51,7 +52,7 @@
       <div class="col-12 grid-margin stretch-card">
           <div class="card">
               <div class="card-body">
-                  <h4 class="card-title">Create new category</h4>
+                  <h2 style="font-weight: bold;">Create new category</h2>
                   <p class="card-description">
                       
                   </p>
@@ -71,7 +72,7 @@
       <div class="col-12 grid-margin stretch-card">
           <div class="card">
               <div class="card-body">
-                <h1 class="page-title">Category Details</h1>
+                <h2 class="page-title" style="font-weight: bold;">Category Details</h2>
                 <section class="section-page-shoulders">
                   <div class="btn-group">
                     <a class="btn btn-warning" href="/master-categories-{{ category._id }}-edit">Edit</a>
@@ -105,9 +106,11 @@
                           {{/if}}
                         </td>
                       </tr> 
+                      <tr></tr>
                     </tbody> 
                   </table>
                 </div>
+                <br>
                 <div class="form-actions form-group"> 
                   <button style="float: right;" class="btn btn-danger" id="delete">Delete Category</button>
                   <div style="clear: both;"></div>
@@ -124,7 +127,7 @@
       <div class="col-12 grid-margin stretch-card">
           <div class="card">
               <div class="card-body">
-                  <h4 class="card-title">Edit category {{category.name}}</h4>
+                  <h2 style="font-weight: bold;">Edit category {{category.name}}</h2>
                   <p class="card-description">
                       
                   </p>
