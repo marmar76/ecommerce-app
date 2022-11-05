@@ -465,7 +465,7 @@ FlowRouter.route('/master-promotions-create', {
 FlowRouter.route('/master-promotions-:_id-details', {
     name: 'promotionsDetailPage',
     template: 'promotionsDetailPage',
-    async ction() {
+    async action() {
         const isAdmin = await checkAdmin(Meteor.userId())
         if(!Meteor.userId()){
             FlowRouter.go('login', {})

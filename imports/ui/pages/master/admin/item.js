@@ -468,14 +468,11 @@ Template.itemsHome.onCreated(function () {
       const category = Template.instance().category.get();
       if (category) {
         const now = Template.instance().now.get();
-        console.log(category.find((x) => x._id == now).subcategory);
         return category.find((x) => x._id == now).subcategory
       }
       return [];
     },
     models() {
-
-      console.log( Template.instance().models.get() )
       return Template.instance().models.get()
     },
     equals(a, b){
@@ -528,12 +525,26 @@ Template.itemsHome.onCreated(function () {
       // })
       // console.log(thisSubcategory);
       //ini masih belum bisa untuk menchek semua model specnya sudah diisi atau belum
-      let statusModel = true 
-      const oldModels  = (item.subcategory == subcategory  && item.category == category) ? models.filter((p) => !p.isNew) : models.filter((p) => !p.isNew).map( function (x) {
-        // delete x.specification 
-        x.specification = canCompare.specification
-        return x
-      })
+      let statusModel = true
+      let oldModels 
+      let updateSubCategory = false 
+      if(item.subcategory == subcategory  && item.category == category){
+        console.log('tes');
+        oldModels =  models.filter((p) => !p.isNew)
+      }
+      else{
+        updateSubCategory = true
+        oldModels = models.filter((p) => !p.isNew).map( function (x) {
+          x.specification = canCompare.specification
+          return x
+        })
+      }
+      // const oldModels  = (item.subcategory == subcategory  && item.category == category) ? models.filter((p) => !p.isNew) : models.filter((p) => !p.isNew).map( function (x) {
+      //   // delete x.specification 
+      //   x.specification = canCompare.specification
+      //   return x
+      // })
+      console.log(oldModels);
       for (const i of oldModels) {
         // console.log(i);
         i.specification.map(function (x) {
@@ -589,7 +600,7 @@ Template.itemsHome.onCreated(function () {
       for (const i of thisModels) { 
         arr.push(i)
       }
-      console.log(arr);
+      // console.log(arr);
       console.log(statusModel);
       if (valid) {
         if (!name || !category || !subcategory || !weight || !description || !picture) {
@@ -614,51 +625,53 @@ Template.itemsHome.onCreated(function () {
               // data.ext = getExt
               // console.log(data);
               data.picture = paramId + getExt
-          }
-          let message=''
-          if(subcategory != item.subcategory)
-          {
-            message='Are you sure you want to update this item? this may cause formating the item specification'
-          }else{
-            message='Are you sure you want to update this item'
-          }
-          if(statusModel)
-          {
-            Swal.fire({
-              title: message,
-              icon: 'warning', 
-              showCancelButton: true,
-              confirmButtonText: 'OK', 
-            }).then((result) => { 
-              // console.log("tes1");
-              if (result.isConfirmed) {
-                // console.log("tes2");
-                Meteor.call('updateItem',paramId, data, function (error, result) {  
-                  if(error){
-                    failAlert(error);
-                  }
-                  else{
-                    if(imageList){
-                      console.log(result);
-                      const fileName = paramId + getExt
-                      uploadImageFile(imageList, 'items/picture', fileName).then((snapshot) => { 
-                        console.log('Image Uploaded Successfully'); 
-                        // successAlert() 
-                      }).catch((error) => { 
-                        console.error(error); 
-                        failAlert(error) 
-                      });
-                    } else {
-                      // exitLoading() 
-                    }
-                    successAlertBack();
-                  }
-                }) 
+
+              let message=''
+              if(subcategory != item.subcategory)
+              {
+                message='Are you sure you want to update this item? this may cause formating the item specification'
+              }else{
+                message='Are you sure you want to update this item'
               }
-            })
-          }else{
-            failAlert('All model specification must be filled')
-          }
+              if(statusModel || updateSubCategory)
+              {
+                Swal.fire({
+                  title: message,
+                  icon: 'warning', 
+                  showCancelButton: true,
+                  confirmButtonText: 'OK', 
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    Meteor.call('updateItem',paramId, data, function (error, result) {  
+                      if(error){
+                        failAlert(error);
+                      }
+                      else{
+                        if(imageList){
+                          console.log(result);
+                          const fileName = paramId + getExt
+                          uploadImageFile(imageList, 'items/picture', fileName).then((snapshot) => { 
+                            console.log('Image Uploaded Successfully'); 
+                            // successAlert() 
+                          }).catch((error) => { 
+                            console.error(error); 
+                            failAlert(error) 
+                          });
+                        } else {
+                          // exitLoading() 
+                        }
+                        successAlertBack();
+                      }
+                    }) 
+                  }
+                })
+              }else{
+                failAlert('All model specification must be filled')
+              }
+            }
+            else{
+              failAlert('You Must Insert Picture')
+            }
           
         }
       }
@@ -674,10 +687,10 @@ Template.itemsHome.onCreated(function () {
       const subCategory = t.subcategory.get()
       const canCompare = subCategory.find((x) => x._id == click)
       // const canCompare = SpecificationComparison.find((x) => x.subcategoryId == click)
-      console.log(canCompare);
+      // console.log(canCompare);
+      let models = t.models.get()
       // console.log(click);
       // if (canCompare) {
-        console.log(canCompare);
       if (canCompare.specification) {
         t.comparison.set(canCompare)
       } else {
@@ -734,6 +747,7 @@ Template.itemsHome.onCreated(function () {
       const paramId = FlowRouter.current().params._id;
       const click = $(e.target).val()
       let models = t.models.get()
+      console.log(models);
       const thisModel = models.find((x) => x.id == click) 
       const itemId = thisModel.itemId
       const name = thisModel.name
