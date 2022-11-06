@@ -28,7 +28,7 @@
                                 {{#each subcategory}} 
                                 <tr>
                                   <td class="fs-6">{{name}}</td> 
-                                  <td class="fs-6"><a href="/master-subcategories-{{_id}}-details"><button class="btn btn-primary btn-sm">Detail</button></a></td> 
+                                  <td class="fs-6"><a href="/master-subcategories-{{_id}}-details"><button class="btn btn-primary">Detail</button></a></td> 
                                 </tr> 
                                 {{/each}}
                               </tbody>
@@ -155,7 +155,7 @@
                                 {{else}}
                                     <td><input type="text" class="form-control" id="model-name-{{i.id}}" required placeholder="{{i.label}}" value="{{i.label}}"> </td>
                                 {{/if}}
-                                <td><button class="btn btn-danger model-delete btn-sm" value="{{i.id}}">Delete</button></td>
+                                <td><button class="btn btn-danger model-delete" value="{{i.id}}">Delete</button></td>
                             </tr> 
                             {{/if}}
                         {{/each}}
@@ -207,7 +207,7 @@
                         {{#if i.status}}
                             <tr>  
                               <td><input type="text" class="form-control" id="model-name-{{i.id}}" required placeholder="Specification Name"></td>
-                              <td><button class="btn btn-danger model-delete btn-sm" value="{{i.id}}">Delete</button></td>
+                              <td><button class="btn btn-danger model-delete " value="{{i.id}}">Delete</button></td>
                             </tr> 
                           {{/if}}
                       {{/each}}
