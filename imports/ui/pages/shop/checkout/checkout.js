@@ -94,7 +94,7 @@ Template.checkout.helpers({
             }, 0)
             $("#total-purchase").html(grandtotal);
             let disc = discount * grandtotal / 100
-            grandtotal += ongkir - disc
+            grandtotal += (ongkir ? ongkir.value : 0) - disc
             return grandtotal
         } 
     },
@@ -141,6 +141,8 @@ Template.checkout.events({
                 x.index = i + 1
                 return x
             }))
+            t.ongkir.set(null)
+            $("#select-courier").val("0");
         }
         else{
             t.selectedCourier.set(null)
@@ -178,6 +180,9 @@ Template.checkout.events({
             })
             
         }
+        $("#select-courier").val("0");
+        $("#select-duration").val("0");
+        t.ongkir.set(null)
     },
     'click #btnVoucher'(e, t){
         const code = $('#voucherCode').val(); 
@@ -214,70 +219,104 @@ Template.checkout.events({
         const cart = Template.instance().cart.get()
         const ongkir = Template.instance().ongkir.get()
         const discount = Template.instance().discount.get()
-        const promotion = Template.instance().promotion.get()
-        let grandtotal = cart.reduce(function (prev, curr) {  
-            if(curr.status){
-                return prev + +curr.qty * +curr.price
-            }
-            return prev
-        }, 0)
-        let disc = discount * grandtotal / 100
-        grandtotal += ongkir - disc
-
-        console.log(user._id);
-        console.log(user.username);
-        console.log(cart);
-        console.log(+grandtotal);
-        console.log(+discount);
-        console.log(promotion._id);
-        console.log(promotion.code);
-        console.log(user._id);
-
-        const data = {
-            userId: user._id,
-            userUsername: user.username,
-            items: cart.map(function (x) {  
+        const address = JSON.parse($("#select-address").val());
+        if(cart.length == 0){
+            failAlert("Cart masih kosong !!")
+        }
+        else if(!address){
+            failAlert('Mohon pilih alamat terlebih dahulu')
+        }
+        else if(!ongkir){
+            failAlert('Mohon pilih kurir terlebih dahulu :)')
+        }
+        else{
+            // const promotion = Template.instance().promotion.get()
+            let grandtotal = cart.reduce(function (prev, curr) {  
+                if(curr.status){
+                    return prev + (+curr.qty * +curr.price)
+                }
+                return prev
+            }, 0)
+            let disc = discount * grandtotal / 100
+            grandtotal += ongkir.value - disc
+            const items = cart.map(function (x) {  
                 return {
                     id: x.itemId,
                     price: +x.price,
                     name: x.name,
                     quantity: x.qty
                 }
-            }),
-            totalPurchase: +grandtotal,
-            discount: +discount,
-            // address:user.address[0],
-            promotionId: promotion._id,
-            promotionCode: promotion.code,
-            // createdBy: user._id,
+            })
+            
+            console.log(user._id);
+            console.log(user.username);
+            console.log(cart);
+            console.log(+grandtotal);
+            console.log(+discount);
+            // console.log(promotion._id);
+            // console.log(promotion.code);
+            console.log(user._id);
+    
+            const data = {
+                userId: user._id,
+                userUsername: user.username,
+                items,
+                totalPurchase: +grandtotal,
+                discount: +discount,
+                ongkir,
+                address,
+                // promotionId: promotion._id,
+                // promotionCode: promotion.code,
+                // createdBy: user._id,
+            }
+            // const items = cart.filter((x) => x.status).map(function (x) {  
+            //     return {
+            //         id: x.itemId,
+            //         price: x.price,
+            //         name: x.name,
+            //         quantity: x.quantity
+            //     }
+            // })
+            console.log(data);
+            Meteor.call('createInvoice', data, function (err, res) {  
+                if(err){
+                    console.log(err);
+                }else{
+                    snap.pay(res, {
+                        onSuccess: function (result) {
+                            Meteor.call('confirmPayment', res, result, function (err, res) {  
+                                if(err){
+                                    failAlert(err)
+                                }
+                                else{
+                                    successAlert()
+                                }
+                            })
+                            console.log("success", result);
+                        },
+                        onPending: function (result) {  
+                            console.log("pending", result);
+                        },
+                        onError: function (result) {  
+                            console.log("error", result);
+                        },
+                        onClose: function (result) {
+                            // Meteor.call('deleteTransaction', res, function (err, res1) {  
+                            //     if(err){
+                            //         failAlert(err)
+                            //     }
+                            //     else{
+                            //         failAlert('Transaction is canceled')
+                            //     }
+                            // })
+                            console.log("close", result);
+                        }
+                        // a
+                    })
+                    // console.log(res);
+                }
+            })
         }
-        const items = cart.filter((x) => x.status).map(function (x) {  
-            return {
-                id: x.itemId,
-                price: x.price,
-                name: x.name,
-                quantity: x.quantity
-            }
-        })
-        console.log(items);
-        Meteor.call('createInvoice', data, function (err, res) {  
-            if(err){
-                console.log(err);
-            }else{
-                snap.pay(res, {
-                    onSuccess: function (result) {  
-                        console.log("success", result);
-                    },
-                    onPending: function (result) {  
-                        console.log("pending", result);
-                    },
-                    onError: function (result) {  
-                        console.log("error", result);
-                    }
-                })
-                // console.log(res);
-            }
-        })
     },
 
 })

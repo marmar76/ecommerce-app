@@ -9,8 +9,10 @@ import {
 } from './invoices';
 import { fetch, Headers } from 'meteor/fetch';
 import moment from 'moment';
+import { Items } from '../items/items';
 moment.locale('id'); 
 const origin = "444" //surabaya
+const BASE_URL = 'https://api.sandbox.midtrans.com'
 
 const midtransClient = require('midtrans-client');
 const kurir = [
@@ -161,14 +163,26 @@ Meteor.methods({
         data.createdBy = Meteor.userId()
         data.createdAt = new Date()
         data.status = 1
+        data.log = [{
+            id: 1,
+            timestamp: new Date()
+        }]
+        data.paymentToken = null
         const id = Invoices.insert(data)
-        const items = data.items.map(function (x) {  
-            return {
-                id: x.itemId,
-                price: x.price,
-                name: x.name,
-                quantity: x.quantity
-            }
+        const items = data.items
+        // items.map(function (x) {  
+        //     return {
+        //         id: x.itemId,
+        //         price: x.price,
+        //         name: x.name,
+        //         quantity: x.quantity
+        //     }
+        // })
+        items.push({
+            id: "Courier",
+            price: data.ongkir.value,
+            name: data.ongkir.desc,
+            quantity: 1
         })
         const parameter = {
             'transaction_details': {
@@ -182,10 +196,75 @@ Meteor.methods({
                 //     'phone' : '08111222333',
                 
                 // },
-                "item_details": items
-            }
-            return await getToken(parameter)
+            "item_details": items
+        }
             
+        const token = await getToken(parameter)
+        Invoices.update({_id: id}, {$set: {
+            paymentToken: token
+        }})
+        return token
+            
+        },
+        async 'confirmPayment'(successObj){
+            if(successObj){
+                const thisInvoice = Invoices.findOne({_id: successObj.order_id})
+                if(thisInvoice){
+                    const thisUser = Meteor.users.findOne({_id: Meteor.userId()})
+                    console.log(id);
+                    thisInvoice.payment = successObj
+                    thisInvoice.status = 200
+                    thisInvoice.log.push({
+                        id: 200,
+                        timestamp: new Date()
+                    })
+                    for (const i of thisInvoice.items) {
+                        const item = i.id.split('-')
+                        const thisItem = Items.findOne({_id: item[0]})
+                        thisItem.models[item[1]].stock = (+thisItem.models[item[1]].stock) - i.quantity
+                        const userCartPosition = thisUser.cart.findIndex(function (x) {  
+                            return x.itemId == i.id
+                        })
+                        thisUser.cart.splice(userCartPosition, 1)
+                        Items.update({_id: item[0]}, {$set: thisItem})
+                    }
+                    Meteor.users.update({_id: Meteor.userId()}, {$set: thisUser})
+                    Invoices.update({_id: thisInvoice._id}, {$set: thisInvoice})
+                }
+                else{
+                    console.log("invalid invoice");
+                    throw new Meteor.Error("invalid invoice", "Invalid Invoice")
+                }
+            }
+            else{
+                console.log("success object");
+                throw new Meteor.Error('invalid success object', "Invalid  Success Object")
+            }
+
+            // const thisOngkir = await fetch(`${BASE_URL}/v2/${id}/status`, {
+            //     method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            //     // mode: 'cors', // no-cors, *cors, same-origin
+            //     // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            //     // credentials: 'same-origin', // include, *same-origin, omit
+            //     headers: new Headers({
+            //         'Content-Type': 'application/json',
+            //         'Accept': 'application/json',
+            //         'Authorization': settings.MIDTRANS_SERVERKEY,
+            //     }),
+            //     // redirect: 'follow', // manual, *follow, error
+            //     // referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            //     body: JSON.stringify({
+            //         origin: origin,
+            //         destination,
+            //         weight,
+            //         courier: x.name
+            //     }) // body data type must match "Content-Type" header
+            // });
+            // const result = await thisOngkir.json()
+            
+        },
+        'deleteTransaction'(id){
+            return Invoices.remove({_id: id})
         },
         'clientKey'(){
             const settings = Meteor.settings.public
