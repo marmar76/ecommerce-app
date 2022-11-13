@@ -1,39 +1,19 @@
-const model = [
-    {
-        id: 1,
-        spec: [
-            1, 2,3, 4
-        ],
-        pass:23,
-        word:23
-    },
-    {
-        id: 1,
-        spec: [
-            1, 2,3, 4
-        ]
-    },
-    {
-        id: 1,
-        spec: [
-            1, 2,3, 4
-        ]
-    },
-    {
-        id: 1,
-        spec: [
-            1, 2,3, 4
-        ]
-    },
-    {
-        id: 1,
-        spec: [
-            1, 2,3, 4
-        ]
-    },
-]
-console.log(model.map(function (x) {  
-    x.gura = 1
-    x.zeta = 1
-    return x
-}));
+const panjang = 10
+const tinggi = 10
+
+for (let i = 0; i < tinggi; i++) {
+    let cetak = ""
+    for (let j = 0; j < panjang; j++) {
+        if(j == 0 || i == 0 || j == panjang - 1 || i == tinggi - 1){
+            cetak += "*"
+        }
+        else cetak += " "
+
+        // const element = array[j];
+
+        
+    }
+    console.log(cetak);
+    // const element = array[index];
+    
+}

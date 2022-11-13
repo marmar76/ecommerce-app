@@ -10,13 +10,11 @@ Template.productList.onCreated(function () {
     let thisData = FlowRouter.getQueryParam('data')
     if(thisData){
         thisData = JSON.parse(thisData)
+    }else{
+        thisData = {filter: thisQuery ? thisQuery : "", sort: thisData ? (thisData.sort ? thisData.sort : 1) : 1}
     }
     // console.log(thisQuery);
-    self.filtering = new ReactiveVar({
-        filter: thisQuery ? thisQuery : '',
-        sort: thisData ? (thisData.sort ? thisData.sort : 1) : 1,
-        // hargaAkhir: thisData ? (thisData.hargaAkhir ? thisData.hargaAkhir : )
-    })
+    self.filtering = new ReactiveVar(thisData)
     this.item = new ReactiveVar();
     this.category = new ReactiveVar();
     this.subcategory = new ReactiveVar();
@@ -93,21 +91,16 @@ Template.productList.events({
         const sort = $('#sort').val()
         const hargaAwal = +$('#hargaAwal').val();
         const hargaAkhir = +$('#hargaAkhir').val();
-        const active = true 
-        t.filtering.set({
-            filter,
-            sort,
-            hargaAwal,
-            hargaAkhir,
-        })
-        FlowRouter.go('/search?q='+filter+'&data='+JSON.stringify({sort, hargaAkhir, hargaAwal}))
+        const active = true
+        const filtering = t.filtering.get()
+        filtering.filter = filter 
+        filtering.sort = sort 
+        filtering.hargaAwal = hargaAwal 
+        filtering.hargaAkhir = hargaAkhir 
+        t.filtering.set(filtering)
+        FlowRouter.go('/search?q='+filter+'&data='+JSON.stringify(filtering))
         // console.log(sort);
-        Meteor.call('getAllItem', {
-            filter, 
-            sort, 
-          hargaAwal,
-          hargaAkhir, 
-        }, function (err, res) {
+        Meteor.call('getAllItem', filtering, function (err, res) {
         if(err){
             failAlert(err)
         }else{
@@ -127,21 +120,16 @@ Template.productList.events({
         const hargaAwal = +$('#hargaAwal').val();
         const hargaAkhir = +$('#hargaAkhir').val();
         const active = true 
-        t.filtering.set({
-            filter,
-            sort,
-            category,
-            hargaAwal,
-            hargaAkhir,
-        })
-        console.log(sort);
-        Meteor.call('getAllItem', {
-            filter, 
-            sort, 
-            category,
-            hargaAwal,
-            hargaAkhir, 
-        }, function (err, res) {
+        const filtering = t.filtering.get()
+        filtering.filter = filter 
+        filtering.sort = sort 
+        filtering.category = category
+        filtering.hargaAwal = hargaAwal 
+        filtering.hargaAkhir = hargaAkhir 
+        t.filtering.set(filtering)
+        FlowRouter.go('/search?q='+filter+'&data='+JSON.stringify(filtering))
+        // console.log(sort);
+        Meteor.call('getAllItem', filtering, function (err, res) {
         if(err){
             failAlert(err)
         }else{
@@ -160,21 +148,16 @@ Template.productList.events({
         const hargaAwal = +$('#hargaAwal').val();
         const hargaAkhir = +$('#hargaAkhir').val();
         const active = true 
-        t.filtering.set({
-            filter,
-            sort,
-            subcategory,
-            hargaAwal,
-            hargaAkhir,
-        })
+        const filtering = t.filtering.get()
+        filtering.filter = filter 
+        filtering.sort = sort 
+        filtering.subcategory = subcategory
+        filtering.hargaAwal = hargaAwal 
+        filtering.hargaAkhir = hargaAkhir 
+        t.filtering.set(filtering)
+        FlowRouter.go('/search?q='+filter+'&data='+JSON.stringify(filtering))
         console.log(sort);
-        Meteor.call('getAllItem', {
-            filter, 
-            sort, 
-            subcategory,
-            hargaAwal,
-            hargaAkhir, 
-        }, function (err, res) {
+        Meteor.call('getAllItem', filtering, function (err, res) {
         if(err){
             failAlert(err)
         }else{
@@ -188,19 +171,15 @@ Template.productList.events({
         const hargaAwal = +$('#hargaAwal').val();
         const hargaAkhir = +$('#hargaAkhir').val();
         const active = true 
-        t.filtering.set({
-        filter,
-        sort,
-          hargaAwal,
-          hargaAkhir,
-        })
+        const filtering = t.filtering.get()
+        filtering.filter = filter 
+        filtering.sort = sort 
+        filtering.hargaAwal = hargaAwal 
+        filtering.hargaAkhir = hargaAkhir 
+        t.filtering.set(filtering)
+        FlowRouter.go('/search?q='+filter+'&data='+JSON.stringify(filtering))
         console.log(sort);
-        Meteor.call('getAllItem', {
-            filter, 
-            sort, 
-          hargaAwal,
-          hargaAkhir, 
-        }, function (err, res) {
+        Meteor.call('getAllItem', filtering, function (err, res) {
         if(err){
             failAlert(err)
         }else{
