@@ -187,8 +187,8 @@
                     <tr>
                       <!-- <th scope="row">{{id}}</th> -->
                       <td><input type="text" class="form-control" id="model-name-{{i.id}}" required placeholder="Model Name"></td>
-                      <td><input type="text" inputmode="numeric" class="form-control" id="model-price-{{i.id}}" required placeholder="Price"></td>
-                      <td><input type="text" inputmode="numeric" class="form-control" id="model-stock-{{i.id}}" required placeholder="Stock"></td>
+                      <td><input type="number" inputmode="numeric" class="form-control" id="model-price-{{i.id}}" required placeholder="Price"></td>
+                      <td><input type="number" inputmode="numeric" class="form-control" id="model-stock-{{i.id}}" required placeholder="Stock"></td>
                       <td><button class="btn btn-danger model-delete" value="{{i.id}}">Delete</button></td>
                     </tr>
                     {{#if comparison}}

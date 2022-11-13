@@ -187,13 +187,15 @@
                 </tbody>
               </table>
             </div><br>
-            {{#if equals user.isBanned false}}
-            <button style="float: right;" class="btn btn-danger" id="banned">Banned User</button>
-            {{else}}
-            <button style="float: right;" class="btn btn-primary" id="unbanned">Unbanned User</button>
-            {{/if}}
-            <button style="float: right; margin-right: 20px;" class="btn btn-danger" id="delete">Delete User</button>
-          </div>
+            {{#if isLogin user._id}}
+                {{#if equals user.isBanned false}}
+                <button style="float: right;" class="btn btn-danger" id="banned">Banned User</button>
+                {{else}}
+                <button style="float: right;" class="btn btn-primary" id="unbanned">Unbanned User</button>
+                {{/if}}
+                <button style="float: right; margin-right: 20px;" class="btn btn-danger" id="delete">Delete User</button>
+            {{/if}}    
+            </div>
         </div>
       </div>
     </div>

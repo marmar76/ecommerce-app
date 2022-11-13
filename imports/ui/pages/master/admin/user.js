@@ -61,7 +61,7 @@ Template.usersHome.onCreated(function () {
       // console.log(sort);
       const users = Meteor.users.find({
         isBanned: filtering.isBanned,
-        // status: filtering.status,
+        status: true,
         $or
       }, {
         sort: sort()
@@ -73,7 +73,8 @@ Template.usersHome.onCreated(function () {
         }
         return x
       })
-    }
+    },
+    
   
   })
   Template.usersHome.events({
@@ -177,7 +178,11 @@ Template.usersHome.onCreated(function () {
     },
     equals(a, b) {
       return a == b;
-    }
+    },
+    isLogin(_id){
+      // console.log( Meteor.user());
+      return Meteor.user()._id != _id
+    },
   })
   
   Template.userDetailPage.events({

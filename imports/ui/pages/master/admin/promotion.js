@@ -87,15 +87,7 @@ Template.promotionsHome.onCreated(function () {
       const expiredDate = moment($("#end").val(), 'YYYY-MM-DD').toDate(); 
       console.log(startDate);
       console.log(expiredDate);
-      const data = {
-        name,
-        code,
-        discount,
-        startDate,
-        expiredDate,
-        description,
-        status
-      };
+
       if (name.length === 0) {
         failAlert("Nama tidak boleh kosong!")
       } else if (code.length === 0) {
@@ -104,7 +96,18 @@ Template.promotionsHome.onCreated(function () {
         failAlert("Tanggal Start harus kurang dari tanggal Expired")
       } else if (description.length == 0) {
         failAlert("Description tidak boleh kosong")
+      } else if (!(discount && discount <=90 && discount >0)){
+        failAlert('Discount must be filled and less than 90')
       } else {
+        const data = {
+          name,
+          code,
+          discount,
+          startDate,
+          expiredDate,
+          description,
+          status
+        };
         Meteor.call('createPromotion', data, function (error, res) {
           console.log(error);
           console.log(res);

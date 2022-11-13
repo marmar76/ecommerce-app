@@ -264,7 +264,7 @@ Template.itemsHome.onCreated(function () {
         }
       })
       if (valid) {
-        if (!name || !category || !subcategory || !weight || !description) {
+        if (!name || (!category  || +category == 0) || (!subcategory || +subcategory == 0) || !weight || !description) {
           failAlert("something missing with this item")
         } else {
           const data = {
@@ -603,7 +603,7 @@ Template.itemsHome.onCreated(function () {
       // console.log(arr);
       console.log(statusModel);
       if (valid) {
-        if (!name || !category || !subcategory || !weight || !description || !picture) {
+        if (!name || !category  || +category == 0 || !subcategory || +subcategory == 0 || !weight || !description || !picture) {
           failAlert("something missing with this item")
         } else {
             const data = {
