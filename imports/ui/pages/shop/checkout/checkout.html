@@ -67,9 +67,9 @@
                             <div class="col-md-8">
                                 <div class="card-body">
                                     <h3 class="text-start ">{{name}}</h3> <br>
-                                    <h4 class="mb-2 text-start fw-bold">Rp. {{price}}</h4>
+                                    <h4 class="mb-2 text-start fw-bold">{{formatRp price}}</h4>
                                     <h4 class="mb-2 text-start fw-bold">{{qty}} pcs</h4>
-                                    <h4 class="mb-2 text-start fw-bold">Subtotal: Rp. {{multiply price qty}}</h4>
+                                    <h4 class="mb-2 text-start fw-bold">Subtotal: {{multiply price qty}}</h4>
                                 </div>
                             </div>
                         </div>
@@ -116,11 +116,11 @@
                         <div class="card-body">
                             <h3 class="text-start fw-bold">Order Summary</h3> <br>
                             <h4 class="card-subtitle mb-2 text-start">Total Price ({{totalItem}} product)
-                                Rp.<span id="total-purchase"></span></h4>
-                            <h4 class="card-subtitle mb-2 text-start">Shipment Fee {{ongkir}}</h4>
+                                <span id="total-purchase"></span></h4>
+                            <h4 class="card-subtitle mb-2 text-start">Shipment Fee {{formatRp ongkir}}</h4>
                             <!-- <h4 class="card-subtitle mb-2 text-start">Discount {{discount}}%</h4> -->
                             <hr>
-                            <h4 class="text-start fw-bold">Grand Total {{totalPurchase}}</h4> <br>
+                            <h4 class="text-start fw-bold">Grand Total {{formatRp totalPurchase}}</h4> <br>
                             <button class="btn btn-success w-100" type="submit" id="btnCheckOut">Check Out</button>
                         </div>
                     </div>

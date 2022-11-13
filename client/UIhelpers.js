@@ -4,10 +4,16 @@ import {
 import moment from 'moment';
 import 'moment/locale/id'
 const numeral = require('numeral')
-
+formatRp = function (context) {  
+  if (context != 0) {
+    return 'Rp' + numeral(context).format('0,0');
+  } else {
+    return 'FREE';
+  }
+}
 Template.registerHelper('formatRp', function (context, options) {
   if (context != 0) {
-    return 'Rp ' + numeral(context).format('0,0');
+    return 'Rp' + numeral(context).format('0,0');
   } else {
     return 'FREE';
   }

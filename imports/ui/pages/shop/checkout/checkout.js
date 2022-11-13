@@ -92,7 +92,7 @@ Template.checkout.helpers({
                 }
                 return prev
             }, 0)
-            $("#total-purchase").html(grandtotal);
+            $("#total-purchase").html(formatRp(grandtotal));
             let disc = discount * grandtotal / 100
             grandtotal += (ongkir ? ongkir.value : 0) - disc
             return grandtotal
@@ -121,7 +121,7 @@ Template.checkout.helpers({
         return ''
     },
     multiply(a, b){
-        return parseInt(a) * parseInt(b)
+        return formatRp(parseInt(a) * parseInt(b))
     },
     courier(){
         return Template.instance().courier.get()
@@ -171,7 +171,7 @@ Template.checkout.events({
             console.log(address);
             Meteor.call('getOngkir', address.regency.city_id, weight, function (err, res) {  
                 if(err){
-                    failAlert(err)
+                    failAlert(err.reason)
                 }
                 else{
                     t.courier.set(res)

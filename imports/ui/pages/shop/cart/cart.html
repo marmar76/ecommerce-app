@@ -7,7 +7,7 @@
     </style>
     <!-- <center> -->
     <div class="justify-content-center d-flex ">
-        <div class="kontener w-75 d-flex justify-content-around gap-5 ">
+        <div class="kontener w-100 mx-5 d-flex justify-content-around">
             <div class="container w-75"> 
                 <h3 class="text-start fw-bold">Cart</h3> <br>
                 <hr><br>
@@ -33,8 +33,8 @@
                             <div class="col-md-8">
                                 <div class="card-body"> 
                                     <h2 class="text-start fw-bold">{{name}}</h2> <br>
-                                    <h3 class="mb-2 text-start fw-bold"><i class="far fa-money-bill-alt"></i> Price : Rp. {{price}}</h3>
-                                    <h3 class="mb-2 text-start fw-bold">Total : Rp. {{multiply price qty}}</h3>
+                                    <h3 class="mb-2 text-start fw-bold"><i class="far fa-money-bill-alt"></i> Price : {{formatRp price}}</h3>
+                                    <h3 class="mb-2 text-start fw-bold">Total : {{multiply price qty}}</h3>
                                 </div>
                             </div>
                         </div>

@@ -40,12 +40,12 @@ Template.cart.helpers({
                 qty += +i.qty
                 total += +i.qty * +i.price
             }
-            $("#grand-total").html(total);
+            $("#grand-total").html(formatRp(total));
             return qty
         }
     },
     multiply(a, b){
-        return parseInt(a) * parseInt(b)
+        return formatRp(parseInt(a) * parseInt(b))
     },
 })
 

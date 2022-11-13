@@ -299,6 +299,9 @@ Meteor.methods({
 
 
     },
+    async 'getPromotion'(){
+        
+    },
     async 'getOngkir'(destination, weight){
         // console.log({
         //     key: settings.RAJAONGKIR_KEY,
@@ -329,38 +332,43 @@ Meteor.methods({
             });
             const result = await thisOngkir.json()
             // return {converted: x.getDate(result), result}
-            const thisDate = x.getDate(result)
             try {
-                for (const i of thisDate) {
-                    let label = ''
-                    if(i){
-                        if(i.estimation.includes('-')){
-                            label = i.estimation.split('-')[0]
-                        }
-                        else{
-                            label = i.estimation
-                        }
-                        const findSimiliar = allOngkir.find(function (u) {
-                            return u.label == label
-                        })
-                        if(findSimiliar){
-                            findSimiliar.data.push(i)
-                        }
-                        else{
-                            allOngkir.push({
-                                label,
-                                data: [i],
-                                jsDate: i.jsDate
+                const thisDate = x.getDate(result)
+                try {
+                    for (const i of thisDate) {
+                        let label = ''
+                        if(i){
+                            if(i.estimation.includes('-')){
+                                label = i.estimation.split('-')[0]
+                            }
+                            else{
+                                label = i.estimation
+                            }
+                            const findSimiliar = allOngkir.find(function (u) {
+                                return u.label == label
                             })
+                            if(findSimiliar){
+                                findSimiliar.data.push(i)
+                            }
+                            else{
+                                allOngkir.push({
+                                    label,
+                                    data: [i],
+                                    jsDate: i.jsDate
+                                })
+                            }
                         }
                     }
+                } catch (error) {
+                    console.log(error);
+                    return thisDate
                 }
+                
+                return thisDate    
             } catch (error) {
-                console.log(error);
-                return thisDate
+                throw new Meteor.Error('error-bos', result.rajaongkir.status.description)
             }
             
-            return thisDate
 
         })
         
