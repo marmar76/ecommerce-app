@@ -18,6 +18,8 @@ import '../../ui/pages/shop/comparison/comparison'
 import '../../ui/pages/shop/checkout/checkout' 
 import '../../ui/pages/shop/userSettings/userSettings' 
 import '../../ui/pages/shop/productList/productList' 
+import '../../ui/pages/shop/thankyou/thankyou' 
+import '../../ui/pages/shop/support/support' 
 
 // FlowRouter.route('*', {
 //     action() {
@@ -618,6 +620,40 @@ FlowRouter.route('/checkout', {
         }
         else if(!isAdmin){
             this.render('checkout');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
+    },
+})
+
+FlowRouter.route('/thank-you', {
+    name: 'thankyou',
+    template: 'thankyou',
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(!isAdmin){
+            this.render('thankyou');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
+    },
+})
+
+FlowRouter.route('/support', {
+    name: 'support',
+    template: 'support',
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(!isAdmin){
+            this.render('layouts', 'support');
         }
         else{
             FlowRouter.go('forbidden', {})

@@ -14,12 +14,16 @@ Template.checkout.onCreated(function () {
     this.promotion = new ReactiveVar();
     this.user = new ReactiveVar()
     this.courier = new ReactiveVar([])
+    this.promotion = new ReactiveVar([])
     this.selectedCourier = new ReactiveVar(null)
     const currentDt = moment().startOf('day').toDate() 
     Meteor.call('getTodayPromotion', currentDt, function (err, res) {
         console.log(res);
         self.promotion.set(res);
     });
+    Meteor.call('getPromotion', function (err, res) {  
+        console.log(res);
+    })
     Meteor.call('getMyCart', function (err, res) {  
         if(err){
             console.log(err);
@@ -289,6 +293,7 @@ Template.checkout.events({
                                     failAlert(err)
                                 }
                                 else{
+                                    FlowRouter.go('thankyou')
                                     successAlert()
                                 }
                             })

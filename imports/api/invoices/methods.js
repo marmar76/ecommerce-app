@@ -10,6 +10,7 @@ import {
 import { fetch, Headers } from 'meteor/fetch';
 import moment from 'moment';
 import { Items } from '../items/items';
+import { Promotions } from '../promotions/promotions';
 moment.locale('id'); 
 const origin = "444" //surabaya
 const BASE_URL = 'https://api.sandbox.midtrans.com'
@@ -299,8 +300,18 @@ Meteor.methods({
 
 
     },
-    async 'getPromotion'(){
-        
+    'getPromotion'(date){
+        date = date ? date : new Date()
+        const promotion = Promotions.find({
+            startDate: {
+                $gte: date
+            },
+            endDate: {
+                $lte: date
+            }
+        }).fetch()
+        return promotion
+
     },
     async 'getOngkir'(destination, weight){
         // console.log({

@@ -1,0 +1,29 @@
+<template name="thankyou">
+    <style>
+        .card {
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+    </style>
+    <div class="container">
+        <div>
+            <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+                <div class="container-fluid d-flex w-75">
+                    <div>
+                        <img class="img-fluid" src="../img/logo/logov2.png" alt="" srcset=""
+                            style="width: 100%; height: 80px;">
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div>
+            <button style="display: none;" class="trigger-button"></button>
+        </div>
+    </div>
+    <div class="content d-flex align-items-center vh-100 flex-column justify-content-center">
+        <h1>Thankyou for your purchase</h1>
+        <h2>You will be redirected in {{seconds}}</h2>
+    </div>
+
+
+</template>

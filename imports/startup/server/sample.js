@@ -68,7 +68,7 @@ Meteor.startup(async () => {
       $set: {isAdmin: true}
     })
   }
-
+  // Accounts.addEmail('SiWSoiaa8cAGqpdxK', 'takina@mail.com')
   const user = Accounts.findUserByUsername(SEED_USERNAME);
   // https://stackoverflow.com/questions/10473745/compare-strings-javascript-return-of-likely
   // Levenshtein distance
@@ -123,7 +123,7 @@ Meteor.startup(async () => {
       'Seventh Task',
     ].forEach(taskText => insertTask(taskText, user));
   }
-  if(Provinces.find().count() !== 0 && false){
+  if(Provinces.find().count() !== 0 && false){ 
     const rajaongkirprovince = await axios({
       method: 'get',
       url: 'https://api.rajaongkir.com/starter/province',
