@@ -12,6 +12,7 @@ import './promotions.html';
 import './subCategories.html';
 import './categories.html';
 import './banners.html';
+import './invoice.html';
 
 // import '../../assets/master/vendors/feather/feather.css'
 import '../../assets/master/vendors/mdi/css/materialdesignicons.min.css'
@@ -135,6 +136,17 @@ export const navbar = [{
       }
     ]
   },
+  {
+    type: 2,
+    title: 'Invoice',
+    icon: 'menu-icon mdi mdi-account',
+    href: 'master-invoice',
+    child: [{
+        href: '/master-invoice',
+        title: 'List invoice'
+      },
+    ]
+  },
 ]
 
 function autoText(e) {
@@ -218,3 +230,4 @@ import './admin/promotion'
 
 import './admin/banner'
 import './admin/item'
+import './admin/invoice'

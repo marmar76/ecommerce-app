@@ -1,0 +1,71 @@
+<template name="invoiceHome">
+    <h1>List Invoice</h1>
+    <label for="">Status Filter</label>
+    <select name="dateoption" id="dateoption" class="form-control filtering">
+        <option value="0">All Status</option>
+        <option value="1">Pending Payment</option> 
+        <option value="200">Payment Success</option> 
+        <option value="201">Order Confirmed</option> 
+        <option value="202">Package Sent</option> 
+        <option value="203">Package Received</option> 
+        <option value="269">Order Finished</option> 
+        <option value="400">Order Canceled</option> 
+    </select><br>
+    <div class="form-group"> 
+        <label for="">Start Date</label>
+        <input type="date" class="form-control filtering" id="startDate" value="{{formatHTML monthStart}}">
+    </div><br>
+    <div class="form-group"> 
+        <label for="">Expired Date</label>
+        <input type="date" class="form-control filtering" id="expiredDate" value="{{formatHTML monthEnd}}">
+    </div><br>
+    <div class="2-50 mx-2 mt-3">
+        <label for="">Order By</label>
+        <select class="form-control filtering" name="" id="sort">
+            <option value="1">Name Ascending</option>
+            <option value="2">Name Descending</option>
+            <option value="3">Join Date Ascending</option>
+            <option value="4">Join Date Descending</option>
+        </select>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Username</th> 
+                <th>Address</th>   
+                <th>Total Item</th>
+                <th>Total Purchase</th>
+                <th>Courier</th>
+                <th>Status Trans</th>
+                <th>Tanggal Trans</th>
+                <th>Action</th> 
+            </tr>
+        </thead>
+        <tbody>
+            {{#each i in invoices}}
+            <tr>
+                <td>{{i.userUsername}}</td> 
+                <td>{{i.address.address}}</td>
+                <td>{{i.totalItem}}</td>
+                <td>{{formatRp i.totalPurchase}}</td>
+                <td>{{i.ongkir.desc}}</td>
+                <td>{{i.statusTrans}}</td>
+                <td>{{formatDateIDN i.createdAt}}</td>
+                <td>
+                    <a href="/master-invoice-{{i._id}}-detail"><button class="btn btn-primary">Details</button></a>
+                    {{#if equals i.status 200}}
+                        <button class="btn btn-success accept" value="{{i._id}}">Accept</button>
+                    {{/if}}
+                    {{#if equals i.status 201}}
+                        <button class="btn btn-success accept" value="{{i._id}}">Send</button>
+                    {{/if}}
+                    {{#if equals i.status 200}}
+                        <button class="btn btn-warning reject" value="{{i._id}}">reject</button>
+                    {{/if}}
+                </td>
+                
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</template>

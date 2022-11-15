@@ -4,6 +4,22 @@ import {
 import moment from 'moment';
 import 'moment/locale/id'
 const numeral = require('numeral')
+
+changeInvoiceStatus = function (status) {  
+  let nextStatus
+  if(status == 200){
+    nextStatus = 201
+  } else if(status == 201){
+    nextStatus = 202
+  } else if(status == 202){
+    nextStatus = 203
+  } else if(status == 203){
+    nextStatus = 269
+  }
+  console.log(nextStatus);
+  return nextStatus
+}
+
 formatRp = function (context) {  
   if (context != 0) {
     return 'Rp' + numeral(context).format('0,0');
@@ -11,6 +27,14 @@ formatRp = function (context) {
     return 'FREE';
   }
 }
+
+validateEmail = (email) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+};
 Template.registerHelper('formatRp', function (context, options) {
   if (context != 0) {
     return 'Rp' + numeral(context).format('0,0');

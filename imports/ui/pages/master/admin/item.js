@@ -264,7 +264,7 @@ Template.itemsHome.onCreated(function () {
         }
       })
       if (valid) {
-        if (!name || (!category  || +category == 0) || (!subcategory || +subcategory == 0) || !weight || !description) {
+        if (!name || (!category  || +category == 0) || (!subcategory || +subcategory == 0) || (!weight || +weight == 0) || !description) {
           failAlert("something missing with this item")
         } else {
           const data = {
@@ -603,7 +603,7 @@ Template.itemsHome.onCreated(function () {
       // console.log(arr);
       console.log(statusModel);
       if (valid) {
-        if (!name || !category  || +category == 0 || !subcategory || +subcategory == 0 || !weight || !description || !picture) {
+        if (!name || !category  || +category == 0 || !subcategory || +subcategory == 0 || (!weight || +weight == 0) || !description || !picture) {
           failAlert("something missing with this item")
         } else {
             const data = {
@@ -618,6 +618,8 @@ Template.itemsHome.onCreated(function () {
           // $("#uploadImageItem").trigger("change");
             const imageList = t.imageList.get()
             let thisFile, getExt
+            console.log(imageList);
+            
             if(imageList){
               thisFile = imageList
               getExt = thisFile.type.split('/')[1]
@@ -658,11 +660,11 @@ Template.itemsHome.onCreated(function () {
                             failAlert(error) 
                           });
                         } else {
-                          // exitLoading() 
+                          
                         }
                         successAlertBack();
                       }
-                    }) 
+                    })
                   }
                 })
               }else{
@@ -670,9 +672,16 @@ Template.itemsHome.onCreated(function () {
               }
             }
             else{
-              failAlert('You Must Insert Picture')
+              Meteor.call('updateItem',paramId, data, function (error, result) {  
+                if(error){
+                  failAlert(error);
+                }
+                else{
+                  successAlertBack();
+                }
+              })
             }
-          
+            
         }
       }
   

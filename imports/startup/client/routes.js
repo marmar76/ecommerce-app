@@ -20,6 +20,7 @@ import '../../ui/pages/shop/userSettings/userSettings'
 import '../../ui/pages/shop/productList/productList' 
 import '../../ui/pages/shop/thankyou/thankyou' 
 import '../../ui/pages/shop/support/support' 
+import '../../ui/pages/shop/historyTransaction/historyTransaction' 
 
 // FlowRouter.route('*', {
 //     action() {
@@ -110,6 +111,7 @@ FlowRouter.route('/register', {
         this.render('register')
     }
 })
+
 FlowRouter.route('/master', {
     name: 'masterContainer',
     template: 'masterContainer',
@@ -583,6 +585,28 @@ FlowRouter.route('/master-banner-:_id-edit', {
         }
     },
 })
+
+
+//=====================================================
+//                  Master invoice     
+//=====================================================
+FlowRouter.route('/master-invoice', {
+    name: 'invoiceHome',
+    template: 'invoiceHome',
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(isAdmin){
+            this.render('masterContainer','invoiceHome');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
+    },
+})
+
 //=====================================================
 //                  Client side     
 //=====================================================
@@ -610,6 +634,7 @@ FlowRouter.route('/cart', {
        }
     },
 })
+
 FlowRouter.route('/checkout', {
     name: 'checkout',
     template: 'checkout',
@@ -637,6 +662,22 @@ FlowRouter.route('/thank-you', {
         }
         else if(!isAdmin){
             this.render('thankyou');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
+    },
+})
+FlowRouter.route('/historyTrans', {
+    name: 'historyTrans',
+    template: 'historyTrans',
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(!isAdmin){
+            this.render('layouts','historyTrans');
         }
         else{
             FlowRouter.go('forbidden', {})

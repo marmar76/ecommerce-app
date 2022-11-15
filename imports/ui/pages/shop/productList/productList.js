@@ -125,7 +125,8 @@ Template.productList.events({
         filtering.sort = sort 
         filtering.category = category
         filtering.hargaAwal = hargaAwal 
-        filtering.hargaAkhir = hargaAkhir 
+        filtering.hargaAkhir = hargaAkhir
+        delete filtering.subcategory
         t.filtering.set(filtering)
         FlowRouter.go('/search?q='+filter+'&data='+JSON.stringify(filtering))
         // console.log(sort);
@@ -153,7 +154,8 @@ Template.productList.events({
         filtering.sort = sort 
         filtering.subcategory = subcategory
         filtering.hargaAwal = hargaAwal 
-        filtering.hargaAkhir = hargaAkhir 
+        filtering.hargaAkhir = hargaAkhir
+        delete filtering.category 
         t.filtering.set(filtering)
         FlowRouter.go('/search?q='+filter+'&data='+JSON.stringify(filtering))
         console.log(sort);

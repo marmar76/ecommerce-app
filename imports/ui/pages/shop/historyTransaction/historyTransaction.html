@@ -1,0 +1,64 @@
+<template name="historyTrans">
+    <!-- <style>
+        .card {
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+    </style>
+    <div class="container">
+        <div>
+            <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+                <div class="container-fluid d-flex w-75">
+                    <div>
+                        <img class="img-fluid" src="../img/logo/logov2.png" alt="" srcset=""
+                            style="width: 100%; height: 80px;">
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div>
+            <button style="display: none;" class="trigger-button"></button>
+        </div>
+    </div> -->
+    <div class="px-4">
+        <h1>Daftar Transaksi</h1>
+        {{#each i in historyTrans}}
+        <div class="card mb-3">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="{{i.firstItem.link}}" class="card-img-top rounded" style="height: 18rem; width: 18rem; object-fit: cover;" alt="">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h6 class="text-start">{{formatDateIDN i.createdAt}}</h6> <br>
+                        {{#if equals i.statusType 1}}
+                        <h6 class="text-start bg-success w-25">{{i.statusTrans}}</h6> <br>
+                        
+                        {{else}}
+                        <h6 class="text-start bg-secondary w-25">{{i.statusTrans}}</h6> <br>
+                        
+                        {{/if}}
+                        <h2 class="text-start fw-bold">{{i.firstItem.name}}</h2> <br>
+                        <h3 class="mb-2 text-start fw-bold"> {{i.firstItem.quantity}} product x {{formatRp i.firstItem.price}} </h3>
+                        <h3 class="mb-2 text-start fw-bold"> +{{i.productLainnya}} product lainnya </h3>
+                        <h3 class="mb-2 text-start fw-bold"> Total Purchase {{formatRp i.totalPurchase}} </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-row-reverse gap-3">
+                <div class="d-flex align-content-center justify-content-end me-4 py-4">
+                    <!-- <input type="checkbox" class="form-control"> -->
+                    {{#if equals i.status 203}}
+                        <button class="changeStatus" value="{{i._id}}">Package Received</button> 
+                    {{/if}}
+                    <button>Details</button>    
+                    {{#if equals i.status 269}}
+                        <button>Review</button> 
+                    {{/if}}
+                    <button class="changeStatus" value="{{i._id}}">Change Stat</button>    
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</template>

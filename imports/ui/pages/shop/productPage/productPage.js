@@ -111,6 +111,7 @@ Template.productPage.helpers({
     item() {
         const items = Template.instance().item.get();
         if (items) {
+            console.log(items);
             return items;
         }
     },

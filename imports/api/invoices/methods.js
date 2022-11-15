@@ -207,12 +207,13 @@ Meteor.methods({
         return token
             
         },
-        async 'confirmPayment'(successObj){
+        async 'confirmPayment'(res, successObj){
             if(successObj){
+                console.log(successObj);
                 const thisInvoice = Invoices.findOne({_id: successObj.order_id})
                 if(thisInvoice){
                     const thisUser = Meteor.users.findOne({_id: Meteor.userId()})
-                    console.log(id);
+                    // console.log(id);
                     thisInvoice.payment = successObj
                     thisInvoice.status = 200
                     thisInvoice.log.push({
@@ -393,6 +394,64 @@ Meteor.methods({
             })
             return r
         })
-    }
+    },
+    async 'getUserInvoice'(_id){
+        const invoice = Invoices.find({userId:_id}).fetch()
+        if(invoice){
+            const newInvoice = invoice.map(async function (x) {
+                const items = x.items.map(async function (y) {
+                    const itemId = y.id.split('-')
+                    const item   = Items.findOne({_id: itemId[0]})
+                    const thisModel = item.models[itemId[1]]
+                    if(item.picture){
+                        try {
+                            const profilePictureLink = await getFireImage('items/picture', item.picture)
+                            item.link = profilePictureLink
+                        } catch (error) {
+                            console.log(error);
+                        }
+                    }
+                    y.link = item.link
+                    return y
+                })
+                x.items = await Promise.all(items)
+                return x
+            })
+            return await Promise.all(newInvoice)
+        }
+    },
+    'getOneInvoice'(_id){
+        console.log(Invoices.findOne({_id:_id}));
+        return Invoices.findOne({_id:_id})
+    },
+    'getAllInvoice'(filtering){
+        const thisFilter = {}
+        const sort = {}
+        // if (filtering) {
+        //     thisFilter.status = true
+        //     if ((+filtering.sort) === 1) {
+        //         sort.name = 1
+        //     } else if ((+filtering.sort) === 2) {
+        //         sort.name = -1
+        //     } 
+        // }
+        const invoices = Invoices.find(thisFilter, {
+            sort: sort
+        }).fetch();
+        console.log(invoices);
+        let invoice = invoices.filter(function (x) {   
+            return x
+        })
+        console.log(invoice);
+        return invoice
+    },
+    'updateInvoiceStatus'(_id, nextStatus){
+        return Invoices.update({_id:_id},{
+            $set:{
+                status: nextStatus
+            }
+        })
+    },
+
 
 })

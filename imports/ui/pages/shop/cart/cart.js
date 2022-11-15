@@ -27,7 +27,7 @@ Template.cart.helpers({
         const cart = Template.instance().cart.get()
         if(cart)
         {
-            // console.log(cart);
+            console.log(cart);
             return cart
         }
     }, 

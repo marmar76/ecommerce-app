@@ -135,7 +135,10 @@ Template.usersHome.onCreated(function () {
       // console.log(user_gender);
       if (!user_username || !user_email || !user_password || !user_name || !user_gender || !isValidDate(user_dob) || !user_phone) {
         failAlert("Please fill the blank")
-      } else {
+      } else if(!validateEmail(user_email)){
+        failAlert("email is not valid sir")
+      }
+      else {
         const profile = {
           name: user_name,
           gender: user_gender,
@@ -147,6 +150,7 @@ Template.usersHome.onCreated(function () {
           email: user_email,
           password: user_password
         };
+        // console.log(data);
         // console.log(profile);
         // console.log(data);
         Meteor.call('registerAdmin', data, profile, function (err, res) {
