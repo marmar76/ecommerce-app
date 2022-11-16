@@ -20,6 +20,7 @@ import '../../ui/pages/shop/userSettings/userSettings'
 import '../../ui/pages/shop/productList/productList' 
 import '../../ui/pages/shop/thankyou/thankyou' 
 import '../../ui/pages/shop/support/support' 
+import '../../ui/pages/shop/landingPage/landingPage' 
 import '../../ui/pages/shop/historyTransaction/historyTransaction' 
 
 // FlowRouter.route('*', {
@@ -606,6 +607,25 @@ FlowRouter.route('/master-invoice', {
         }
     },
 })
+FlowRouter.route('/master-invoice-:_id-detail', {
+    name: 'invoiceDetail',
+    template: 'invoiceDetail',
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(isAdmin){
+            this.render('masterContainer','invoiceDetail');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
+    },
+})
+//=====================================================
+//                  Client side     
+//=====================================================
 FlowRouter.route('/customer-support', {
     name: 'customerSupport',
     template: 'customerSupport',
@@ -622,9 +642,7 @@ FlowRouter.route('/customer-support', {
         }
     },
 })
-//=====================================================
-//                  Client side     
-//=====================================================
+
 FlowRouter.route('/productPage/:_id', {
     name: 'productPage',
     template: 'productPage',
@@ -655,6 +673,7 @@ FlowRouter.route('/checkout', {
     template: 'checkout',
     async action() {
         const isAdmin = await checkAdmin(Meteor.userId())
+        console.log(Meteor.userId());
         if(!Meteor.userId()){
             FlowRouter.go('login', {})
         }
@@ -683,6 +702,7 @@ FlowRouter.route('/thank-you', {
         }
     },
 })
+
 FlowRouter.route('/historyTrans', {
     name: 'historyTrans',
     template: 'historyTrans',
@@ -700,6 +720,23 @@ FlowRouter.route('/historyTrans', {
     },
 })
 
+FlowRouter.route('/historyTrans/:_id/detail', {
+    name: 'historyTransDetail',
+    template: 'historyTransDetail',
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(!isAdmin){
+            this.render('layouts','historyTransDetail');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
+    },
+})
+
 FlowRouter.route('/support', {
     name: 'support',
     template: 'support',
@@ -710,6 +747,23 @@ FlowRouter.route('/support', {
         }
         else if(!isAdmin){
             this.render('layouts', 'support');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
+    },
+})
+
+FlowRouter.route('/landingPage', {
+    name: 'landingPage',
+    template: 'landingPage',
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(!isAdmin){
+            this.render('layouts', 'landingPage');
         }
         else{
             FlowRouter.go('forbidden', {})

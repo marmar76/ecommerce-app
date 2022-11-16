@@ -1,7 +1,7 @@
 <template name="invoiceHome">
     <h1>List Invoice</h1>
     <label for="">Status Filter</label>
-    <select name="dateoption" id="dateoption" class="form-control filtering">
+    <select name="statusTrans" id="statusTrans" class="form-control filtering">
         <option value="0">All Status</option>
         <option value="1">Pending Payment</option> 
         <option value="200">Payment Success</option> 
@@ -16,16 +16,14 @@
         <input type="date" class="form-control filtering" id="startDate" value="{{formatHTML monthStart}}">
     </div><br>
     <div class="form-group"> 
-        <label for="">Expired Date</label>
-        <input type="date" class="form-control filtering" id="expiredDate" value="{{formatHTML monthEnd}}">
+        <label for="">End Date</label>
+        <input type="date" class="form-control filtering" id="EndDate" value="{{formatHTML monthEnd}}">
     </div><br>
     <div class="2-50 mx-2 mt-3">
         <label for="">Order By</label>
         <select class="form-control filtering" name="" id="sort">
-            <option value="1">Name Ascending</option>
-            <option value="2">Name Descending</option>
-            <option value="3">Join Date Ascending</option>
-            <option value="4">Join Date Descending</option>
+            <option value="1">Tanggal Trans Ascending</option>
+            <option value="2">Tanggal Trans Descending</option>
         </select>
     </div>
     <table class="table table-striped">
@@ -49,7 +47,11 @@
                 <td>{{i.totalItem}}</td>
                 <td>{{formatRp i.totalPurchase}}</td>
                 <td>{{i.ongkir.desc}}</td>
-                <td>{{i.statusTrans}}</td>
+                {{#if equals i.status '400'}}
+                    <td class="text-danger"> {{i.statusTrans}} </td>
+                {{else}}
+                    <td>{{i.statusTrans}}</td>
+                {{/if}}
                 <td>{{formatDateIDN i.createdAt}}</td>
                 <td>
                     <a href="/master-invoice-{{i._id}}-detail"><button class="btn btn-primary">Details</button></a>
@@ -68,4 +70,71 @@
             {{/each}}
         </tbody>
     </table>
+</template>
+<template name="invoiceDetail">
+    <style>
+        .dot {
+        height: 15px;
+        width: 15px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+        }
+    </style>
+    <h1>Invoice Detail</h1>
+    <h3>
+        {{#if equals invoices.statusType -1}}
+            <div class="text-danger">{{invoices.statusTrans}}</div>
+        {{else}}
+            {{invoices.statusTrans}}
+        {{/if}}    
+        Invoice Log
+    </h3>
+    <!-- <div class="d-flex"> -->
+        {{#each i in invoices.log}}
+            <div>
+                {{formatDateIDN i.timestamp}}
+                <span class="dot"></span>
+                    {{i.detail.name}}
+                <!-- {{i.detail.desc}} -->
+            </div>
+        {{/each}}
+    <!-- </div> -->
+    <br>
+    <table class="table caption-top">
+        <tbody>
+          <tr>
+            <th>Name</th>
+            <td>{{ invoices.userUsername }}</td>
+          </tr>
+          <tr>
+            <th>Tanggal Trans</th>
+            <td>{{ formatDateIDN invoices.createdAt }}</td>
+          </tr>
+          <tr>
+            <th>discount</th>
+            <td>{{ invoices.discount }}</td>
+          </tr>
+          <tr>
+            <th>Items</th>
+            <td>
+                <ul>
+                {{#each i in invoices.items}}
+                    <li>{{i.name}} {{i.quantity}} Pcs - {{formatRp i.price}}</li>
+                {{/each}}
+                </ul>
+            </td>
+          </tr> 
+          <tr>
+            <th>Payment Type</th>
+            <td>
+                {{invoices.payment.payment_type}} - 
+                {{#each j in invoices.payment.va_numbers}}
+                    {{j.bank}}
+                {{/each}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
 </template>

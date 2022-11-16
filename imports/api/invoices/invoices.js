@@ -4,7 +4,7 @@ import { Mongo } from 'meteor/mongo';
 
 export const Invoices = new Mongo.Collection( 'invoices' );
 
-const StatusTransaction = [
+export const StatusTransaction = [
     {
         id: 1,
         name: "Pending Payment",

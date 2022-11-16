@@ -9,7 +9,7 @@ import {
 } from 'meteor/ostrio:flow-router-extra';
 import moment from 'moment';
 import './historyTransaction.html';
-
+import { StatusTransaction } from '../../../../api/invoices/invoices';
 let TomJerry = null
 Template.historyTrans.onCreated(function () {
     const self = this;
@@ -76,6 +76,7 @@ Template.historyTrans.helpers({
     equals(a, b){
         return a == b
     },
+    
     historyTrans(){
         const historyTrans = Template.instance().historyTrans.get()
         if(historyTrans)
@@ -115,4 +116,60 @@ Template.historyTrans.events({
         console.log(selectedInvoice);
         console.log(nextStatus);
     }
+})
+
+
+Template.historyTransDetail.onCreated(function () {
+    const self = this;
+    const paramId = FlowRouter.current().params._id
+    this.invoice = new ReactiveVar();
+    Meteor.call('getOneInvoice', paramId, function (err, res) { 
+        res[0].firstItem = res[0].items[0]
+        res[0].totalItem = +res[0].items.length
+        if(+res[0].status == 269)
+        {
+            res[0].statusTrans = 'Order Finished'
+            res[0].statusType = 1
+        } else if(+res[0].status == 400){
+            res[0].statusTrans = 'Order Canceled'
+            res[0].statusType = -1
+        } else{
+            if(+res[0].status == 1)res[0].statusTrans = 'Pending Payment'
+            if(+res[0].status == 200)res[0].statusTrans = 'Payment Success'
+            if(+res[0].status == 201)res[0].statusTrans = 'Order Confirmed'
+            if(+res[0].status == 202)res[0].statusTrans = 'Package Sent'
+            if(+res[0].status == 203)res[0].statusTrans = 'Package Received'
+            res[0].statusType = 0
+        }
+        res[0].log = res[0].log.map(function (y) {  
+            return {
+                timestamp: y.timestamp,
+                detail: StatusTransaction.find((z) => z.id == y.id)
+            }
+        })
+        self.invoice.set(res[0])
+        console.log(res[0]);
+    });
+  })
+  
+Template.historyTransDetail.helpers({
+    invoices() {
+        return Template.instance().invoice.get();
+    },
+    equals(a, b){
+        return a == b
+    },
+    formatHTML(context) {
+        return moment(context).format("YYYY-MM-DD");
+    },
+    notEquals(a, b){
+        return a != b
+    },
+    multiply(a, b){
+        return formatRp(parseInt(a) * parseInt(b))
+    },
+})
+
+Template.historyTransDetail.events({
+     
 })

@@ -48,10 +48,13 @@
             <div class="d-flex flex-row-reverse gap-3">
                 <div class="d-flex align-content-center justify-content-end me-4 py-4">
                     <!-- <input type="checkbox" class="form-control"> -->
-                    {{#if equals i.status 203}}
+                    {{#if equals i.status 202}}
                         <button class="changeStatus" value="{{i._id}}">Package Received</button> 
                     {{/if}}
-                    <button>Details</button>    
+                    {{#if equals i.status 203}}
+                        <button class="changeStatus" value="{{i._id}}">Complete Order</button> 
+                    {{/if}}
+                    <a href="/historyTrans/{{i._id}}/detail"><button class="btn btn-primary">Details</button></a>
                     {{#if equals i.status 269}}
                         <button>Review</button> 
                     {{/if}}
@@ -59,6 +62,96 @@
                 </div>
             </div>
         </div>
+        {{/each}}
+    </div>
+</template>
+
+<template name="historyTransDetail">
+    <style>
+        .dot {
+        height: 15px;
+        width: 15px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+        }
+    </style>
+    <div class="p-3">
+        <h1>Invoice Detail</h1>
+        <h3> {{invoices.statusTrans}} - Invoice Log</h3>
+        <!-- <div class="d-flex"> -->
+            {{#each i in invoices.log}}
+                <div>
+                    {{formatDateIDN i.timestamp}}
+                    <span class="dot"></span>
+                        {{i.detail.name}}
+                    <!-- {{i.detail.desc}} -->
+                </div>
+            {{/each}}
+        <!-- </div> -->
+        <br>
+        <table class="table caption-top">
+            <tbody>
+            <tr>
+                <th>Name</th>
+                <td>{{ invoices.userUsername }}</td>
+            </tr>
+            <tr>
+                <th>Tanggal Trans</th>
+                <td>{{ formatDateIDN invoices.createdAt }}</td>
+            </tr>
+            <tr>
+                <th>discount</th>
+                <td>{{ invoices.discount }}</td>
+            </tr>
+            {{#if notEquals invoices.status 1}}
+                <tr>
+                    <th>Payment Type</th>
+                    <td>
+                        {{invoices.payment.payment_type}} - 
+                        {{#each j in invoices.payment.va_numbers}}
+                            {{j.bank}}
+                        {{/each}}
+                    </td>
+                </tr>
+            {{/if}}
+            <tr>
+                <th>Detail Items</th>
+                <!-- <td>
+                    <ul>
+                    {{#each i in invoices.items}}
+                        <li>{{i.name}} {{i.quantity}} Pcs - {{formatRp i.price}}</li>
+                    {{/each}}
+                    </ul>
+                </td> -->
+            </tr> 
+            </tbody>
+        </table>
+        {{#each i in invoices.items}}
+            <!-- <div class="card mb-3 d-flex justify-content-center"> -->
+                <div class="card row g-0 d-flex justify-content-between mt-3">
+                    <div class="mb-3" style="max-width: 540px;">
+                        <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="{{i.link}}" class="card-img-top rounded" style="height: 10rem; width: 10rem; object-fit: cover;" alt="">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body"> 
+                                <h2 class="text-start fw-bold">{{i.name}}</h2>
+                                <h3 class="mb-2 text-start fw-bold"> {{i.quantity}} product x {{formatRp i.price}} </h3> 
+                                <h3 class="mb-2 text-start fw-bold"> Total Purchase {{multiply i.quantity i.price}} </h3>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row-reverse">
+                        <div class="d-flex align-content-center justify-content-end me-4 py-4">
+                            <!-- <input type="checkbox" class="form-control"> -->
+                            <a href="/productPage/{{i.itemId}}"><button class="btn btn-success">Beli Lagi</button></a>
+                        </div>
+                    </div>
+                </div>
+            <!-- </div> -->
         {{/each}}
     </div>
 </template>

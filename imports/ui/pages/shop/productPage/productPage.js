@@ -50,8 +50,6 @@ Template.productPage.onCreated(function () {
             })
             Meteor.call('getItemOnSubCategory', res.subcategory, function (err, res) {  
                 self.subcategoryItem.set(res)
-                
-                console.log(res);
                 setTimeout(() => {
                     for (const i of self.comparison.get()) {
                         const thisSelect = new TomSelect('#compare-'+i.id,{

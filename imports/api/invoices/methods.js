@@ -420,34 +420,71 @@ Meteor.methods({
             return await Promise.all(newInvoice)
         }
     },
-    'getOneInvoice'(_id){
-        console.log(Invoices.findOne({_id:_id}));
-        return Invoices.findOne({_id:_id})
+    async 'getOneInvoice'(_id){
+        const invoice = Invoices.find({_id:_id}).fetch()
+        if(invoice){
+            console.log(invoice);
+            const newInvoice = invoice.map(async function (x) {
+                const items = x.items.map(async function (y) {
+                    const itemId = y.id.split('-')
+                    const item   = Items.findOne({_id: itemId[0]})
+                    const thisModel = item.models[itemId[1]]
+                    if(item.picture){
+                        try {
+                            const profilePictureLink = await getFireImage('items/picture', item.picture)
+                            item.link = profilePictureLink
+                        } catch (error) {
+                            console.log(error);
+                        }
+                    }
+                    y.link = item.link
+                    y.itemId = itemId[0]
+                    return y
+                })
+                x.items = await Promise.all(items)
+                return x
+            })
+            return await Promise.all(newInvoice)
+        }
     },
     'getAllInvoice'(filtering){
         const thisFilter = {}
         const sort = {}
-        // if (filtering) {
-        //     thisFilter.status = true
-        //     if ((+filtering.sort) === 1) {
-        //         sort.name = 1
-        //     } else if ((+filtering.sort) === 2) {
-        //         sort.name = -1
-        //     } 
-        // }
+        if (filtering) {
+            if ((+filtering.sort) == 1) {
+                sort.createdAt = 1
+            } else if ((+filtering.sort) == 2) {
+                sort.createdAt = -1
+            }
+            if (filtering.dateFrom || filtering.dateTo) {
+                thisFilter['createdAt'] = {}
+                if (filtering.dateFrom) {
+                    thisFilter['createdAt']["$gte"] = filtering.dateFrom
+                }
+                if (filtering.dateTo) {
+                    thisFilter['createdAt']["$lte"] = filtering.dateTo
+                }
+            }
+            if(filtering.status && +filtering.status != 0){
+                thisFilter.status = +filtering.status
+            }
+        }
         const invoices = Invoices.find(thisFilter, {
             sort: sort
         }).fetch();
         console.log(invoices);
         let invoice = invoices.filter(function (x) {   
             return x
-        })
-        console.log(invoice);
+        }) 
         return invoice
     },
     'updateInvoiceStatus'(_id, nextStatus){
+        const invoice = Invoices.findOne({_id: _id})
+        const log = invoice.log 
+        log.push({id: nextStatus, timestamp: new Date()})
         return Invoices.update({_id:_id},{
             $set:{
+                log: log,
                 status: nextStatus
             }
         })
