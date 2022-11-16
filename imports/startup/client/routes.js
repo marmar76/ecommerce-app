@@ -606,7 +606,22 @@ FlowRouter.route('/master-invoice', {
         }
     },
 })
-
+FlowRouter.route('/customer-support', {
+    name: 'customerSupport',
+    template: 'customerSupport',
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(isAdmin){
+            this.render('masterContainer','customerSupport');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
+    },
+})
 //=====================================================
 //                  Client side     
 //=====================================================

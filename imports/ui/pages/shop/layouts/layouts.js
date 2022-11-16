@@ -11,7 +11,9 @@ Template.layouts.onCreated(function () {
   self.thisUser = new ReactiveVar()
   this.fotoProfile = new ReactiveVar(ImagePlaceholder)
   this.thisUser = new ReactiveVar()
-
+  Meteor.subscribe('user.chat', function () {  
+    console.log("subscribe");
+  })
   Meteor.call('getMyself', async function (err, res) {  
     if(err){
       console.log(err);
@@ -69,6 +71,14 @@ Template.layouts.helpers({
   },
   now(){
     return Template.instance().now.get();
+  },
+  chats(){
+    const user = Meteor.users.findOne()
+    if(user){
+      console.log(user.chats);
+      return user.chats
+    }
+    // return user
   },
   subcategory(){  
     return Template.instance().subcategory.get();
@@ -148,6 +158,9 @@ Template.layouts.events({
     $(".chat-box").toggle('scale');
   },
   'click #chat-circle'(e, t){
+    Meteor.call('validateUserChat', function (err, res) {  
+
+    })
     $("#chat-circle").toggle('scale');
     $(".chat-box").toggle('scale');
   },
@@ -159,24 +172,30 @@ Template.layouts.events({
   },
   'submit #chat-submit'(e, t){
     e.preventDefault()
-    var msg = $("#chat-input").val(); 
+    const msg = $("#chat-input").val(); 
     if(msg.trim() == ''){
       return false;
     }
-    generate_message(msg, 'self');
-    let buttons = [
-        {
-          name: 'Existing User',
-          value: 'existing'
-        },
-        {
-          name: 'New User',
-          value: 'new'
-        }
-      ];
-    setTimeout(function() {      
-      generate_message(msg, 'user');  
-    }, 1000)
+    Meteor.call('sendUserMessage', msg, function (err, res) {  
+      if(err){
+        failAlert(err)
+      }
+    })
+    $('#chat-input').val('');
+    // generate_message(msg, 'self');
+    // let buttons = [
+    //     {
+    //       name: 'Existing User',
+    //       value: 'existing'
+    //     },
+    //     {
+    //       name: 'New User',
+    //       value: 'new'
+    //     }
+    //   ];
+    // setTimeout(function() {      
+    //   generate_message(msg, 'user');  
+    // }, 1000)
   },
   'click .trigger-button'(e, t){
     Meteor.call('getMyself', async function (err, res) {  

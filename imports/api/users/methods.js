@@ -70,6 +70,48 @@ Meteor.methods({
         check(id,String);
         return Meteor.users.findOne({_id: id});
     },
+    'validateUserChat'(){
+        const user = Meteor.users.findOne({_id: Meteor.userId()});
+        if(user && !user.chats){
+            user.chats = []
+            user.readStatus = {
+                admin: {
+                    lastRead: null,
+                    lastIndex: null
+                },
+                user: {
+                    lastRead: null,
+                    lastIndex: null    
+                }
+            }
+            Meteor.users.update({_id: Meteor.userId()}, {$set: user})
+        }
+        else{
+            user.readStatus.user = {
+                lastRead: new Date(),
+                lastIndex: user.chats.length
+            }
+            Meteor.users.update({_id: Meteor.userId()}, {$set: user})
+
+        }
+    },
+    'sendUserMessage'(msg){
+        const user = Meteor.users.findOne({_id: Meteor.userId()});
+        // console.log(msg);
+        if(user){
+            user.chats.push({
+                createdAt: new Date(),
+                message: msg,
+                admin: false
+            })
+            user.readStatus.user = {
+                lastRead: new Date(),
+                lastIndex: user.chats.length
+            }
+            Meteor.users.update({_id: Meteor.userId()}, {$set: user})
+        }
+
+    },
     async 'getMyself'(){
         // check(id,String);
         const user = Meteor.users.findOne({_id: Meteor.userId()});

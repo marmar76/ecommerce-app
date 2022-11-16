@@ -331,7 +331,16 @@
         <div class="chat-box-overlay">
         </div>
         <div class="chat-logs">
-
+          {{#each chats}}
+          <div id='cm-msg-{{@index}}' class="chat-msg self">
+            <span class="msg-avatar">
+              <img src="{{ fotoProfile }}">
+            </span>
+            <div class="cm-msg-text">
+              {{message}}
+            </div>
+          </div>
+          {{/each}}
         </div>
         <!--chat-log -->
       </div>
