@@ -149,6 +149,7 @@ export const navbar = [{
     ]
   },
   {
+    type: 2,
     title: 'Customer Service',
     icon: 'menu-icon mdi mdi-account',
     href: 'customer-support',

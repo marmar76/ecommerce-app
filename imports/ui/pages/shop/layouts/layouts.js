@@ -76,6 +76,9 @@ Template.layouts.helpers({
     const user = Meteor.users.findOne()
     if(user){
       console.log(user.chats);
+      setTimeout(() => {
+        $(".chat-logs").stop().animate({ scrollTop: $(".chat-logs")[0].scrollHeight}, 1000);
+      }, 200);
       return user.chats
     }
     // return user

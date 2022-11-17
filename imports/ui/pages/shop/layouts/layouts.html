@@ -263,7 +263,7 @@
         }
       }
 
-      .chat-msg.user>.msg-avatar img {
+      .chat-msg.user>.msg-avatar img, span {
         width: 45px;
         height: 45px;
         border-radius: 50%;
@@ -271,7 +271,7 @@
         width: 15%;
       }
 
-      .chat-msg.self>.msg-avatar img {
+      .chat-msg.self>.msg-avatar img, span {
         width: 45px;
         height: 45px;
         border-radius: 50%;
@@ -321,7 +321,7 @@
 
     <div class="chat-box">
       <div class="chat-box-header">
-        ChatBot
+        Customer Support
         <span class="chat-box-toggle">
           <i class="fas fa-times"></i>
           <!-- <i class="material-icons">close</i> -->
@@ -330,13 +330,19 @@
       <div class="chat-box-body">
         <div class="chat-box-overlay">
         </div>
-        <div class="chat-logs">
+        <div class="chat-logs mb-2">
           {{#each chats}}
-          <div id='cm-msg-{{@index}}' class="chat-msg self">
-            <span class="msg-avatar">
-              <img src="{{ fotoProfile }}">
-            </span>
-            <div class="cm-msg-text">
+          <div id='cm-msg-{{@index}}' class="chat-msg {{#if admin}}user{{else}}self{{/if}}">
+            <!-- <span class="msg-avatar"> -->
+            {{#if admin}}
+            <div style="float: left;">{{relativeTimeFormat createdAt}}</div>
+            {{else}}
+            <div style="float: right;">{{relativeTimeFormat createdAt}}</div>
+            {{/if}}
+            <br>
+              <!-- <img src="{{ fotoProfile }}"> -->
+            <!-- </span> -->
+            <div class="cm-msg-text mt-1">
               {{message}}
             </div>
           </div>

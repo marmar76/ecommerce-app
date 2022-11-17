@@ -110,6 +110,28 @@ Meteor.methods({
             }
             Meteor.users.update({_id: Meteor.userId()}, {$set: user})
         }
+        
+    },
+    'sendAdminMessage'(userId, msg){
+        const me = Meteor.users.findOne({_id: Meteor.userId()})
+        const user = Meteor.users.findOne({_id: userId});
+        // console.log(msg);
+        if(user){
+            user.chats.push({
+                createdAt: new Date(),
+                message: msg,
+                admin: {
+                    username: me.username,
+                    name: me.name,
+                    userId: Meteor.userId()
+                }
+            })
+            user.readStatus.admin = {
+                lastRead: new Date(),
+                lastIndex: user.chats.length
+            }
+            Meteor.users.update({_id: userId}, {$set: user})
+        }
 
     },
     async 'getMyself'(){

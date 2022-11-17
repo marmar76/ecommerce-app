@@ -259,9 +259,11 @@
             </header>
             <ul>
                 {{#each users}}
-                <li class="d-flex align-items-center">
-                    <!-- <img src="{{userPicture profilePicture}}" alt=""> -->
-                    <div class="fs-4 text-light ms-3">{{username}}</div>
+                <li class="d-grid">
+                    <button class="btn w-full bg-info select-chat text-start" value="{{_id}}">
+                        <!-- <img src="{{userPicture profilePicture}}" alt=""> -->
+                        <div class="fs-3 text-light">{{username}}</div>
+                    </button>
                 </li>
                 {{/each}}
                 <!-- <li>
@@ -357,26 +359,28 @@
             </ul>
         </aside>
         <main>
+            {{#if getChat}}
             <header>
-                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg" alt="">
+                <!-- <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg" alt=""> -->
                 <div>
-                    <div class="fs-5">Jonathan Untario</div>
+                    <div class="fs-3">{{getChat.username}}</div>
                     <!-- <div>already 1902 messages</div> -->
                 </div>
                 <!-- <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_star.png" alt=""> -->
             </header>
-            <ul id="chat">
-                <li class="you">
+            <ul id="chat" class="chat-logs">
+                {{#each getChat.chats}}
+                <li class="{{#if admin}}me{{else}}you{{/if}} li-pos-{{@index}}">
                     <div class="entete">
-                        <!-- <span class="status green"></span> -->
-                        <span class="fs-6">Vincent</span>
-                        <span class="fs-6">10:12AM, Today</span>
+                        <!-- <span class="fs-6">Vincent</span> -->
+                        <span class="fs-6">{{relativeTimeFormat createdAt}}</span>
                     </div>
                     <div class="triangle"></div>
                     <div class="message fs-5">
-                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
+                        {{message}}
                     </div>
                 </li>
+                {{/each}}
                 <!-- <li class="me">
                     <div class="entete">
                         <h3>10:12AM, Today</h3>
@@ -434,11 +438,17 @@
                 </li> -->
             </ul>
             <footer>
-                <textarea placeholder="Type your message"></textarea>
-                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_picture.png" alt="">
-                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_file.png" alt="">
-                <a href="#">Send</a>
+                <form id="send-chat">
+                    <input type="text" class="form-control" id="message" placeholder="Type your message">
+                    <!-- <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_picture.png" alt=""> -->
+                    <!-- <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_file.png" alt=""> -->
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-info">Send</button>
+    
+                    </div>
+                </form>
             </footer>
+            {{/if}}
         </main>
     </div>
 </template>
