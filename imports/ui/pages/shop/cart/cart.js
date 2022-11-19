@@ -133,5 +133,21 @@ Template.cart.events({
             }
         })
     },
-
+    'click #check-out'(e, t){
+        const cart = Template.instance().cart.get()
+        let status = true
+        for (const i of cart) {
+            if(i.stock < i.qty){
+                failAlert(i.name + ' qty must be lower or equals with the stock ('+ i.stock +')')
+                status = false 
+            }else if(i.qty <= 0){
+                failAlert(i.name + ' qty must be greater than 0')
+                status = false 
+            }
+        }
+        if(status)
+        {
+            FlowRouter.go('/checkout');
+        }
+    }
 })

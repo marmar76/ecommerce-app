@@ -231,15 +231,24 @@ Template.productPage.events({
         const item = Template.instance().item.get()
         const jenisItem = Template.instance().jenisItem.get()
         console.log(itemId, qty);
+        if(qty <= 0){
+            failAlert('jumlah tidak boleh dibawah sama dengan 0')
+        }else{
+            if(qty > jenisItem.stock){
+                failAlert('jumlah tidak boleh melebihi stock')
+            }else {
+                Meteor.call('insertCart', {itemId, qty}, function (err, res) {  
+                    if(err){
+                        console.log(err);
+                    }
+                    else{
+                        successAlert('Barang berhasil ditambahkan')
+                    }
+                })
+            }
+        }
         // let name = item.name + " - " + jenisItem.name
-        Meteor.call('insertCart', {itemId, qty}, function (err, res) {  
-            if(err){
-                console.log(err);
-            }
-            else{
-                successAlert('Barang berhasil ditambahkan')
-            }
-        })
+        
         // if (user) { <- dis is sucks so much
         //     Meteor.call('getOneCart', user._id, function (err, res) {
         //         if (err) {
