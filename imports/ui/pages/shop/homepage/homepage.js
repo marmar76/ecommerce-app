@@ -28,11 +28,16 @@ Template.homepage.onCreated(function () {
     //     self.item.set(res);
     // })
     Meteor.call('getAllBanner', self.filtering.get(), function (err, res) {  
-        self.banner.set(res.filter((x) => x.check == true).map(function (x) {  
-            x.index = +self.index.get()
-            self.index.set(+self.index.get() + 1)
-            return x 
-        }) )
+        if(err){
+            console.log(err);
+        }
+        else{
+            self.banner.set(res.filter((x) => x.check == true).map(function (x) {  
+                x.index = +self.index.get()
+                self.index.set(+self.index.get() + 1)
+                return x 
+            }) )
+        }
         // self.category.set(res.filter(function (x) {
         //     return x.subcategory.length != 0
         //   }));

@@ -14,6 +14,7 @@ Template.cart.onCreated(function () {
             console.log(err);
         }else{
             self.cart.set(res)
+            // console.log(res);
             setTimeout(() => {
                 self.allowUpdate.set(true)
             }, 2000);

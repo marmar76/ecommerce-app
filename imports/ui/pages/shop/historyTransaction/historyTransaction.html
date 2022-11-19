@@ -23,24 +23,20 @@
     <div class="px-4">
         <h1>Daftar Transaksi</h1>
         {{#each i in historyTrans}}
-        <div class="card mb-3">
+        <div class="card mb-3 p-3">
             <div class="row g-0">
                 <div class="col-md-4">
                     <img src="{{i.firstItem.link}}" class="card-img-top rounded" style="height: 18rem; width: 18rem; object-fit: cover;" alt="">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
-                        <h6 class="text-start">{{formatDateIDN i.createdAt}}</h6> <br>
-                        {{#if equals i.statusType 1}}
-                        <h6 class="text-start bg-success w-25">{{i.statusTrans}}</h6> <br>
-                        
-                        {{else}}
-                        <h6 class="text-start bg-secondary w-25">{{i.statusTrans}}</h6> <br>
-                        
-                        {{/if}}
-                        <h2 class="text-start fw-bold">{{i.firstItem.name}}</h2> <br>
-                        <h3 class="mb-2 text-start fw-bold"> {{i.firstItem.quantity}} product x {{formatRp i.firstItem.price}} </h3>
-                        <h3 class="mb-2 text-start fw-bold"> +{{i.productLainnya}} product lainnya </h3>
+                        <div class="text-start fs-3 mb-2 d-flex align-items-center">{{formatDateIDN i.createdAt}} <span class="ms-3 rounded-3 bg-info px-3 py-1 text-white fs-6">{{i.statusTrans}}</span></div>
+                        <!-- <div class="text-start fs-6 mb-2">{{i.statusTrans}}</div> -->
+
+                        <div class="text-start fs-4 fw-bold">{{i.firstItem.name}}</div>
+                        <div class="mb-2 fs-4 text-start fw-bold"> {{i.firstItem.quantity}} product x {{formatRp i.firstItem.price}} </div>
+                        <div class="mb-2 fs-4 text-start fw-bold"> {{#if i.productLainnya}}+{{i.productLainnya}} product lainnya {{/if}} </div>
+                        <!-- <h3 class="mb-2 text-start fw-bold"> +{{i.productLainnya}} product lainnya</h3> -->
                         <h3 class="mb-2 text-start fw-bold"> Total Purchase {{formatRp i.totalPurchase}} </h3>
                     </div>
                 </div>
@@ -58,7 +54,7 @@
                     {{#if equals i.status 269}}
                         <button>Review</button> 
                     {{/if}}
-                    <button class="changeStatus" value="{{i._id}}">Change Stat</button>    
+                    <button class="changeStatus btn btn-info ms-3" value="{{i._id}}">Change Stat</button>    
                 </div>
             </div>
         </div>
@@ -79,6 +75,66 @@
     <div class="p-3">
         <h1>Invoice Detail</h1>
         <h3> {{invoices.statusTrans}} - Invoice Log</h3>
+        <div class="w-25">
+            <ul class="bullet-line-list">
+                <li>
+                    <div class="d-flex justify-content-between">
+                        <div><span class="text-light-green">Ben
+                                Tossell</span> assign you a task
+                        </div>
+                        <p>Just now</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="d-flex justify-content-between">
+                        <div><span class="text-light-green">Oliver
+                                Noah</span> assign you a task
+                        </div>
+                        <p>1h</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="d-flex justify-content-between">
+                        <div><span class="text-light-green">Jack
+                                William</span> assign you a task
+                        </div>
+                        <p>1h</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="d-flex justify-content-between">
+                        <div><span class="text-light-green">Leo
+                                Lucas</span> assign you a task
+                        </div>
+                        <p>1h</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="d-flex justify-content-between">
+                        <div><span class="text-light-green">Thomas
+                                Henry</span> assign you a task
+                        </div>
+                        <p>1h</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="d-flex justify-content-between">
+                        <div><span class="text-light-green">Ben
+                                Tossell</span> assign you a task
+                        </div>
+                        <p>1h</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="d-flex justify-content-between">
+                        <div><span class="text-light-green">Ben
+                                Tossell</span> assign you a task
+                        </div>
+                        <p>1h</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
         <!-- <div class="d-flex"> -->
             {{#each i in invoices.log}}
                 <div>
