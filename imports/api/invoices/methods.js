@@ -223,6 +223,8 @@ Meteor.methods({
                     for (const i of thisInvoice.items) {
                         const item = i.id.split('-')
                         const thisItem = Items.findOne({_id: item[0]})
+                        console.log(thisItem.models[item[1]].stock);
+                        console.log(i.quantity);
                         thisItem.models[item[1]].stock = (+thisItem.models[item[1]].stock) - i.quantity
                         const userCartPosition = thisUser.cart.findIndex(function (x) {  
                             return x.itemId == i.id
@@ -447,6 +449,7 @@ Meteor.methods({
             return await Promise.all(newInvoice)
         }
     },
+    
     'getAllInvoice'(filtering){
         const thisFilter = {}
         const sort = {}
@@ -490,5 +493,121 @@ Meteor.methods({
         })
     },
 
-
+    'getTransReport'(start, end){
+        const trans = Invoices.find({
+            createdAt: {
+                $gte: start,
+                $lte: end
+            }
+        }, {
+            sort: {
+                createdAt: 1
+            } 
+        }).fetch()
+        const res = []
+        for (const i of trans) {
+            const thisDate = moment(i.createdAt).format("ll")
+            const searchRes = res.find((x) => x.label == thisDate)
+            if(searchRes){
+                searchRes.data.push(i)
+            }
+            else{
+                res.push({
+                    label: thisDate,
+                    data: [i]
+                })
+            }
+        }
+        return res
+    },
+    'getWeeklyIncome'(start,end){
+        const trans = Invoices.find({
+            createdAt: {
+                $gte: start,
+                $lte: end
+            }
+        }, {
+            sort: {
+                createdAt: 1
+            }
+        }).fetch()
+        const res = []
+        for (const i of trans) {
+            const thisDate = moment(i.createdAt).format('dddd');
+            const searchRes = res.find((x) => x.label == thisDate)
+            if(searchRes){
+                searchRes.total += i.totalPurchase
+            }else{
+                res.push({
+                    label: thisDate,
+                    total: i.totalPurchase
+                })
+            }
+        }
+        return res 
+    },
+    async 'getMostActiveUser'(start, end, sort){ 
+        const trans = Invoices.find({
+            createdAt: {
+                $gte: start,
+                $lte: end
+            }
+        }, {
+            sort: {
+                createdAt: 1
+            }
+        }).fetch()
+        const res = []
+        for (const i of trans) {
+            const thisDate = moment(i.createdAt).format('dddd');
+            const searchRes = res.find((x) => x.label == i.userUsername)
+            if(searchRes){
+                searchRes.total += i.totalPurchase
+                let totalItems = 0 
+                for (const j of i.items) {
+                    totalItems += j.quantity
+                }
+                searchRes.totalItems += totalItems
+                searchRes.totalTrans += 1
+            }else{
+                const user = Meteor.users.findOne({_id: i.userId});
+                if(user && user.profilePicture){
+                    const profilePictureLink = await getFireImage('user/picture', user.profilePicture)
+                    user.profilePicture = profilePictureLink
+                }
+                let totalItems = 0 
+                for (const j of i.items) {
+                    totalItems += j.quantity
+                }
+                res.push({
+                    label: i.userUsername,
+                    user,
+                    total: i.totalPurchase,
+                    totalItems,
+                    totalTrans: 1
+                })
+            }
+        }
+        return res.sort(function (a, b) {  
+            if((+sort) == 1 ){ 
+                return b.total - a.total 
+              }
+              else if((+sort) == 2){ 
+                return a.total - b.total 
+              }
+              else if((+sort) == 3){ 
+                return b.totalItems - a.totalItems 
+              }
+              else if((+sort) == 4){ 
+                return a.totalItems - b.totalItems 
+              }
+              else if((+sort) == 5){ 
+                return b.totalTrans - a.totalTrans 
+              }
+              else if((+sort) == 6){ 
+                return a.totalTrans - b.totalTrans 
+              }
+             
+        })
+    }
 })

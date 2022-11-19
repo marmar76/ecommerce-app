@@ -29,7 +29,7 @@ Template.checkout.onCreated(function () {
             console.log(err);
         }else{
             console.log(res);
-            self.cart.set(res)
+            self.cart.set(res.filter((x) => x.status))
             $("#triger-change-alamat").trigger("click");
 
         }

@@ -5,6 +5,7 @@ import {
   Template
 } from 'meteor/templating';
 import select2 from 'select2';
+import ProgressBar from "progressbar.js";
 import './master.html';
 import './users.html';
 import './items.html';
@@ -14,6 +15,15 @@ import './categories.html';
 import './banners.html';
 import './invoice.html';
 import './customerSupport.html';
+import './admin/navbar'
+import './admin/container'
+import './admin/user'
+import './admin/category' 
+import './admin/promotion' 
+import './admin/banner'
+import './admin/item'
+import './admin/invoice'
+import './admin/customerSupport'
 
 // import '../../assets/master/vendors/feather/feather.css'
 import '../../assets/master/vendors/mdi/css/materialdesignicons.min.css'
@@ -183,64 +193,410 @@ function initNav(param) {
     elem.addClass('active');
   }
 }
-import './admin/navbar'
-import './admin/container'
-//===============================================
-//                    USER
-//===============================================
-import './admin/user'
-//===============================================
-//                    ITEM
-//===============================================
-//ini codingan untuk client side
-// Template.itemsHome.onCreated(function () {  
-//   const self=this;
-//   this.item = new ReactiveVar();
-//   this.category = new ReactiveVar();
-//   this.subcategory = new ReactiveVar(); 
-//   this.now = new ReactiveVar(1);
-//   Meteor.call('getAllCategory', function (err,res) {
-//     self.category.set(res);
-//     console.log(res);
-// });
-// })
-
-// Template.itemsHome.helpers({
-//   categories(){
-//     return Template.instance().category.get();
-//   },
-//   now(){
-//     return Template.instance().now.get();
-//   },
-//   subcategories(){ 
-//     const category = Template.instance().category.get();
-//     if(category){
-//       const now = +Template.instance().now.get();
-//       console.log(category[now].subcategory);
-//       return category[now].subcategory
-//     }
-//     return [];
-//   }
-// })
-// Template.itemsHome.events({
-//   'click .tes'(e,t){
-//     const click = $(e.target).val();
-//     t.now.set(click)
-
-//   }
-// });
 
 
-//===============================================
-//                    CATEGORY
-//===============================================
-import './admin/category'
-//===============================================
-//                    PROMOTION
-//===============================================
-import './admin/promotion'
+function setMonthlyInvoice(trans) {  
+  setTimeout(() => {
+    var graphGradient = document.getElementById("performaneLine").getContext('2d');
+    var graphGradient2 = document.getElementById("performaneLine").getContext('2d');
+    var saleGradientBg = graphGradient.createLinearGradient(5, 0, 5, 100);
+    saleGradientBg.addColorStop(0, 'rgba(26, 115, 232, 0.18)');
+    saleGradientBg.addColorStop(1, 'rgba(26, 115, 232, 0.02)');
+    var saleGradientBg2 = graphGradient2.createLinearGradient(100, 0, 50, 150);
+    saleGradientBg2.addColorStop(0, 'rgba(0, 208, 255, 0.19)');
+    saleGradientBg2.addColorStop(1, 'rgba(0, 208, 255, 0.03)');
+    const labels = []
+    const data = []
+    const datas = trans
+    for (const i of datas) {
+      labels.push(i.label)
+      data.push(i.data.length)
+    }
+    var salesTopData = {
+        // labels: ["SUN","sun", "MON", "mon", "TUE","tue", "WED", "wed", "THU", "thu", "FRI", "fri", "SAT"],
+        labels: labels,
+        datasets: [{
+            label: 'Monthly Report',
+            // label: 'This week',
+            // data: [50, 110, 60, 290, 200, 115, 130, 170, 90, 210, 240, 280, 200],
+            data: data,
+            backgroundColor: saleGradientBg,
+            borderColor: [
+                '#1F3BB3',
+            ],
+            borderWidth: 1.5,
+            fill: true, // 3: no fill
+            pointBorderWidth: 1,
+            pointRadius: [4, 4, 4, 4, 4,4, 4, 4, 4, 4,4, 4, 4],
+            pointHoverRadius: [2, 2, 2, 2, 2,2, 2, 2, 2, 2,2, 2, 2],
+            pointBackgroundColor: ['#1F3BB3)', '#1F3BB3', '#1F3BB3', '#1F3BB3','#1F3BB3)', '#1F3BB3', '#1F3BB3', '#1F3BB3','#1F3BB3)', '#1F3BB3', '#1F3BB3', '#1F3BB3','#1F3BB3)'],
+            pointBorderColor: ['#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff',],
+        }
+      ]
+    };
 
-import './admin/banner'
-import './admin/item'
-import './admin/invoice'
-import './admin/customerSupport'
+    var salesTopOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+        scales: {
+            yAxes: [{
+                gridLines: {
+                    display: true,
+                    drawBorder: false,
+                    color:"#F0F0F0",
+                    zeroLineColor: '#F0F0F0',
+                },
+                ticks: {
+                  beginAtZero: false,
+                  autoSkip: true,
+                  maxTicksLimit: 4,
+                  fontSize: 10,
+                  color:"#6B778C"
+                }
+            }],
+            xAxes: [{
+              gridLines: {
+                  display: false,
+                  drawBorder: false,
+              },
+              ticks: {
+                beginAtZero: false,
+                autoSkip: true,
+                maxTicksLimit: 7,
+                fontSize: 10,
+                color:"#6B778C"
+              }
+          }],
+        },
+        legend:false,
+        legendCallback: function (chart) {
+          var text = [];
+          text.push('<div class="chartjs-legend"><ul>');
+          for (var i = 0; i < chart.data.datasets.length; i++) {
+            console.log(chart.data.datasets[i]); // see what's inside the obj.
+            text.push('<li>');
+            text.push('<span style="background-color:' + chart.data.datasets[i].borderColor + '">' + '</span>');
+            text.push(chart.data.datasets[i].label);
+            text.push('</li>');
+          }
+          text.push('</ul></div>');
+          return text.join("");
+        },
+        
+        elements: {
+            line: {
+                tension: 0.4,
+            }
+        },
+        tooltips: {
+            backgroundColor: 'rgba(31, 59, 179, 1)',
+        }
+    }
+    var salesTop = new Chart(graphGradient, {
+        type: 'line',
+        data: salesTopData,
+        options: salesTopOptions
+    });
+    document.getElementById('performance-line-legend').innerHTML = salesTop.generateLegend();
+  }, 200);
+
+}
+function setWeeklyIncome(trans,week) {
+  const labels = []
+  const data = []
+  for (const i of trans) {
+    console.log(i.label);
+    console.log(formatNumber(i.total));
+    labels.push(i.label)
+    data.push(i.total)
+  }
+  console.log(data);
+  var marketingOverviewChart = document.getElementById("marketingOverview").getContext('2d');
+  var marketingOverviewData = {
+      labels: labels,
+      datasets: [{
+          label: week,
+          data: data,
+          backgroundColor: "#52CDFF",
+          borderColor: [
+              '#52CDFF',
+          ],
+          borderWidth: 0,
+          fill: true, // 3: no fill
+          
+      }]
+  };
+
+  var marketingOverviewOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+      scales: {
+          yAxes: [{
+              gridLines: {
+                  display: true,
+                  drawBorder: false,
+                  color:"#F0F0F0",
+                  zeroLineColor: '#F0F0F0',
+              },
+              ticks: {
+                beginAtZero: true,
+                autoSkip: true,
+                maxTicksLimit: 5,
+                fontSize: 10,
+                color:"#6B778C"
+              }
+          }],
+          xAxes: [{
+            stacked: true,
+            barPercentage: 0.35,
+            gridLines: {
+                display: false,
+                drawBorder: false,
+            },
+            ticks: {
+              beginAtZero: false,
+              autoSkip: true,
+              maxTicksLimit: 12,
+              fontSize: 10,
+              color:"#6B778C"
+            }
+        }],
+      },
+      legend:false,
+      legendCallback: function (chart) {
+        var text = [];
+        text.push('<div class="chartjs-legend"><ul>');
+        for (var i = 0; i < chart.data.datasets.length; i++) {
+          console.log(chart.data.datasets[i]); // see what's inside the obj.
+          text.push('<li class="text-muted text-small">');
+          text.push('<span style="background-color:' + chart.data.datasets[i].borderColor + '">' + '</span>');
+          text.push(chart.data.datasets[i].label);
+          text.push('</li>');
+        }
+        text.push('</ul></div>');
+        return text.join("");
+      },
+      
+      elements: {
+          line: {
+              tension: 0.4,
+          }
+      },
+      tooltips: {
+          backgroundColor: 'rgba(31, 59, 179, 1)',
+      }
+  }
+  var marketingOverview = new Chart(marketingOverviewChart, {
+      type: 'bar',
+      data: marketingOverviewData,
+      options: marketingOverviewOptions
+  });
+  document.getElementById('marketing-overview-legend').innerHTML = marketingOverview.generateLegend();
+}
+
+//   bar.text.style.fontSize = '0rem';
+//   bar.animate(.64); // Number from 0.0 to 1.0
+
+// }
+Template.contentExample.onCreated(function () {
+  const self = this 
+  self.invoiceReport = new ReactiveVar()
+  self.totalMonthlyInvoice = new ReactiveVar()
+  self.weeklyTransactionReport = new ReactiveVar()
+  self.mostActiveUser = new ReactiveVar()
+  self.totalWeeklyIncome = new ReactiveVar()
+  self.thisWeek = new ReactiveVar()
+  self.lastWeek = new ReactiveVar()
+  self.labelTimeActiveUser = new ReactiveVar('This Week')
+  const dateFrom = moment().startOf('month').toDate()
+  // const month = moment('2022-03-03').startOf('month').toDate()
+  // console.log(month);
+  const dateTo = moment().endOf('month').toDate()
+  const getLastWeek = moment().subtract(7, 'days').calendar()
+  const lastWeek = moment(getLastWeek, 'DD/MM/YYYY').endOf('day').toDate()
+  const today = moment(new Date(), 'DD/MM/YYYY').endOf('day').toDate()
+  self.thisWeek.set(today)
+  self.lastWeek.set(lastWeek)
+  Meteor.call('getWeeklyIncome', lastWeek, today, function (err, res) {  
+    if(err){
+      failAlert(err)
+    }else{
+      console.log(res);
+      self.weeklyTransactionReport.set(res)
+      setWeeklyIncome(res,'This week')
+      let totalIncome = 0 
+      for (const i of res) {
+        totalIncome += i.total
+      }
+      self.totalWeeklyIncome.set(totalIncome)
+    }
+  })
+  Meteor.call('getTransReport', dateFrom, dateTo, function (err, res) {  
+    if(err){
+      failAlert(err)
+    }else{
+      self.invoiceReport.set(res);
+      self.totalMonthlyInvoice.set(res.length);
+      setMonthlyInvoice(res)
+    }
+  })
+  Meteor.call('getMostActiveUser', lastWeek, today, 1,  function (err, res) {  
+    if(err){
+      failAlert(err)
+    }else{
+      self.mostActiveUser.set(res)
+    }
+  })
+})
+Template.contentExample.helpers({
+  mostActiveUser() { 
+    console.log(Template.instance().mostActiveUser.get());
+    return Template.instance().mostActiveUser.get()
+  },
+  totalWeeklyIncome() { 
+    return Template.instance().totalWeeklyIncome.get();
+  },
+  totalInvoice() {
+    return Template.instance().totalMonthlyInvoice.get();
+  },
+  equals(a, b){
+    return a == b
+  },
+  thisWeek(){
+    return Template.instance().thisWeek.get()
+  },
+  lastWeek(){
+    return Template.instance().lastWeek.get()
+  },
+  labelTimeActiveUser(){
+    return Template.instance().labelTimeActiveUser.get()
+  }
+
+})
+
+Template.contentExample.events({
+  'change #month'(e, t){
+    const dateFrom =  $('#month').val() != 0 ? moment( $('#month').val()).startOf('month').toDate() : moment().startOf('month').toDate()
+    const dateTo =  $('#month').val() != 0 ? moment( $('#month').val()).endOf('month').toDate() : moment().endOf('month').toDate()
+    console.log(dateFrom);
+    Meteor.call('getTransReport', dateFrom, dateTo, function (err, res) {  
+      if(err){
+        failAler(err)
+      } else{
+        console.log(res.length);
+        t.invoiceReport.set(res);
+        t.totalMonthlyInvoice.set(res.length);
+        setMonthlyInvoice(res)
+      }
+    })
+    var bar = new ProgressBar.Circle(totalVisitors, {
+      color: '#fff',
+      // This has to be the same size as the maximum width to
+      // prevent clipping
+      strokeWidth: 15,
+      trailWidth: 15, 
+      easing: 'easeInOut',
+      duration: 1400,
+      text: {
+        autoStyleContainer: false
+      },
+      from: {
+        color: '#52CDFF',
+        width: 15
+      },
+      to: {
+        color: '#677ae4',
+        width: 15
+      },
+      // Set default step function for all animate calls
+      step: function(state, circle) {
+        circle.path.setAttribute('stroke', state.color);
+        circle.path.setAttribute('stroke-width', state.width);
+  
+        var value = Math.round(circle.value() * 100);
+        if (value === 0) {
+          circle.setText('');
+        } else {
+          circle.setText(value);
+        }
+  
+      }
+    });
+  
+    bar.text.style.fontSize = '0rem';
+    bar.animate(.64); // Number from 0.0 to 1.0
+    
+  },
+  'change #weeklyIncome'(e, t){
+    const week = +$('#weeklyIncome').val();
+    const getLastWeek = moment().subtract(week, 'days').calendar()
+    const lastWeek = week != 0 ? moment(getLastWeek, 'DD/MM/YYYY').endOf('day').toDate() : moment(new Date(), 'DD/MM/YYYY').endOf('day').toDate() 
+    const getLastWeekPlus7 = moment().subtract(week+7, 'days').calendar()
+    const lastWeekPlus7 = moment(getLastWeekPlus7, 'DD/MM/YYYY').endOf('day').toDate()
+    console.log(getLastWeek);
+    console.log(getLastWeekPlus7);
+    t.thisWeek.set(lastWeek)
+    t.lastWeek.set(lastWeekPlus7)
+    let text ='This Week'
+    if(week == 7){
+      text = 'Last Week'
+    }else if(week == 14){
+      text = 'Last 2 Week'
+    }else if(week ==21){
+      text = 'Last 3 Week'
+    }
+    Meteor.call('getWeeklyIncome', lastWeekPlus7, lastWeek, function (err, res) {  
+      if(err){
+        failAlert(err)
+      }else{
+        t.weeklyTransactionReport.set(res)
+        setWeeklyIncome(res, text)
+        let totalIncome = 0 
+        for (const i of res) {
+          totalIncome += i.total
+        }
+        t.totalWeeklyIncome.set(totalIncome)
+      }
+    })
+    
+  },
+  'change #weeklyUser'(e,t){
+    const week = +$('#weeklyUser').val();
+    const getLastWeek = moment().subtract(week, 'days').calendar()
+    const lastWeek = week != 0 ? moment(getLastWeek, 'DD/MM/YYYY').endOf('day').toDate() : moment(new Date(), 'DD/MM/YYYY').endOf('day').toDate() 
+    const getLastWeekPlus7 = moment().subtract(week+7, 'days').calendar()
+    const lastWeekPlus7 = moment(getLastWeekPlus7, 'DD/MM/YYYY').endOf('day').toDate()
+    const sort = $('#sortUser').val();
+    if(week == 7){
+      t.labelTimeActiveUser.set('Last Week')
+    }else if(week == 14){
+      t.labelTimeActiveUser.set('Last 2 Week')
+    }else if(week == 21){
+      t.labelTimeActiveUser.set('Last 3 Week')
+    }else{
+      t.labelTimeActiveUser.set('This Week')
+    }
+    Meteor.call('getMostActiveUser', lastWeekPlus7, lastWeek, sort,  function (err, res) {  
+      if(err){
+        failAlert(err)
+      }else{
+        t.mostActiveUser.set(res)
+      }
+    })
+  },
+  'change #sortUser'(e,t){
+    const week = +$('#weeklyUser').val();
+    const getLastWeek = moment().subtract(week, 'days').calendar()
+    const lastWeek = week != 0 ? moment(getLastWeek, 'DD/MM/YYYY').endOf('day').toDate() : moment(new Date(), 'DD/MM/YYYY').endOf('day').toDate() 
+    const getLastWeekPlus7 = moment().subtract(week+7, 'days').calendar()
+    const lastWeekPlus7 = moment(getLastWeekPlus7, 'DD/MM/YYYY').endOf('day').toDate()
+    const sort = $('#sortUser').val();
+    Meteor.call('getMostActiveUser', lastWeekPlus7, lastWeek, sort,  function (err, res) {  
+      if(err){
+        failAlert(err)
+      }else{
+        t.mostActiveUser.set(res)
+      }
+    })
+  },
+}) 

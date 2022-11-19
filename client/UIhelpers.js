@@ -27,7 +27,13 @@ formatRp = function (context) {
     return 'FREE';
   }
 }
-
+formatNumber = function (context) {  
+  if (context != 0) {
+    return numeral(context).format('0.0');
+  } else {
+    return 0
+  }
+}
 validateEmail = (email) => {
   return String(email)
     .toLowerCase()

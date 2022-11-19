@@ -269,32 +269,16 @@
                                                         <h4 class="card-title card-title-dash">
                                                             Most Active Users</h4>
                                                         <p class="card-subtitle card-subtitle-dash">
-                                                            {{labelTimeActiveUser}}</p>
+                                                            You have 50+ new requests</p>
                                                     </div>
-                                                    <div class="d-flex flex-wrap">
-                                                        <div class="mx-3">
-                                                            <p class="card-subtitle card-subtitle-dash">
-                                                                Filter:</p>
-                                                            <select name="month" id="weeklyUser" class="form-select" aria-label="Default select example">
-                                                                <option value="0">This Week</option>
-                                                                <option value="7">Last Week</option>
-                                                                <option value="14">Last 2 Week</option>
-                                                                <option value="21">Last 3 Week</option>
-                                                            </select><br>
-                                                        </div>
-                                                        <div>
-                                                            <p class="card-subtitle card-subtitle-dash">
-                                                                Sort:</p>
-                                                            <select name="month" id="sortUser" class="form-select" aria-label="Default select example">
-                                                                <option value="1">Total Spent Desc</option>
-                                                                <option value="2">Total Spent Asc</option>
-                                                                <option value="3">Total Item Desc</option>
-                                                                <option value="4">Total Item Asc</option>
-                                                                <option value="5">Total Trans Desc</option>
-                                                                <option value="6">Total Trans Asc</option>
-                                                            </select>
-                                                        </div>
-                                                    </div> 
+                                                    <div>
+                                                        <select name="month" id="weeklyIncome" class="form-select" aria-label="Default select example">
+                                                            <option value="0">This Week</option>
+                                                            <option value="7">Last Week</option>
+                                                            <option value="14">Last 2 Week</option>
+                                                            <option value="21">Last 3 Week</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                                 <div class="table-responsive  mt-1">
                                                     <table class="table select-table">
@@ -310,11 +294,7 @@
                                                                 <tr>
                                                                     <td>
                                                                         <div class="d-flex ">
-                                                                            {{#if i.user.profilePicture}}
-                                                                                <img src="{{i.user.profilePicture}}" alt="">
-                                                                            {{else}}
-                                                                                <img src="../../../../public/img/placeholder/minigura.png" alt="">
-                                                                            {{/if}}
+                                                                            <img src="{{i.user.profilePicture}}" alt="">
                                                                             <div>
                                                                                 <h6>{{i.user.name}}
                                                                                 </h6>

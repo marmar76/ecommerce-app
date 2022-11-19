@@ -31,6 +31,7 @@ import '../../ui/pages/shop/historyTransaction/historyTransaction'
 // });
 
 const checkAdmin = function (id) {
+    if(!id) return false
     return new Promise(function (resolve, reject) {  
         Meteor.call('getOneUser', id, function (err, res) {  
             if(err){
@@ -117,12 +118,11 @@ FlowRouter.route('/master', {
     name: 'masterContainer',
     template: 'masterContainer',
     async action(){
-        const isAdmin = await checkAdmin(Meteor.userId())
-        console.log(isAdmin);
         if(!Meteor.userId()){
             FlowRouter.go('login', {});
         }
-        else if(isAdmin){
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(isAdmin){
             this.render('masterContainer', 'contentExample')
         }
         else{
@@ -655,11 +655,11 @@ FlowRouter.route('/cart', {
     name: 'cart',
     template: 'cart',
     async action() {
-        const isAdmin = await checkAdmin(Meteor.userId())
         if(!Meteor.userId()){
             FlowRouter.go('login', {})
         }
-        else if(!isAdmin){
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!isAdmin){
             this.render('layouts','cart');
         }
         else{
@@ -708,7 +708,7 @@ FlowRouter.route('/historyTrans', {
     template: 'historyTrans',
     async action() {
         const isAdmin = await checkAdmin(Meteor.userId())
-        if(!Meteor.userId()){
+        if(!Meteor.user()){
             FlowRouter.go('login', {})
         }
         else if(!isAdmin){
@@ -759,10 +759,7 @@ FlowRouter.route('/landingPage', {
     template: 'landingPage',
     async action() {
         const isAdmin = await checkAdmin(Meteor.userId())
-        if(!Meteor.userId()){
-            FlowRouter.go('login', {})
-        }
-        else if(!isAdmin){
+        if(!isAdmin){
             this.render('layouts', 'landingPage');
         }
         else{
