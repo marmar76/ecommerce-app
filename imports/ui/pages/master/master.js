@@ -301,16 +301,14 @@ function setMonthlyInvoice(trans) {
   }, 200);
 
 }
-function setWeeklyIncome(trans,week) {
+function setWeeklyIncome(trans, week) {
   const labels = []
   const data = []
   for (const i of trans) {
-    console.log(i.label);
-    console.log(formatNumber(i.total));
-    labels.push(i.label)
-    data.push(i.total)
+      labels.push(i.label)
+      data.push(i.total)
+  
   }
-  console.log(data);
   var marketingOverviewChart = document.getElementById("marketingOverview").getContext('2d');
   var marketingOverviewData = {
       labels: labels,
@@ -440,11 +438,12 @@ Template.contentExample.onCreated(function () {
       setMonthlyInvoice(res)
     }
   })
-  Meteor.call('getMostActiveUser', lastWeek, today, 1,  function (err, res) {  
+  Meteor.call('getMostActiveUser', lastWeek, today, 1, 3,  function (err, res) {  
     if(err){
       failAlert(err)
     }else{
       self.mostActiveUser.set(res)
+      console.log(res);
     }
   })
 })
@@ -454,6 +453,7 @@ Template.contentExample.helpers({
     return Template.instance().mostActiveUser.get()
   },
   totalWeeklyIncome() { 
+    console.log(Template.instance().totalWeeklyIncome.get());
     return Template.instance().totalWeeklyIncome.get();
   },
   totalInvoice() {
@@ -533,8 +533,7 @@ Template.contentExample.events({
     const lastWeek = week != 0 ? moment(getLastWeek, 'DD/MM/YYYY').endOf('day').toDate() : moment(new Date(), 'DD/MM/YYYY').endOf('day').toDate() 
     const getLastWeekPlus7 = moment().subtract(week+7, 'days').calendar()
     const lastWeekPlus7 = moment(getLastWeekPlus7, 'DD/MM/YYYY').endOf('day').toDate()
-    console.log(getLastWeek);
-    console.log(getLastWeekPlus7);
+    const top = $('#top').val();
     t.thisWeek.set(lastWeek)
     t.lastWeek.set(lastWeekPlus7)
     let text ='This Week'
@@ -558,15 +557,15 @@ Template.contentExample.events({
         t.totalWeeklyIncome.set(totalIncome)
       }
     })
-    
   },
-  'change #weeklyUser'(e,t){
+  'change .weeklyUser'(e,t){
     const week = +$('#weeklyUser').val();
     const getLastWeek = moment().subtract(week, 'days').calendar()
     const lastWeek = week != 0 ? moment(getLastWeek, 'DD/MM/YYYY').endOf('day').toDate() : moment(new Date(), 'DD/MM/YYYY').endOf('day').toDate() 
     const getLastWeekPlus7 = moment().subtract(week+7, 'days').calendar()
     const lastWeekPlus7 = moment(getLastWeekPlus7, 'DD/MM/YYYY').endOf('day').toDate()
     const sort = $('#sortUser').val();
+    const top = $('#top').val();
     if(week == 7){
       t.labelTimeActiveUser.set('Last Week')
     }else if(week == 14){
@@ -576,7 +575,7 @@ Template.contentExample.events({
     }else{
       t.labelTimeActiveUser.set('This Week')
     }
-    Meteor.call('getMostActiveUser', lastWeekPlus7, lastWeek, sort,  function (err, res) {  
+    Meteor.call('getMostActiveUser', lastWeekPlus7, lastWeek, sort, top,  function (err, res) {  
       if(err){
         failAlert(err)
       }else{
@@ -584,19 +583,5 @@ Template.contentExample.events({
       }
     })
   },
-  'change #sortUser'(e,t){
-    const week = +$('#weeklyUser').val();
-    const getLastWeek = moment().subtract(week, 'days').calendar()
-    const lastWeek = week != 0 ? moment(getLastWeek, 'DD/MM/YYYY').endOf('day').toDate() : moment(new Date(), 'DD/MM/YYYY').endOf('day').toDate() 
-    const getLastWeekPlus7 = moment().subtract(week+7, 'days').calendar()
-    const lastWeekPlus7 = moment(getLastWeekPlus7, 'DD/MM/YYYY').endOf('day').toDate()
-    const sort = $('#sortUser').val();
-    Meteor.call('getMostActiveUser', lastWeekPlus7, lastWeek, sort,  function (err, res) {  
-      if(err){
-        failAlert(err)
-      }else{
-        t.mostActiveUser.set(res)
-      }
-    })
-  },
+  
 }) 

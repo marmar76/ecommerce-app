@@ -54,6 +54,7 @@ Template.homepage.helpers({
     // },
     banners(){
         const banner = Template.instance().banner.get()
+        console.log(banner);
         if(banner && banner.length > 0){
             console.log(banner);
             return banner

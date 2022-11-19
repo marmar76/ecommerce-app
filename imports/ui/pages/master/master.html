@@ -270,12 +270,17 @@
                                                             Most Active Users</h4>
                                                         <p class="card-subtitle card-subtitle-dash">
                                                             {{labelTimeActiveUser}}</p>
+                                                        <select name="month" id="top" class="form-select weeklyUser" aria-label="Default select example">
+                                                            <option value="3">Top 3</option>
+                                                            <option value="5">Top 5</option>
+                                                            <option value="10">Top 10</option>
+                                                        </select><br>
                                                     </div>
                                                     <div class="d-flex flex-wrap">
                                                         <div class="mx-3">
                                                             <p class="card-subtitle card-subtitle-dash">
                                                                 Filter:</p>
-                                                            <select name="month" id="weeklyUser" class="form-select" aria-label="Default select example">
+                                                            <select name="month" id="weeklyUser" class="form-select weeklyUser" aria-label="Default select example">
                                                                 <option value="0">This Week</option>
                                                                 <option value="7">Last Week</option>
                                                                 <option value="14">Last 2 Week</option>
@@ -285,7 +290,7 @@
                                                         <div>
                                                             <p class="card-subtitle card-subtitle-dash">
                                                                 Sort:</p>
-                                                            <select name="month" id="sortUser" class="form-select" aria-label="Default select example">
+                                                            <select name="month" id="sortUser" class="form-select weeklyUser" aria-label="Default select example">
                                                                 <option value="1">Total Spent Desc</option>
                                                                 <option value="2">Total Spent Asc</option>
                                                                 <option value="3">Total Item Desc</option>
@@ -313,7 +318,7 @@
                                                                             {{#if i.user.profilePicture}}
                                                                                 <img src="{{i.user.profilePicture}}" alt="">
                                                                             {{else}}
-                                                                                <img src="../../../../public/img/placeholder/minigura.png" alt="">
+                                                                                <img src="/img/placeholder/chisato.jpg" alt="">
                                                                             {{/if}}
                                                                             <div>
                                                                                 <h6>{{i.user.name}}
@@ -330,42 +335,6 @@
                                                                     </td> 
                                                                 </tr>
                                                             {{/each}}
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="d-flex ">
-                                                                        <img src="images/faces/face1.jpg" alt="">
-                                                                        <div>
-                                                                            <h6>Brandon Washington
-                                                                            </h6>
-                                                                            <p>Head admin</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <h6>Company name 1</h6>
-                                                                    <p>company type</p>
-                                                                </td>
-                                                                <td>
-                                                                    <div>
-                                                                        <div
-                                                                            class="d-flex justify-content-between align-items-center mb-1 max-width-progress-wrap">
-                                                                            <p class="text-success">
-                                                                                79%</p>
-                                                                            <p>85/162</p>
-                                                                        </div>
-                                                                        <div class="progress progress-md">
-                                                                            <div class="progress-bar bg-success" role="progressbar"
-                                                                                style="width: 85%" aria-valuenow="25"
-                                                                                aria-valuemin="0" aria-valuemax="100">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="badge badge-opacity-warning">
-                                                                        In progress</div>
-                                                                </td>
-                                                            </tr>
                                                             
                                                         </tbody>
                                                     </table>

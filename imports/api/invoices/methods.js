@@ -212,28 +212,34 @@ Meteor.methods({
                 console.log(successObj);
                 const thisInvoice = Invoices.findOne({_id: successObj.order_id})
                 if(thisInvoice){
-                    const thisUser = Meteor.users.findOne({_id: Meteor.userId()})
-                    // console.log(id);
-                    thisInvoice.payment = successObj
-                    thisInvoice.status = 200
-                    thisInvoice.log.push({
-                        id: 200,
-                        timestamp: new Date()
-                    })
-                    for (const i of thisInvoice.items) {
-                        const item = i.id.split('-')
-                        const thisItem = Items.findOne({_id: item[0]})
-                        console.log(thisItem.models[item[1]].stock);
-                        console.log(i.quantity);
-                        thisItem.models[item[1]].stock = (+thisItem.models[item[1]].stock) - i.quantity
-                        const userCartPosition = thisUser.cart.findIndex(function (x) {  
-                            return x.itemId == i.id
-                        })
-                        thisUser.cart.splice(userCartPosition, 1)
-                        Items.update({_id: item[0]}, {$set: thisItem})
+                    if(thisInvoice.payment){
+                        console.log("done already");
+                        return 'is already done'
                     }
-                    Meteor.users.update({_id: Meteor.userId()}, {$set: thisUser})
-                    Invoices.update({_id: thisInvoice._id}, {$set: thisInvoice})
+                    else{
+                        const thisUser = Meteor.users.findOne({_id: Meteor.userId()})
+                        // console.log(id);
+                        thisInvoice.payment = successObj
+                        thisInvoice.status = 200
+                        thisInvoice.log.push({
+                            id: 200,
+                            timestamp: new Date()
+                        })
+                        for (const i of thisInvoice.items) {
+                            const item = i.id.split('-')
+                            const thisItem = Items.findOne({_id: item[0]})
+                            console.log(thisItem.models[item[1]].stock);
+                            console.log(i.quantity);
+                            thisItem.models[item[1]].stock = (+thisItem.models[item[1]].stock) - i.quantity
+                            const userCartPosition = thisUser.cart.findIndex(function (x) {  
+                                return x.itemId == i.id
+                            })
+                            thisUser.cart.splice(userCartPosition, 1)
+                            Items.update({_id: item[0]}, {$set: thisItem})
+                        }
+                        Meteor.users.update({_id: Meteor.userId()}, {$set: thisUser})
+                        Invoices.update({_id: thisInvoice._id}, {$set: thisInvoice})
+                    }
                 }
                 else{
                     console.log("invalid invoice");
@@ -546,7 +552,7 @@ Meteor.methods({
         }
         return res 
     },
-    async 'getMostActiveUser'(start, end, sort){ 
+    async 'getMostActiveUser'(start, end, sort, top){ 
         const trans = Invoices.find({
             createdAt: {
                 $gte: start,
@@ -558,6 +564,7 @@ Meteor.methods({
             }
         }).fetch()
         const res = []
+        let ctr = 1
         for (const i of trans) {
             const thisDate = moment(i.createdAt).format('dddd');
             const searchRes = res.find((x) => x.label == i.userUsername)
@@ -570,25 +577,30 @@ Meteor.methods({
                 searchRes.totalItems += totalItems
                 searchRes.totalTrans += 1
             }else{
-                const user = Meteor.users.findOne({_id: i.userId});
-                if(user && user.profilePicture){
-                    const profilePictureLink = await getFireImage('user/picture', user.profilePicture)
-                    user.profilePicture = profilePictureLink
-                }
-                let totalItems = 0 
-                for (const j of i.items) {
-                    totalItems += j.quantity
-                }
-                res.push({
-                    label: i.userUsername,
-                    user,
-                    total: i.totalPurchase,
-                    totalItems,
-                    totalTrans: 1
-                })
+                // if(ctr <= top){
+                    const user = Meteor.users.findOne({_id: i.userId});
+                    if(user && user.profilePicture){
+                        const profilePictureLink = await getFireImage('user/picture', user.profilePicture)
+                        user.profilePicture = profilePictureLink
+                    }
+                    let totalItems = 0 
+                    for (const j of i.items) {
+                        totalItems += j.quantity
+                    }
+                    res.push({
+                        label: i.userUsername,
+                        user,
+                        total: i.totalPurchase,
+                        totalItems,
+                        totalTrans: 1
+                    })
+                    // ctr++;
+
+                // }
             }
+            
         }
-        return res.sort(function (a, b) {  
+        return await res.sort(function (a, b) {  
             if((+sort) == 1 ){ 
                 return b.total - a.total 
               }
@@ -608,6 +620,8 @@ Meteor.methods({
                 return a.totalTrans - b.totalTrans 
               }
              
+        }).filter(function (z) {  
+            return top >= ctr++
         })
     }
 })
