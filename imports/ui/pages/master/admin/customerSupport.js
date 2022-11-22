@@ -32,6 +32,8 @@ Template.customerSupport.onCreated(function () {
     users(){
       const users = Meteor.users.find({chats: {$exists: true}}, {fields: {chats: 1, readStatus: 1, username: 1, name: 1, profilePicture: 1}}).fetch()
       console.log(users);
+      const filtering = Template.instance().filtering.get()
+      const thisFilter = filtering.filter.toString().toLowerCase()
       // let now = Template.instance().now.get()
       if(users){
         Template.instance().chats.set(users)
@@ -40,7 +42,9 @@ Template.customerSupport.onCreated(function () {
         //   Template.instance().now.set(now)
         // }
         
-        return users
+        return users.filter(function (x) {  
+          return x.name.toLowerCase().includes(thisFilter) || x.username.toLowerCase().includes(thisFilter)
+        })
       }
       return []
     },
@@ -93,48 +97,25 @@ Template.customerSupport.onCreated(function () {
     },
     'change .filtering'(e, t) {
       const filter = $('#filter').val();
-      const category = Template.instance().category.get();
-      // const sort = $('#sort').val();
-      const categoryIndex = $('#filtercategory').val();
-      console.log(categoryIndex);
-      const filtersubcategory = $('#filtersubcategory').val();
-      let filtercategory;
-      for (let i = 0; i < category.length; i++) {
-        if (i == categoryIndex) {
-          filtercategory = category[i]._id;
-        }
-      }
-      console.log(filtercategory);
-      console.log(filtersubcategory);
       t.filtering.set({
-        filter,
-        filtercategory,
-        filtersubcategory
+        filter
+        // filtercategory,
+        // filtersubcategory
       })
-      Meteor.call('getAllItem', {
-        filter,
-        filtercategory,
-        filtersubcategory
-      }, function (err, res) {
-        t.item.set(res);
-      })
+      // Meteor.call('getAllItem', {
+      //   filter,
+      //   filtercategory,
+      //   filtersubcategory
+      // }, function (err, res) {
+      //   t.item.set(res);
+      // })
     },
     'input .filtering'(e, t) {
       const filter = $('#filter').val();
-      // const sort = $('#sort').val();
-      const filtercategory = $('#filtercategory').val();
-      const filtersubcategory = $('#filtersubcategory').val();
       t.filtering.set({
-        filter,
-        filtercategory,
-        filtersubcategory
-      })
-      Meteor.call('getAllItem', {
-        filter,
-        filtercategory,
-        filtersubcategory
-      }, function (err, res) {
-        t.item.set(res);
+        filter
+        // filtercategory,
+        // filtersubcategory
       })
     },
   });

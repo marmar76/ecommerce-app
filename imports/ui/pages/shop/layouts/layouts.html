@@ -342,7 +342,7 @@
             <br>
               <!-- <img src="{{ fotoProfile }}"> -->
             <!-- </span> -->
-            <div class="cm-msg-text mt-1">
+            <div class="cm-msg-text mt-1" style="overflow-wrap: break-word;">
               {{message}}
             </div>
           </div>
@@ -352,7 +352,7 @@
       </div>
       <div class="chat-input">
         <form id="chat-submit">
-          <input type="text" id="chat-input" placeholder="Send a message..." />
+          <input type="text" id="chat-input" style="overflow-wrap: break-word;" placeholder="Send a message..." />
           <button type="submit" class="chat-submit" id="">
             <i class="far fa-paper-plane"></i>
             <!-- <i class="material-icons">send</i> -->
@@ -361,8 +361,12 @@
       </div>
     </div>
 
-
+    
 
 
   </div>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MPLRDFX"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 </template>

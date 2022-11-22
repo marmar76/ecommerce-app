@@ -255,12 +255,12 @@
     <div class="w-full">
         <aside>
             <header>
-                <input type="text" class="fs-5" placeholder="Search user">
+                <input type="text" class="fs-5 filtering" id="filter" placeholder="Search user">
             </header>
             <ul>
                 {{#each users}}
                 <li class="d-grid">
-                    <button class="btn w-full bg-info select-chat text-start" value="{{_id}}">
+                    <button class="btn w-full {{#if equals getChat._id _id}}bg-info{{/if}} select-chat text-start" value="{{_id}}">
                         <!-- <img src="{{userPicture profilePicture}}" alt=""> -->
                         <div class="fs-3 text-light">{{username}}</div>
                     </button>
@@ -376,7 +376,7 @@
                         <span class="fs-6">{{relativeTimeFormat createdAt}}</span>
                     </div>
                     <div class="triangle"></div>
-                    <div class="message fs-5">
+                    <div class="message fs-5" style="overflow-wrap: break-word;">
                         {{message}}
                     </div>
                 </li>

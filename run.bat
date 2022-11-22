@@ -2,5 +2,5 @@
 @REM SET MONGO_URL=mongodb://administrator:6LGuwq2jhzVTqpFT@marmar-shard-00-00.hiryh.mongodb.net:27017,marmar-shard-00-01.hiryh.mongodb.net:27017,marmar-shard-00-02.hiryh.mongodb.net:27017/e-commerce?ssl=true
 @REM SET MONGO_URL=mongodb+srv://administrator:6LGuwq2jhzVTqpFT@marmar.hiryh.mongodb.net/e-commerce?retryWrites=true
 @REM meteor
-@REM meteor --settings settings.json
-meteor --settings settings.json -p 192.168.1.124:3000
+meteor --settings settings.json
+@REM meteor --settings settings.json -p 192.168.1.124:3000
