@@ -11,3 +11,5 @@ done, good luck
 untuk login !!!
 username: admin
 password: takina
+
+Cukup import database districtv2 untuk kedepannya

@@ -18,14 +18,19 @@ Meteor.methods({
             limit: 400
         }).fetch()
         const thisResult = thisDistricts.map(function (x, i) {  
-            const thisRegency = Regencies.findOne({code: x.regencyCode})
-            const thisProvince = Provinces.findOne({code: thisRegency.provinceCode})
+            // const thisRegency = Regencies.findOne({code: x.regencyCode})
+            // const thisProvince = Provinces.findOne({code: thisRegency.provinceCode})
             return {
                 id: i,
-                label: `${x.name.initCap()}, ${thisRegency.name.initCap()}, ${thisProvince.name.initCap()}`,
-                city_id: thisRegency.city_id,
-                province_id: thisProvince.province_id,
-                districtCode: x.code
+                label: `${x.name}, ${x.type} ${x.city}, ${x.province}`,
+                city_id: x.city_id,
+                province_id: x.province_id,
+                districtCode: x.subdistrict_id
+                // id: i,
+                // label: `${x.name}, ${thisRegency.name}, ${thisProvince.name}`,
+                // city_id: thisRegency.city_id,
+                // province_id: thisProvince.province_id,
+                // districtCode: x.code
             }
         })
         // const additionResult = Regencies.find({ name : { "$regex" : keyword , "$options" : "i"}}).fetch()

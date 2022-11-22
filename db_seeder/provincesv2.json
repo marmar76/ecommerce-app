@@ -1,0 +1,137 @@
+[{
+  "_id": "E9jgrnLeRZW2LNM3Z",
+  "province_id": "1",
+  "name": "Bali"
+},{
+  "_id": "RqhnGJqtK8mT4oBHd",
+  "province_id": "2",
+  "name": "Bangka Belitung"
+},{
+  "_id": "3L3a3XXpav3DjsEY9",
+  "province_id": "3",
+  "name": "Banten"
+},{
+  "_id": "sc9uB88w2JKfvdonN",
+  "province_id": "4",
+  "name": "Bengkulu"
+},{
+  "_id": "nhF38HPCsKbQNQ5eD",
+  "province_id": "5",
+  "name": "DI Yogyakarta"
+},{
+  "_id": "7jbePQ4Kdi5EFEQ9x",
+  "province_id": "6",
+  "name": "DKI Jakarta"
+},{
+  "_id": "iSLpCHdKxFTZ4L8Fm",
+  "province_id": "7",
+  "name": "Gorontalo"
+},{
+  "_id": "ZaXgqkGYaZ7HaS4E3",
+  "province_id": "8",
+  "name": "Jambi"
+},{
+  "_id": "inwLxugojivTe34h6",
+  "province_id": "9",
+  "name": "Jawa Barat"
+},{
+  "_id": "dBoKtvskQiaFEen63",
+  "province_id": "10",
+  "name": "Jawa Tengah"
+},{
+  "_id": "bfJF9JJHaKEKKuCn5",
+  "province_id": "11",
+  "name": "Jawa Timur"
+},{
+  "_id": "QW2ehCxHdCpzbpb3R",
+  "province_id": "12",
+  "name": "Kalimantan Barat"
+},{
+  "_id": "yQT2WQ3FLCMT5Ym9F",
+  "province_id": "13",
+  "name": "Kalimantan Selatan"
+},{
+  "_id": "NTrPruBEtdn5SL4Xe",
+  "province_id": "14",
+  "name": "Kalimantan Tengah"
+},{
+  "_id": "424yCy7Fqp8M7uQxG",
+  "province_id": "15",
+  "name": "Kalimantan Timur"
+},{
+  "_id": "2Fum6RFD3WAEBY8sT",
+  "province_id": "16",
+  "name": "Kalimantan Utara"
+},{
+  "_id": "KxMxriixQkhCyCDrh",
+  "province_id": "17",
+  "name": "Kepulauan Riau"
+},{
+  "_id": "TdzJK3BgRKh2y93qx",
+  "province_id": "18",
+  "name": "Lampung"
+},{
+  "_id": "KEpAMQrYL2GnsMsp4",
+  "province_id": "19",
+  "name": "Maluku"
+},{
+  "_id": "PbLJd6Patrzwdasre",
+  "province_id": "20",
+  "name": "Maluku Utara"
+},{
+  "_id": "EzC6Qxufoj8fXhJqo",
+  "province_id": "21",
+  "name": "Nanggroe Aceh Darussalam (NAD)"
+},{
+  "_id": "BH92PiGqmEu5LEXDj",
+  "province_id": "22",
+  "name": "Nusa Tenggara Barat (NTB)"
+},{
+  "_id": "MrLGezdohDtT9EGYH",
+  "province_id": "23",
+  "name": "Nusa Tenggara Timur (NTT)"
+},{
+  "_id": "xuGEjp757qgwoYEaF",
+  "province_id": "24",
+  "name": "Papua"
+},{
+  "_id": "ibmS7CpMrXkmzrpWu",
+  "province_id": "25",
+  "name": "Papua Barat"
+},{
+  "_id": "JWvmveacjeHbYLqYP",
+  "province_id": "26",
+  "name": "Riau"
+},{
+  "_id": "WG7bNT9SZmroNZgSE",
+  "province_id": "27",
+  "name": "Sulawesi Barat"
+},{
+  "_id": "ko9fpAS3XDfWZGN9j",
+  "province_id": "28",
+  "name": "Sulawesi Selatan"
+},{
+  "_id": "DGzvjnQ49rRz6D8SC",
+  "province_id": "29",
+  "name": "Sulawesi Tengah"
+},{
+  "_id": "A8X6k8zvec6z69dAA",
+  "province_id": "30",
+  "name": "Sulawesi Tenggara"
+},{
+  "_id": "jiqemYoGwFm2Zyuca",
+  "province_id": "31",
+  "name": "Sulawesi Utara"
+},{
+  "_id": "Zj39QANKHSAWkiwxq",
+  "province_id": "32",
+  "name": "Sumatera Barat"
+},{
+  "_id": "aWgpc8yAngLpM6TJ7",
+  "province_id": "33",
+  "name": "Sumatera Selatan"
+},{
+  "_id": "HkHfuyq28WbRK4dXB",
+  "province_id": "34",
+  "name": "Sumatera Utara"
+}]
