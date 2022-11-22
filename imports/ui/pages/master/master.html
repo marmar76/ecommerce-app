@@ -252,8 +252,12 @@
                                                         <div id="marketing-overview-legend"></div>
                                                     </div>
                                                 </div>
-                                                <div class="chartjs-bar-wrapper mt-3">
-                                                    <canvas id="marketingOverview"></canvas>
+                                                <div class="chartjs-bar-wrapper mt-3"> 
+                                                    {{#if equals totalWeeklyIncomeLenght 0}}
+                                                        <h4>There's no Transaction This month</h4>
+                                                    {{else}}
+                                                        <canvas id="marketingOverview"></canvas> 
+                                                    {{/if}}
                                                 </div>
                                             </div>
                                         </div>
@@ -267,7 +271,7 @@
                                                 <div class="d-sm-flex justify-content-between align-items-start">
                                                     <div>
                                                         <h4 class="card-title card-title-dash">
-                                                            Most Active Users</h4>
+                                                            Most Spending Users</h4>
                                                         <p class="card-subtitle card-subtitle-dash">
                                                             {{labelTimeActiveUser}}</p>
                                                         <select name="month" id="top" class="form-select weeklyUser" aria-label="Default select example">
@@ -302,42 +306,46 @@
                                                     </div> 
                                                 </div>
                                                 <div class="table-responsive  mt-1">
-                                                    <table class="table select-table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Customer</th>
-                                                                <th>Total Items</th>
-                                                                <th>Total Spending</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            {{#each i in mostActiveUser}} 
+                                                    {{#if mostActiveUser}}
+                                                        <table class="table select-table">
+                                                            <thead>
                                                                 <tr>
-                                                                    <td>
-                                                                        <div class="d-flex ">
-                                                                            {{#if i.user.profilePicture}}
-                                                                                <img src="{{i.user.profilePicture}}" alt="">
-                                                                            {{else}}
-                                                                                <img src="/img/placeholder/chisato.jpg" alt="">
-                                                                            {{/if}}
-                                                                            <div>
-                                                                                <h6>{{i.user.name}}
-                                                                                </h6>
-                                                                                <p>{{i.totalTrans}} Transaction</p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <h6>{{i.totalItems}}</h6> 
-                                                                    </td>
-                                                                    <td> 
-                                                                        <h6>{{formatRp i.total}}</h6>
-                                                                    </td> 
+                                                                    <th>Customer</th>
+                                                                    <th>Total Items</th>
+                                                                    <th>Total Spending</th>
                                                                 </tr>
-                                                            {{/each}}
-                                                            
-                                                        </tbody>
-                                                    </table>
+                                                            </thead>
+                                                            <tbody>
+                                                                {{#each i in mostActiveUser}} 
+                                                                    <tr>
+                                                                        <td>
+                                                                            <div class="d-flex ">
+                                                                                {{#if i.user.profilePicture}}
+                                                                                    <img src="{{i.user.profilePicture}}" alt="">
+                                                                                {{else}}
+                                                                                    <img src="/img/placeholder/chisato.jpg" alt="">
+                                                                                {{/if}}
+                                                                                <div>
+                                                                                    <h6>{{i.user.name}}
+                                                                                    </h6>
+                                                                                    <p>{{i.totalTrans}} Transaction</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <h6>{{i.totalItems}}</h6> 
+                                                                        </td>
+                                                                        <td> 
+                                                                            <h6>{{formatRp i.total}}</h6>
+                                                                        </td> 
+                                                                    </tr>
+                                                                {{/each}}
+                                                                
+                                                            </tbody>
+                                                        </table>
+                                                    {{else}}
+                                                        <h4>There's no user this week</h4>
+                                                    {{/if}}
                                                 </div>
                                             </div>
                                         </div>

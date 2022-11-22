@@ -248,7 +248,8 @@ Template.checkout.events({
                     id: x.itemId,
                     price: +x.price,
                     name: x.name,
-                    quantity: x.qty
+                    quantity: x.qty,
+                    isReviewed: false
                 }
             })
             

@@ -1,0 +1,26 @@
+<template name="reviewPage">
+    <div class="d-flex flex-wrap">
+        <div class="col-md-4 mx-3">
+            <img src="{{item.link}}" class="card-img-top rounded" style="object-fit: cover;" alt="">
+        </div>
+        <div>
+            <h1>{{item.name}}</h1>
+            <h5>Bagaimana Kualitas Product ini secara keseluruhan?</h5>
+            <div class="d-flex flex-wrap">
+                <div>
+                    <i class="far fa-star stars" value="1"></i>
+                    <i class="far fa-star stars" value="2"></i>
+                    <i class="far fa-star stars" value="3"></i>
+                    <i class="far fa-star stars" value="4"></i>
+                    <i class="far fa-star stars" value="5"></i>
+                    
+                </div>
+            </div><br>
+            <div class="form-floating">
+                <textarea class="form-control" placeholder="Leave a comment here" id="textReview" style="height: 100px"></textarea>
+                <label for="floatingTextarea2">Comments</label>
+            </div><br>
+            <button class="btn btn-success" id="review">Review</button>
+        </div>
+    </div>
+</template>

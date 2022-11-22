@@ -151,6 +151,32 @@ function getToken(parameter) {
         // return transactionToken
     });
 }
+
+function syncStatus(_id) {
+    const invoice = Invoices.findOne({_id:_id})
+    const today = new Date()
+    if(invoice.status == 202)
+    {
+        // console.log(today);
+        // console.log(invoice.ongkir.jsDate);
+        if(today >= invoice.ongkir.jsDate){
+            // console.log('yes');
+            invoice.status = 203
+        }
+    }
+    if(invoice.status == 203)
+    {
+        const nextDay = moment(new Date()).add(1, 'days').toDate(); 
+        // console.log(nextDay);
+        // console.log(invoice.ongkir.jsDate);
+        if(nextDay >= invoice.ongkir.jsDate){
+            // console.log('ehek');
+            invoice.status = 269
+        }
+    }
+    // console.log(invoice.status);
+    return invoice.status
+}
 Meteor.methods({
     async 'createInvoice'(data) {
         check(data.userId, String)
@@ -169,16 +195,17 @@ Meteor.methods({
             timestamp: new Date()
         }]
         data.paymentToken = null
-        const id = Invoices.insert(data)
-        const items = data.items
-        // items.map(function (x) {  
+        // data.items.map(function (x) {  
         //     return {
         //         id: x.itemId,
         //         price: x.price,
         //         name: x.name,
-        //         quantity: x.quantity
+        //         quantity: x.quantity,
+        //         isReview: false
         //     }
         // })
+        const id = Invoices.insert(data)
+        const items = data.items
         items.push({
             id: "Courier",
             price: data.ongkir.value,
@@ -351,6 +378,7 @@ Meteor.methods({
                 }) // body data type must match "Content-Type" header
             });
             const result = await thisOngkir.json()
+            console.log(result);
             // return {converted: x.getDate(result), result}
             try {
                 const thisDate = x.getDate(result)
@@ -423,6 +451,7 @@ Meteor.methods({
                     return y
                 })
                 x.items = await Promise.all(items)
+                x.status = syncStatus(x._id)
                 return x
             })
             return await Promise.all(newInvoice)
@@ -431,7 +460,7 @@ Meteor.methods({
     async 'getOneInvoice'(_id){
         const invoice = Invoices.find({_id:_id}).fetch()
         if(invoice){
-            console.log(invoice);
+            // console.log(invoice);
             const newInvoice = invoice.map(async function (x) {
                 const items = x.items.map(async function (y) {
                     const itemId = y.id.split('-')
@@ -453,6 +482,27 @@ Meteor.methods({
                 return x
             })
             return await Promise.all(newInvoice)
+        }
+    },
+    async 'getOneItemInvoice'(_id, index){
+        const invoice = Invoices.findOne({_id:_id})
+        if(invoice){
+            const item =  invoice.items[index]
+            if(item){
+                const thisItem = Items.findOne({_id: item.id.split('-')[0]})
+                if(thisItem && thisItem.picture){
+                    try {
+                        const profilePictureLink = await getFireImage('items/picture', thisItem.picture)
+                        item.link = profilePictureLink
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }
+            }
+            item.invoiceId = invoice._id
+            item.userId = invoice.userId
+            item.userUsername = invoice.userUsername
+            return item
         }
     },
     
@@ -481,30 +531,42 @@ Meteor.methods({
         const invoices = Invoices.find(thisFilter, {
             sort: sort
         }).fetch();
-        console.log(invoices);
+        // console.log(invoices);
         let invoice = invoices.filter(function (x) {   
             return x
-        }) 
+        }) .map(function (y) {  
+            y.status = syncStatus(y._id)
+            return y
+        })
         return invoice
     },
     'updateInvoiceStatus'(_id, nextStatus){
         const invoice = Invoices.findOne({_id: _id})
         const log = invoice.log 
         log.push({id: nextStatus, timestamp: new Date()})
+        if(nextStatus == 202){
+            return Invoices.update({_id:_id},{
+                $set:{
+                    log: log,
+                    status: nextStatus,
+                    resi: '003104187293'
+                }
+            })
+        }
         return Invoices.update({_id:_id},{
             $set:{
                 log: log,
                 status: nextStatus
             }
         })
-    },
-
+    }, 
     'getTransReport'(start, end){
         const trans = Invoices.find({
             createdAt: {
                 $gte: start,
                 $lte: end
-            }
+            },
+            status: 269,
         }, {
             sort: {
                 createdAt: 1
@@ -531,7 +593,8 @@ Meteor.methods({
             createdAt: {
                 $gte: start,
                 $lte: end
-            }
+            },
+            status: 269
         }, {
             sort: {
                 createdAt: 1
@@ -557,7 +620,8 @@ Meteor.methods({
             createdAt: {
                 $gte: start,
                 $lte: end
-            }
+            },
+            status: 269
         }, {
             sort: {
                 createdAt: 1

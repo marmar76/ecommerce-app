@@ -11,9 +11,7 @@ Template.layouts.onCreated(function () {
   self.thisUser = new ReactiveVar()
   this.fotoProfile = new ReactiveVar(ImagePlaceholder)
   this.thisUser = new ReactiveVar()
-  Meteor.subscribe('user.chat', function () {  
-    console.log("subscribe");
-  })
+  
   Meteor.call('getMyself', async function (err, res) {  
     if(err){
       console.log(err);
@@ -162,7 +160,9 @@ Template.layouts.events({
   },
   'click #chat-circle'(e, t){
     Meteor.call('validateUserChat', function (err, res) {  
-
+      Meteor.subscribe('user.chat', function () {  
+        console.log("subscribe");
+      })
     })
     $("#chat-circle").toggle('scale');
     $(".chat-box").toggle('scale');

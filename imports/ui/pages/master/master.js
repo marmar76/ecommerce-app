@@ -399,7 +399,7 @@ function setWeeklyIncome(trans, week) {
 Template.contentExample.onCreated(function () {
   const self = this 
   self.invoiceReport = new ReactiveVar()
-  self.totalMonthlyInvoice = new ReactiveVar()
+  self.totalMonthlyInvoice = new ReactiveVar() 
   self.weeklyTransactionReport = new ReactiveVar()
   self.mostActiveUser = new ReactiveVar()
   self.totalWeeklyIncome = new ReactiveVar()
@@ -410,8 +410,8 @@ Template.contentExample.onCreated(function () {
   // const month = moment('2022-03-03').startOf('month').toDate()
   // console.log(month);
   const dateTo = moment().endOf('month').toDate()
-  const getLastWeek = moment().subtract(7, 'days').calendar()
-  const lastWeek = moment(getLastWeek, 'DD/MM/YYYY').endOf('day').toDate()
+  const getLastWeek = moment().subtract(6, 'days').toDate() 
+  const lastWeek = moment(getLastWeek, 'DD/MM/YYYY').startOf('day').toDate() 
   const today = moment(new Date(), 'DD/MM/YYYY').endOf('day').toDate()
   self.thisWeek.set(today)
   self.lastWeek.set(lastWeek)
@@ -449,12 +449,21 @@ Template.contentExample.onCreated(function () {
 })
 Template.contentExample.helpers({
   mostActiveUser() { 
-    console.log(Template.instance().mostActiveUser.get());
-    return Template.instance().mostActiveUser.get()
+    const user = Template.instance().mostActiveUser.get()
+    if(user){ 
+      console.log(Template.instance().mostActiveUser.get());
+      return Template.instance().mostActiveUser.get()
+    }
   },
-  totalWeeklyIncome() { 
-    console.log(Template.instance().totalWeeklyIncome.get());
-    return Template.instance().totalWeeklyIncome.get();
+  totalWeeklyIncome() {  
+    const totalIncome = Template.instance().totalWeeklyIncome.get()
+    if(totalIncome){
+      console.log(totalIncome);
+      return totalIncome;
+    }
+  },
+  weeklyTransactionReport() {  
+    return Template.instance().weeklyTransactionReport.get();
   },
   totalInvoice() {
     return Template.instance().totalMonthlyInvoice.get();
@@ -529,10 +538,10 @@ Template.contentExample.events({
   },
   'change #weeklyIncome'(e, t){
     const week = +$('#weeklyIncome').val();
-    const getLastWeek = moment().subtract(week, 'days').calendar()
+    const getLastWeek = moment().subtract(week, 'days').toDate()
     const lastWeek = week != 0 ? moment(getLastWeek, 'DD/MM/YYYY').endOf('day').toDate() : moment(new Date(), 'DD/MM/YYYY').endOf('day').toDate() 
-    const getLastWeekPlus7 = moment().subtract(week+7, 'days').calendar()
-    const lastWeekPlus7 = moment(getLastWeekPlus7, 'DD/MM/YYYY').endOf('day').toDate()
+    const getLastWeekPlus7 = moment().subtract(week+6, 'days').toDate()
+    const lastWeekPlus7 = moment(getLastWeekPlus7, 'DD/MM/YYYY').startOf('day').toDate()
     const top = $('#top').val();
     t.thisWeek.set(lastWeek)
     t.lastWeek.set(lastWeekPlus7)
@@ -550,20 +559,24 @@ Template.contentExample.events({
       }else{
         t.weeklyTransactionReport.set(res)
         setWeeklyIncome(res, text)
-        let totalIncome = 0 
-        for (const i of res) {
-          totalIncome += i.total
+        let totalIncome = +0 
+        if(res){
+          for (const i of res) {
+            totalIncome += i.total
+          }
         }
+
         t.totalWeeklyIncome.set(totalIncome)
+        console.log(t.totalWeeklyIncome.get());
       }
     })
   },
   'change .weeklyUser'(e,t){
     const week = +$('#weeklyUser').val();
-    const getLastWeek = moment().subtract(week, 'days').calendar()
+    const getLastWeek = moment().subtract(week, 'days').toDate()
     const lastWeek = week != 0 ? moment(getLastWeek, 'DD/MM/YYYY').endOf('day').toDate() : moment(new Date(), 'DD/MM/YYYY').endOf('day').toDate() 
-    const getLastWeekPlus7 = moment().subtract(week+7, 'days').calendar()
-    const lastWeekPlus7 = moment(getLastWeekPlus7, 'DD/MM/YYYY').endOf('day').toDate()
+    const getLastWeekPlus7 = moment().subtract(week+6, 'days').toDate()
+    const lastWeekPlus7 = moment(getLastWeekPlus7, 'DD/MM/YYYY').startOf('day').toDate()
     const sort = $('#sortUser').val();
     const top = $('#top').val();
     if(week == 7){

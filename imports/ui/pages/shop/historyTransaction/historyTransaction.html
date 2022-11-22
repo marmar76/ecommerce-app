@@ -30,7 +30,18 @@
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
-                        <div class="text-start fs-3 mb-2 d-flex align-items-center">{{formatDateIDN i.createdAt}} <span class="ms-3 rounded-3 bg-info px-3 py-1 text-white fs-6">{{i.statusTrans}}</span></div>
+                        <div class="text-start fs-3 mb-2 d-flex align-items-center">{{formatDateIDN i.createdAt}} 
+                            {{#if equals i.statusType -1}}
+                                <span class="ms-3 rounded-3 bg-danger px-3 py-1 text-white fs-6">{{i.statusTrans}}</span>
+                            {{else}}
+                                {{#if equals i.statusType 1}}
+                                <span class="ms-3 rounded-3 bg-success px-3 py-1 text-white fs-6">{{i.statusTrans}}</span>
+                                {{else}}
+                                <span class="ms-3 rounded-3 bg-info px-3 py-1 text-white fs-6">{{i.statusTrans}}</span>
+                                {{/if}}
+                            {{/if}}
+                        
+                        </div>
                         <!-- <div class="text-start fs-6 mb-2">{{i.statusTrans}}</div> -->
 
                         <div class="text-start fs-4 fw-bold">{{i.firstItem.name}}</div>
@@ -44,17 +55,17 @@
             <div class="d-flex flex-row-reverse gap-3">
                 <div class="d-flex align-content-center justify-content-end me-4 py-4">
                     <!-- <input type="checkbox" class="form-control"> -->
+                    <a href="/historyTrans/{{i._id}}/detail"><button class="btn btn-primary mx-3">Details</button></a>
                     {{#if equals i.status 202}}
-                        <button class="changeStatus" value="{{i._id}}">Package Received</button> 
+                        <button class="changeStatus btn btn-success" value="{{i._id}}">Package Received</button> 
                     {{/if}}
                     {{#if equals i.status 203}}
-                        <button class="changeStatus" value="{{i._id}}">Complete Order</button> 
+                        <button class="changeStatus btn btn-success" value="{{i._id}}">Complete Order</button> 
                     {{/if}}
-                    <a href="/historyTrans/{{i._id}}/detail"><button class="btn btn-primary">Details</button></a>
                     {{#if equals i.status 269}}
-                        <button>Review</button> 
+                        <button class="btn btn-success">Review</button> 
                     {{/if}}
-                    <button class="changeStatus btn btn-info ms-3" value="{{i._id}}">Change Stat</button>    
+                    <!-- <button class="changeStatus btn btn-info ms-3" value="{{i._id}}">Change Stat</button>     -->
                 </div>
             </div>
         </div>
@@ -77,73 +88,31 @@
         <h3> {{invoices.statusTrans}} - Invoice Log</h3>
         <div class="w-25">
             <ul class="bullet-line-list">
-                <li>
-                    <div class="d-flex justify-content-between">
-                        <div><span class="text-light-green">Ben
-                                Tossell</span> assign you a task
+                {{#each i in invoices.log}}
+                    <div class="d-flex justify-content-start">
+                        <div class="mx-3">
+                            {{formatDateIDN i.timestamp}}
                         </div>
-                        <p>Just now</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="d-flex justify-content-between">
-                        <div><span class="text-light-green">Oliver
-                                Noah</span> assign you a task
+                        <div class="mx-4">
+                            <li>
+                                <div class="d-flex justify-content-between">
+                                    <div><span class="text-light-green"> {{i.detail.name}} </span>
+                                    </div> 
+                                </div>
+                            </li>
                         </div>
-                        <p>1h</p>
                     </div>
-                </li>
-                <li>
-                    <div class="d-flex justify-content-between">
-                        <div><span class="text-light-green">Jack
-                                William</span> assign you a task
-                        </div>
-                        <p>1h</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="d-flex justify-content-between">
-                        <div><span class="text-light-green">Leo
-                                Lucas</span> assign you a task
-                        </div>
-                        <p>1h</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="d-flex justify-content-between">
-                        <div><span class="text-light-green">Thomas
-                                Henry</span> assign you a task
-                        </div>
-                        <p>1h</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="d-flex justify-content-between">
-                        <div><span class="text-light-green">Ben
-                                Tossell</span> assign you a task
-                        </div>
-                        <p>1h</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="d-flex justify-content-between">
-                        <div><span class="text-light-green">Ben
-                                Tossell</span> assign you a task
-                        </div>
-                        <p>1h</p>
-                    </div>
-                </li>
+                {{/each}}
             </ul>
         </div>
         <!-- <div class="d-flex"> -->
-            {{#each i in invoices.log}}
+            <!-- {{#each i in invoices.log}}
                 <div>
                     {{formatDateIDN i.timestamp}}
                     <span class="dot"></span>
-                        {{i.detail.name}}
-                    <!-- {{i.detail.desc}} -->
+                        {{i.detail.name}} 
                 </div>
-            {{/each}}
+            {{/each}} -->
         <!-- </div> -->
         <br>
         <table class="table caption-top">
@@ -189,10 +158,12 @@
                     <div class="mb-3" style="max-width: 540px;">
                         <div class="row g-0">
                         <div class="col-md-4">
-                            <img src="{{i.link}}" class="card-img-top rounded" style="height: 10rem; width: 10rem; object-fit: cover;" alt="">
+                            <!-- <img src="{{i.link}}" class="card-img-top rounded" style="height: 10rem; width: 10rem; object-fit: cover;" alt=""> -->
+                            <a href="/productPage/{{i.itemId}}"><img src="{{i.link}}" class="card-img-top rounded" style="height: 10rem; width: 10rem; object-fit: cover;" alt=""></a>
                         </div>
                         <div class="col-md-8">
                             <div class="card-body"> 
+                                <!-- <a href="/productPage/{{i.itemId}}"><h2 class="text-start fw-bold">{{i.name}}</h2></a> -->
                                 <h2 class="text-start fw-bold">{{i.name}}</h2>
                                 <h3 class="mb-2 text-start fw-bold"> {{i.quantity}} product x {{formatRp i.price}} </h3> 
                                 <h3 class="mb-2 text-start fw-bold"> Total Purchase {{multiply i.quantity i.price}} </h3>
@@ -203,7 +174,11 @@
                     <div class="d-flex flex-row-reverse">
                         <div class="d-flex align-content-center justify-content-end me-4 py-4">
                             <!-- <input type="checkbox" class="form-control"> -->
-                            <a href="/productPage/{{i.itemId}}"><button class="btn btn-success">Beli Lagi</button></a>
+                            <!-- <a href="/productPage/{{i.itemId}}"><button class="btn btn-primary mx-3">Beli Lagi</button></a> -->
+                            <button class="btn btn-primary mx-3 buyAgain" value="{{i.id}}">Beli Lagi</button>
+                            {{#if equals i.isReviewed false}}
+                                <a href="/reviews/{{invoices._id}}/{{@index}}"><button class="btn btn-success">Review</button></a>
+                            {{/if}}
                         </div>
                     </div>
                 </div>

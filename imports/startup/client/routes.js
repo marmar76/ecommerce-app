@@ -20,6 +20,7 @@ import '../../ui/pages/shop/userSettings/userSettings'
 import '../../ui/pages/shop/productList/productList' 
 import '../../ui/pages/shop/thankyou/thankyou' 
 import '../../ui/pages/shop/support/support' 
+import '../../ui/pages/shop/reviews/reviews' 
 import '../../ui/pages/shop/landingPage/landingPage' 
 import '../../ui/pages/shop/historyTransaction/historyTransaction' 
 
@@ -761,6 +762,19 @@ FlowRouter.route('/landingPage', {
         const isAdmin = await checkAdmin(Meteor.userId())
         if(!isAdmin){
             this.render('layouts', 'landingPage');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
+    },
+})
+FlowRouter.route('/reviews/:_id/:itemIndex', {
+    name: 'reviewPage',
+    template: 'reviewPage',
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        if(!isAdmin){
+            this.render('layouts', 'reviewPage');
         }
         else{
             FlowRouter.go('forbidden', {})

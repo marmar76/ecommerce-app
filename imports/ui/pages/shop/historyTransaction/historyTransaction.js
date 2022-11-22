@@ -112,9 +112,45 @@ Template.historyTrans.events({
             }else{
                 console.log(res );
             }
+        }) 
+        Meteor.call('getMyself', async function (err,res) {  
+            if(err){
+                console.log(err);
+            }else{
+                t.user.set(res)
+                console.log(res);
+                Meteor.call('getUserInvoice', res._id, function (error, result) {
+                    if(error){
+                        console.log(error);
+                    }else{
+                        console.log(result);
+                        t.historyTrans.set(result.map(function (x) {
+                            x.firstItem = x.items[0]
+                            x.productLainnya = +x.items.length - 1
+                    
+                            console.log(x.status);
+                            if(+x.status == 269)
+                            {
+                                x.statusTrans = 'Order Finished'
+                                x.statusType = 1
+                            }else if(+x.status == 400){
+                                x.statusTrans = 'Order Canceled'
+                                x.statusType = -1
+                            }else{
+                                if(+x.status == 1)x.statusTrans = 'Pending Payment'
+                                if(+x.status == 200)x.statusTrans = 'Payment Success'
+                                if(+x.status == 201)x.statusTrans = 'Order Confirmed'
+                                if(+x.status == 202)x.statusTrans = 'Package Sent'
+                                if(+x.status == 203)x.statusTrans = 'Package Received'
+                                x.statusType = 0
+                            }
+    
+                            return x
+                        }))
+                    }
+                })
+            }
         })
-        console.log(selectedInvoice);
-        console.log(nextStatus);
     }
 })
 
@@ -171,5 +207,16 @@ Template.historyTransDetail.helpers({
 })
 
 Template.historyTransDetail.events({
-     
+    'click .buyAgain'(e, t){
+        const itemId = $(e.target).val()
+        const qty = 1
+        Meteor.call('insertCart', {itemId, qty}, function (err, res) {  
+            if(err){
+                console.log(err);
+            }
+            else{
+                successAlert('Barang berhasil ditambahkan ke cart')
+            }
+        })
+    }
 })
