@@ -17,8 +17,13 @@ Template.invoiceHome.onCreated(function () {
         // self.invoice.set(res);
         self.invoice.set(res.map(function (x) {
             x.firstItem = x.items[0]
-            x.totalItem = +x.items.length
-    
+            // x.totalItem = +x.items.length
+            x.totalItem = 0 
+            for (const val of x.items) {
+                
+                x.totalItem += +val.quantity
+                console.log(x.totalItem);
+            }
             if(+x.status == 269)
             {
                 x.statusTrans = 'Order Finished'
@@ -96,8 +101,13 @@ Template.invoiceHome.events({
             // t.invoice.set(res);
             t.invoice.set(res.map(function (x) {
                 x.firstItem = x.items[0]
-                x.totalItem = +x.items.length
-        
+                // x.totalItem = +x.items.length
+                x.totalItem = 0 
+                for (const val of x.items) {
+                    
+                    x.totalItem += +val.quantity
+                    console.log(x.totalItem);
+                }
                 if(+x.status == 269)
                 {
                     x.statusTrans = 'Order Finished'

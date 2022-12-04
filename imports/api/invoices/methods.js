@@ -193,8 +193,8 @@ function checkInvoice(invoices) {
             })
             invoices.status = 400
             Invoices.update({_id: invoices._id}, {$set: invoices})
-            return invoices
         }
+        return invoices
     }
 }
 

@@ -297,6 +297,7 @@ Template.blankCheckout.onCreated(function () {
                 Meteor.call('getInvoiceByToken', token, function (err, res2) {  
                     console.log(res);
                     self.invoice.set(res2)
+                    console.log(res2);
                     if(res2.status<200){
                         setTimeout(() => {
                             snap.pay(token, {
