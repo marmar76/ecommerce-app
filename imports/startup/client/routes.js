@@ -687,6 +687,24 @@ FlowRouter.route('/checkout', {
     },
 })
 
+FlowRouter.route('/checkout/pay/:token', {
+    name: 'blankCheckout',
+    template: 'blankCheckout',
+    async action() {
+        const isAdmin = await checkAdmin(Meteor.userId())
+        console.log(Meteor.userId());
+        if(!Meteor.userId()){
+            FlowRouter.go('login', {})
+        }
+        else if(!isAdmin){
+            this.render('blankCheckout');
+        }
+        else{
+            FlowRouter.go('forbidden', {})
+        }
+    },
+})
+
 FlowRouter.route('/thank-you', {
     name: 'thankyou',
     template: 'thankyou',

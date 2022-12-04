@@ -117,21 +117,21 @@ export const navbar = [{
       },
     ]
   },
-  {
-    type: 2,
-    title: 'Promotion',
-    icon: 'menu-icon mdi mdi-account',
-    href: 'master-promotions',
-    child: [{
-        href: '/master-promotions',
-        title: 'List Promotion'
-      },
-      {
-        href: '/master-promotions-create',
-        title: 'Create Promotion'
-      }
-    ]
-  },
+  // {
+  //   type: 2,
+  //   title: 'Promotion',
+  //   icon: 'menu-icon mdi mdi-account',
+  //   href: 'master-promotions',
+  //   child: [{
+  //       href: '/master-promotions',
+  //       title: 'List Promotion'
+  //     },
+  //     {
+  //       href: '/master-promotions-create',
+  //       title: 'Create Promotion'
+  //     }
+  //   ]
+  // },
   {
     type: 2,
     title: 'Banner',

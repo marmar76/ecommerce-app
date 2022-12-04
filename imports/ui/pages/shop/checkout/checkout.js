@@ -43,15 +43,7 @@ Template.checkout.onCreated(function () {
 
         }
     })
-    this.clientKey = new ReactiveVar()
-    Meteor.call('clientKey', function (err, res) {  
-        if(err){
-            console.log(err);
-        }
-        else{
-            self.clientKey.set(res)      
-        }
-    })
+    
     
 })
   
@@ -117,13 +109,7 @@ Template.checkout.helpers({
             return user.address[0]
         }
     },
-    clientKey(){
-        const clientKey = Template.instance().clientKey.get()
-        if(clientKey){
-            return clientKey
-        }
-        return ''
-    },
+    
     multiply(a, b){
         return formatRp(parseInt(a) * parseInt(b))
     },
@@ -287,42 +273,139 @@ Template.checkout.events({
                 if(err){
                     console.log(err);
                 }else{
-                    snap.pay(res, {
-                        onSuccess: function (result) {
-                            Meteor.call('confirmPayment', res, result, function (err, res) {  
-                                if(err){
-                                    failAlert(err)
-                                }
-                                else{
-                                    FlowRouter.go('thankyou')
-                                    successAlert()
-                                }
-                            })
-                            console.log("success", result);
-                        },
-                        onPending: function (result) {  
-                            console.log("pending", result);
-                        },
-                        onError: function (result) {  
-                            console.log("error", result);
-                        },
-                        onClose: function (result) {
-                            // Meteor.call('deleteTransaction', res, function (err, res1) {  
-                            //     if(err){
-                            //         failAlert(err)
-                            //     }
-                            //     else{
-                            //         failAlert('Transaction is canceled')
-                            //     }
-                            // })
-                            console.log("close", result);
-                        }
-                        // a
-                    })
+                    FlowRouter.go('blankCheckout', {token: res})
                     // console.log(res);
                 }
             })
         }
     },
 
+})
+
+Template.blankCheckout.onCreated(function () {  
+    const self = this
+    const token = FlowRouter.getParam('token');
+    this.clientKey = new ReactiveVar()
+    this.invoice = new ReactiveVar()
+    Meteor.call('clientKey', function (err, res) {  
+        if(err){
+            console.log(err);
+        }
+        else{
+            self.clientKey.set(res)
+            if(token){
+                Meteor.call('getInvoiceByToken', token, function (err, res2) {  
+                    console.log(res);
+                    self.invoice.set(res2)
+                    if(res2.status<200){
+                        setTimeout(() => {
+                            snap.pay(token, {
+                                onSuccess: function (result) {
+                                    Meteor.call('confirmPayment', res, result, function (err, res) {  
+                                        if(err){
+                                            failAlert(err)
+                                        }
+                                        else{
+                                            FlowRouter.go('thankyou')
+                                            successAlert()
+                                        }
+                                    })
+                                    console.log("success", result);
+                                },
+                                onPending: function (result) {  
+                                    console.log("pending", result);
+                                },
+                                onError: function (result) {  
+                                    console.log("error", result);
+                                },
+                                onClose: function (result) {
+                                    // Meteor.call('deleteTransaction', res, function (err, res1) {  
+                                    //     if(err){
+                                    //         failAlert(err)
+                                    //     }
+                                    //     else{
+                                    //         failAlert('Transaction is canceled')
+                                    //     }
+                                    // })
+                                    console.log("close", result);
+                                    failAlert('Payment not finished')
+                                }
+                                // a
+                            })
+                        }, 900);
+                    }
+                })
+            }      
+        }
+    })
+    
+
+})
+
+Template.blankCheckout.helpers({
+    clientKey(){
+        const clientKey = Template.instance().clientKey.get()
+        if(clientKey){
+            return clientKey
+        }
+        return ''
+    },
+    invoice(){
+        const invoice = Template.instance().invoice.get()
+        if(invoice){
+            return invoice
+        }
+        return []
+    },
+    multiply(a, b){
+        return formatRp(parseInt(a) * parseInt(b))
+    },
+})
+
+Template.blankCheckout.events({
+    'click #bayar'(e, t){
+        console.log('lasd');
+        const token = FlowRouter.getParam('token');
+        const invoice = t.invoice.get()
+        if(invoice.status < 200){
+            setTimeout(() => {
+                snap.pay(token, {
+                    onSuccess: function (result) {
+                        Meteor.call('confirmPayment', 'null', result, function (err, res) {  
+                            if(err){
+                                failAlert(err)
+                            }
+                            else{
+                                FlowRouter.go('thankyou')
+                                successAlert()
+                            }
+                        })
+                        console.log("success", result);
+                    },
+                    onPending: function (result) {  
+                        console.log("pending", result);
+                    },
+                    onError: function (result) {  
+                        console.log("error", result);
+                    },
+                    onClose: function (result) {
+                        // Meteor.call('deleteTransaction', res, function (err, res1) {  
+                        //     if(err){
+                        //         failAlert(err)
+                        //     }
+                        //     else{
+                        //         failAlert('Transaction is canceled')
+                        //     }
+                        // })
+                        console.log("close", result);
+                        failAlert('Payment not finished')
+                    }
+                    // a
+                })
+            }, 900);
+        }
+        else{
+            failAlert('Error Payment')
+        }
+    }
 })
