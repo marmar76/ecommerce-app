@@ -223,23 +223,36 @@
                                                             {{formatDateIDN lastWeek}} - {{formatDateIDN thisWeek}}</p>
                                                     </div>
                                                     <div>
-                                                        <div class="dropdown">
-                                                            <select name="month" id="weeklyIncome" class="form-select" aria-label="Default select example">
-                                                                <option value="0">This Week</option>
-                                                                <option value="7">Last Week</option>
-                                                                <option value="14">Last 2 Week</option>
-                                                                <option value="21">Last 3 Week</option>
-                                                            </select>
-                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                                                <h6 class="dropdown-header">Settings
-                                                                </h6>
-                                                                <a class="dropdown-item" href="#">Action</a>
-                                                                <a class="dropdown-item" href="#">Another action</a>
-                                                                <a class="dropdown-item" href="#">Something else here</a>
-                                                                <div class="dropdown-divider"></div>
-                                                                <a class="dropdown-item" href="#">Separated link</a>
+                                                        <div class="d-flex flex-wrap">
+                                                            <div class="form-group mx-3 filterCustom weeklyIncome" style="display: none;"> 
+                                                                <label for="">Start Date</label>
+                                                                <input type="date" class="form-control filtering" id="startDate" value="{{formatHTML weekStart}}" >
+                                                            </div>
+                                                            <div class="form-group mx-3 filterCustom weeklyIncome" style="display: none;"> 
+                                                                <label for="">End Date</label>
+                                                                <input type="date" class="form-control filtering" id="endDate" value="{{formatHTML weekEnd}}" >
+                                                            </div>  
+                                                            <div class="dropdown mx-3">
+                                                                <label for="">Week Filter</label>
+                                                                <select name="month" id="weeklyIncome" class="form-select weeklyIncome" aria-label="Default select example">
+                                                                    <option value="0">This Week</option>
+                                                                    <option value="7">Last Week</option>
+                                                                    <option value="14">Last 2 Week</option>
+                                                                    <option value="21">Last 3 Week</option>
+                                                                    <option value="69">Custom Week</option>
+                                                                </select>
+                                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                                                    <h6 class="dropdown-header">Settings
+                                                                    </h6>
+                                                                    <a class="dropdown-item" href="#">Action</a>
+                                                                    <a class="dropdown-item" href="#">Another action</a>
+                                                                    <a class="dropdown-item" href="#">Something else here</a>
+                                                                    <div class="dropdown-divider"></div>
+                                                                    <a class="dropdown-item" href="#">Separated link</a>
+                                                                </div>
                                                             </div>
                                                         </div>
+                                                        
                                                     </div>
                                                 </div>
                                                 <div class="d-sm-flex align-items-center mt-1 justify-content-between">
@@ -282,18 +295,29 @@
                                                     </div>
                                                     <div class="d-flex flex-wrap">
                                                         <div class="mx-3">
-                                                            <p class="card-subtitle card-subtitle-dash">
-                                                                Filter:</p>
-                                                            <select name="month" id="weeklyUser" class="form-select weeklyUser" aria-label="Default select example">
-                                                                <option value="0">This Week</option>
-                                                                <option value="7">Last Week</option>
-                                                                <option value="14">Last 2 Week</option>
-                                                                <option value="21">Last 3 Week</option>
-                                                            </select><br>
+                                                            <div class="d-flex flex-wrap">
+                                                                <div class="form-group mx-3 filterCustomUser weeklyUser" style="display: none;"> 
+                                                                    <label for="">Start Date</label>
+                                                                    <input type="date" class="form-control filtering" id="startDateUser" value="{{formatHTML weekStart}}" >
+                                                                </div>
+                                                                <div class="form-group mx-3 filterCustomUser weeklyUser" style="display: none;"> 
+                                                                    <label for="">End Date</label>
+                                                                    <input type="date" class="form-control filtering" id="endDateUser" value="{{formatHTML weekEnd}}" >
+                                                                </div>  
+                                                                <div class="form-group mx-3">
+                                                                    <label for="">Date Filter </label>
+                                                                    <select name="month" id="weeklyUser" class="form-select weeklyUser" aria-label="Default select example">
+                                                                        <option value="0">This Week</option>
+                                                                        <option value="7">Last Week</option>
+                                                                        <option value="14">Last 2 Week</option>
+                                                                        <option value="21">Last 3 Week</option>
+                                                                        <option value="69">Custom Date</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                         <div>
-                                                            <p class="card-subtitle card-subtitle-dash">
-                                                                Sort:</p>
+                                                            <label for="">Sort: </label>
                                                             <select name="month" id="sortUser" class="form-select weeklyUser" aria-label="Default select example">
                                                                 <option value="1">Total Spent Desc</option>
                                                                 <option value="2">Total Spent Asc</option>

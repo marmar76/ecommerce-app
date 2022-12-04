@@ -479,7 +479,16 @@ Template.contentExample.helpers({
   },
   labelTimeActiveUser(){
     return Template.instance().labelTimeActiveUser.get()
-  }
+  },
+  weekStart (){
+    return moment().startOf('week').toDate()
+  },
+  weekEnd (){
+      return moment().endOf('week').toDate()
+  },
+  formatHTML(context) {
+      return moment(context).format("YYYY-MM-DD");
+  },
 
 })
 
@@ -536,15 +545,25 @@ Template.contentExample.events({
     bar.animate(.64); // Number from 0.0 to 1.0
     
   },
-  'change #weeklyIncome'(e, t){
+  'change .weeklyIncome'(e, t){
     const week = +$('#weeklyIncome').val();
     const getLastWeek = moment().subtract(week, 'days').toDate()
-    const lastWeek = week != 0 ? moment(getLastWeek, 'DD/MM/YYYY').endOf('day').toDate() : moment(new Date(), 'DD/MM/YYYY').endOf('day').toDate() 
+    let lastWeek = week != 0 ? moment(getLastWeek, 'DD/MM/YYYY').endOf('day').toDate() : moment(new Date(), 'DD/MM/YYYY').endOf('day').toDate() 
     const getLastWeekPlus7 = moment().subtract(week+6, 'days').toDate()
-    const lastWeekPlus7 = moment(getLastWeekPlus7, 'DD/MM/YYYY').startOf('day').toDate()
+    let lastWeekPlus7 = moment(getLastWeekPlus7, 'DD/MM/YYYY').startOf('day').toDate()
     const top = $('#top').val();
+    $('.filterCustom').hide()
+    if(week == 69){
+      $('.filterCustom').show()
+      const start = $('#startDate').val();
+      const end = $('#endDate').val();
+      lastWeekPlus7 = moment(start).startOf('day').toDate()
+      lastWeek = moment(end).endOf('day').toDate()
+    }
     t.thisWeek.set(lastWeek)
     t.lastWeek.set(lastWeekPlus7)
+    // console.log(lastWeek)
+    // console.log(lastWeekPlus7)
     let text ='This Week'
     if(week == 7){
       text = 'Last Week'
@@ -552,6 +571,8 @@ Template.contentExample.events({
       text = 'Last 2 Week'
     }else if(week ==21){
       text = 'Last 3 Week'
+    } else if(week ==69){
+      text = 'custom date'
     }
     Meteor.call('getWeeklyIncome', lastWeekPlus7, lastWeek, function (err, res) {  
       if(err){
@@ -574,24 +595,35 @@ Template.contentExample.events({
   'change .weeklyUser'(e,t){
     const week = +$('#weeklyUser').val();
     const getLastWeek = moment().subtract(week, 'days').toDate()
-    const lastWeek = week != 0 ? moment(getLastWeek, 'DD/MM/YYYY').endOf('day').toDate() : moment(new Date(), 'DD/MM/YYYY').endOf('day').toDate() 
+    let lastWeek = week != 0 ? moment(getLastWeek, 'DD/MM/YYYY').endOf('day').toDate() : moment(new Date(), 'DD/MM/YYYY').endOf('day').toDate() 
     const getLastWeekPlus7 = moment().subtract(week+6, 'days').toDate()
-    const lastWeekPlus7 = moment(getLastWeekPlus7, 'DD/MM/YYYY').startOf('day').toDate()
+    let lastWeekPlus7 = moment(getLastWeekPlus7, 'DD/MM/YYYY').startOf('day').toDate()
     const sort = $('#sortUser').val();
     const top = $('#top').val();
+    $('.filterCustomUser').hide() 
+    if(week == 69){
+      $('.filterCustomUser').show()
+      const start = $('#startDateUser').val();
+      const end = $('#endDateUser').val();
+      lastWeekPlus7 = moment(start).startOf('day').toDate()
+      lastWeek = moment(end).endOf('day').toDate()
+    }
     if(week == 7){
       t.labelTimeActiveUser.set('Last Week')
     }else if(week == 14){
       t.labelTimeActiveUser.set('Last 2 Week')
     }else if(week == 21){
       t.labelTimeActiveUser.set('Last 3 Week')
+    }else if(week ==69){
+      t.labelTimeActiveUser.set('Custom Date')
     }else{
       t.labelTimeActiveUser.set('This Week')
-    }
+    } 
     Meteor.call('getMostActiveUser', lastWeekPlus7, lastWeek, sort, top,  function (err, res) {  
       if(err){
         failAlert(err)
       }else{
+        console.log(res);
         t.mostActiveUser.set(res)
       }
     })

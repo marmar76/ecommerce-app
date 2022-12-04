@@ -616,6 +616,9 @@ Meteor.methods({
         return res 
     },
     async 'getMostActiveUser'(start, end, sort, top){ 
+        // console.log(start);
+        // console.log(end);
+        console.log(top);
         const trans = Invoices.find({
             createdAt: {
                 $gte: start,
@@ -627,6 +630,7 @@ Meteor.methods({
                 createdAt: 1
             }
         }).fetch()
+        // console.log(trans);
         const res = []
         let ctr = 1
         for (const i of trans) {

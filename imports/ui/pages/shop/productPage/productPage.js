@@ -36,6 +36,7 @@ Template.productPage.onCreated(function () {
         },
 
     ])
+    this.review = new ReactiveVar()
     const paramId = FlowRouter.current().params._id
     Meteor.call('getOneItem', paramId, function (err, res) {
         if (err) {
@@ -45,6 +46,10 @@ Template.productPage.onCreated(function () {
             console.log(res);
             self.item.set(res);
             self.jenisItem.set(res.models[0])
+            Meteor.call('getItemReview', res._id, function (err, res) {  
+                console.log(res);
+                self.review.set(res)
+            })
             Meteor.call('getOneSubCategory', res.subcategory, function (err, res) {  
                 self.subcategory.set(res)
             })
@@ -103,6 +108,9 @@ Template.productPage.onRendered(function () {
     
 })
 Template.productPage.helpers({
+    review(){
+        return Template.instance().review.get()
+    },
     comparison(){
         return Template.instance().comparison.get()
     },
@@ -147,6 +155,10 @@ Template.productPage.helpers({
     },
     equals(a, b){
         return a == b
+    },
+    isYellow(val, thisStar){
+        // const star = Template.instance().star.get()
+        return +thisStar >= val
     }
 })
 

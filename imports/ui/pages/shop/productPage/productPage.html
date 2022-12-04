@@ -163,6 +163,21 @@
                                 </div>
                             </div>
                         </div>
+                    </div><br>
+                    <div>
+                        {{#each i in review }}
+                        <div class="d-flex flex-wrap">
+                            <div>
+                                <i class="fa-star stars {{#if isYellow 1 i.star}} fas isYellow {{else}} far {{/if}}" value="1"></i>
+                                <i class="fa-star stars {{#if isYellow 2 i.star}} fas isYellow {{else}} far {{/if}}" value="2"></i>
+                                <i class="fa-star stars {{#if isYellow 3 i.star}} fas isYellow {{else}} far {{/if}}" value="3"></i>
+                                <i class="fa-star stars {{#if isYellow 4 i.star}} fas isYellow {{else}} far {{/if}}" value="4"></i>
+                                <i class="fa-star stars {{#if isYellow 5 i.star}} fas isYellow {{else}} far {{/if}}" value="5"></i>
+                            </div>
+                        </div>
+                        <p class="fw-bold fs-6 p-1" style="color :black">{{i.userUsername}}</p>
+                        <p class="fs-6" style="color :black">{{i.review}}</p><br>
+                        {{/each}}
                     </div>
                 </div>
             </div>

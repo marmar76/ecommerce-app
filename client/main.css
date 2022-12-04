@@ -7,6 +7,9 @@
 .isblue{
   background: rgb(13, 202, 240, .4)
 }
+.isYellow{
+  color: yellow;
+}
 /* .ts-control{
   font-size: medium; */
 /* } */

@@ -49,7 +49,12 @@ Template.reviewPage.helpers({
     },
     equals(a, b){
         return a == b
+    },
+    isYellow(val){
+        const star = Template.instance().star.get()
+        return star >= val
     }
+
 })
 
 Template.reviewPage.events({
