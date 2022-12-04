@@ -366,40 +366,46 @@ Template.blankCheckout.events({
     'click #bayar'(e, t){
         console.log('lasd');
         const token = FlowRouter.getParam('token');
-        setTimeout(() => {
-            snap.pay(token, {
-                onSuccess: function (result) {
-                    Meteor.call('confirmPayment', res, result, function (err, res) {  
-                        if(err){
-                            failAlert(err)
-                        }
-                        else{
-                            FlowRouter.go('thankyou')
-                            successAlert()
-                        }
-                    })
-                    console.log("success", result);
-                },
-                onPending: function (result) {  
-                    console.log("pending", result);
-                },
-                onError: function (result) {  
-                    console.log("error", result);
-                },
-                onClose: function (result) {
-                    // Meteor.call('deleteTransaction', res, function (err, res1) {  
-                    //     if(err){
-                    //         failAlert(err)
-                    //     }
-                    //     else{
-                    //         failAlert('Transaction is canceled')
-                    //     }
-                    // })
-                    console.log("close", result);
-                    failAlert('Payment not finished')
-                }
-                // a
-            })
-        }, 900);
+        const invoice = t.invoice.get()
+        if(invoice.status < 200){
+            setTimeout(() => {
+                snap.pay(token, {
+                    onSuccess: function (result) {
+                        Meteor.call('confirmPayment', 'null', result, function (err, res) {  
+                            if(err){
+                                failAlert(err)
+                            }
+                            else{
+                                FlowRouter.go('thankyou')
+                                successAlert()
+                            }
+                        })
+                        console.log("success", result);
+                    },
+                    onPending: function (result) {  
+                        console.log("pending", result);
+                    },
+                    onError: function (result) {  
+                        console.log("error", result);
+                    },
+                    onClose: function (result) {
+                        // Meteor.call('deleteTransaction', res, function (err, res1) {  
+                        //     if(err){
+                        //         failAlert(err)
+                        //     }
+                        //     else{
+                        //         failAlert('Transaction is canceled')
+                        //     }
+                        // })
+                        console.log("close", result);
+                        failAlert('Payment not finished')
+                    }
+                    // a
+                })
+            }, 900);
+        }
+        else{
+            failAlert('Error Payment')
+        }
     }
 })

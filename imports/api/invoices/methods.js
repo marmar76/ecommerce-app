@@ -170,6 +170,33 @@ const kurir = [{
     }
 }]
 const settings = Meteor.settings.public
+function checkInvoice(invoices) {
+    if(Array.isArray(invoices)){
+        return invoices.map(function (x) {  
+            if(moment(x.createdAt).diff(new Date(), 'days') > 1 && x.status < 200){
+                x.log.push({
+                    id: 400,
+                    timestamp: moment(invoices.createdAt).add({days: 1})
+                })
+                x.status = 400
+                Invoices.update({_id: x._id}, {$set: x})
+                // return x
+            }
+            return x    
+        })
+    }
+    else{
+        if(moment(invoices.createdAt).diff(new Date(), 'days') > 1 && invoices.status < 200){
+            invoices.log.push({
+                id: 400,
+                timestamp: moment(invoices.createdAt).add({days: 1})
+            })
+            invoices.status = 400
+            Invoices.update({_id: invoices._id}, {$set: invoices})
+            return invoices
+        }
+    }
+}
 
 function getToken(parameter) {
     return new Promise(function (resolve, reject) {
@@ -332,18 +359,18 @@ Meteor.methods({
                         id: 200,
                         timestamp: new Date()
                     })
-                    // for (const i of thisInvoice.items) {
-                    //     const item = i.id.split('-')
-                    //     const thisItem = Items.findOne({_id: item[0]})
-                    //     console.log(thisItem.models[item[1]].stock);
-                    //     console.log(i.quantity);
-                    //     thisItem.models[item[1]].stock = (+thisItem.models[item[1]].stock) - i.quantity
-                    //     const userCartPosition = thisUser.cart.findIndex(function (x) {  
-                    //         return x.itemId == i.id
-                    //     })
-                    //     thisUser.cart.splice(userCartPosition, 1)
-                    //     Items.update({_id: item[0]}, {$set: thisItem})
-                    // }
+                    for (const i of thisInvoice.items) {
+                        const item = i.id.split('-')
+                        const thisItem = Items.findOne({_id: item[0]})
+                        // console.log(thisItem.models[item[1]].stock);
+                        // console.log(i.quantity);
+                        thisItem.models[item[1]].stock = (+thisItem.models[item[1]].stock) - i.quantity
+                        // const userCartPosition = thisUser.cart.findIndex(function (x) {  
+                        //     return x.itemId == i.id
+                        // })
+                        // thisUser.cart.splice(userCartPosition, 1)
+                        Items.update({_id: item[0]}, {$set: thisItem})
+                    }
                     // Meteor.users.update({_id: Meteor.userId()}, {$set: thisUser})
                     Invoices.update({
                         _id: thisInvoice._id
@@ -514,10 +541,16 @@ Meteor.methods({
         })
     },
     async 'getUserInvoice'(_id) {
-        const invoice = Invoices.find({
+        let invoice = Invoices.find({
             userId: _id
+        }, 
+        {
+            sort: {
+                createdAt: -1
+            }
         }).fetch()
         if (invoice) {
+            invoice = checkInvoice(invoice)
             const newInvoice = invoice.map(async function (x) {
                 const items = x.items.map(async function (y) {
                     const itemId = y.id.split('-')
@@ -544,10 +577,11 @@ Meteor.methods({
         }
     },
     async 'getOneInvoice'(_id) {
-        const invoice = Invoices.find({
+        let invoice = Invoices.find({
             _id: _id
         }).fetch()
         if (invoice) {
+            invoice = checkInvoice(invoice)
             // console.log(invoice);
             const newInvoice = invoice.map(async function (x) {
                 const items = x.items.map(async function (y) {
@@ -575,10 +609,11 @@ Meteor.methods({
         }
     },
     async 'getOneItemInvoice'(_id, index) {
-        const invoice = Invoices.findOne({
+        let invoice = Invoices.findOne({
             _id: _id
         })
         if (invoice) {
+            invoice = checkInvoice(invoice)
             const item = invoice.items[index]
             if (item) {
                 const thisItem = Items.findOne({
@@ -622,9 +657,10 @@ Meteor.methods({
                 thisFilter.status = +filtering.status
             }
         }
-        const invoices = Invoices.find(thisFilter, {
+        let invoices = Invoices.find(thisFilter, {
             sort: sort
         }).fetch();
+        invoices = checkInvoice(invoices)
         // console.log(invoices);
         let invoice = invoices.filter(function (x) {
             return x
@@ -664,7 +700,7 @@ Meteor.methods({
         })
     },
     'getTransReport'(start, end) {
-        const trans = Invoices.find({
+        let trans = Invoices.find({
             createdAt: {
                 $gte: start,
                 $lte: end
@@ -675,6 +711,7 @@ Meteor.methods({
                 createdAt: 1
             }
         }).fetch()
+        trans = checkInvoice(trans)
         const res = []
         for (const i of trans) {
             const thisDate = moment(i.createdAt).format("ll")
@@ -691,7 +728,7 @@ Meteor.methods({
         return res
     },
     'getWeeklyIncome'(start, end) {
-        const trans = Invoices.find({
+        let trans = Invoices.find({
             createdAt: {
                 $gte: start,
                 $lte: end
@@ -702,6 +739,7 @@ Meteor.methods({
                 createdAt: 1
             }
         }).fetch()
+        trans = checkInvoice(trans)
         const res = []
         for (const i of trans) {
             const thisDate = moment(i.createdAt).format('dddd');
@@ -718,7 +756,7 @@ Meteor.methods({
         return res
     },
     async 'getMostActiveUser'(start, end, sort, top) {
-        const trans = Invoices.find({
+        let trans = Invoices.find({
             createdAt: {
                 $gte: start,
                 $lte: end
@@ -729,6 +767,7 @@ Meteor.methods({
                 createdAt: 1
             }
         }).fetch()
+        trans = checkInvoice(trans)
         const res = []
         let ctr = 1
         for (const i of trans) {
@@ -790,7 +829,7 @@ Meteor.methods({
     'getInvoiceByToken'(token){
         const invoice = Invoices.findOne({paymentToken: token})
         if(invoice){
-            return invoice
+            return checkInvoice(invoice)
         }
     }
 })

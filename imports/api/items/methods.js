@@ -219,4 +219,21 @@ Meteor.methods({
         }
         return item
     },
+    'getItemRecomendation'(itemId){
+        const thisItem = Items.findOne({_id: itemId})
+        const itemRecomendation = Items.find({
+            category: thisItem.category,
+            subcategory: {$ne: thisItem.category}
+        }).fetch()
+        return itemRecomendation
+        
+    },
+    'getSimiliarItem'(itemId){
+        const thisItem = Items.findOne({_id: itemId})
+        const itemRecomendation = Items.find({
+            category: thisItem.category,
+            subcategory: thisItem.category
+        }).fetch()
+        return itemRecomendation
+    }
 })
