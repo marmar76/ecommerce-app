@@ -24,7 +24,6 @@ Meteor.methods({
             }
             return x
         })
-        console.log(review);
         return review
     }
 })
