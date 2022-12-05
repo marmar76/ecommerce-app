@@ -890,11 +890,11 @@ Template.itemsHome.onCreated(function () {
       const id=paramId.split('-')
       const name = $('#name').val();
       const price = $('#price').val();
-      const stock = $('#stock').val();
+      const stock = $('#stock').val(); 
       const specification = model.specification.map(function (x) {
           const label = $('#model-label-' + x.slug).val();
           const value = $('#model-value-' + x.slug).val();
-          const slug = $('#model-slug-' + x.slug).val();
+          const slug = x.slug 
           if (!label || !slug || !value) {
             failAlert("specification field can't be empty " )
           }else{
@@ -920,7 +920,7 @@ Template.itemsHome.onCreated(function () {
           showCancelButton: true,
           confirmButtonText: 'OK', 
         }).then((result) => {  
-          if (result.isConfirmed) { 
+          if (result.isConfirmed) {
             Meteor.call('updateModel', id[0], paramId, data, function (err, res) {
               console.log(res);
               successAlertBack('Success Update')

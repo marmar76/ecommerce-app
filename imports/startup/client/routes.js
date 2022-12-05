@@ -47,6 +47,7 @@ const checkAdmin = function (id) {
     // console.log(thisUser);
     return true
 }
+
 FlowRouter.route('*', {
     name: 'forbidden',
     template: 'forbidden',
@@ -57,6 +58,7 @@ FlowRouter.route('*', {
 FlowRouter.route('/', {
     name: 'homepage',
     template: 'homepage',
+    trackPageView: true,
     action() {
         this.render('layouts', 'homepage')
         // if(Meteor.userId()){
@@ -647,6 +649,7 @@ FlowRouter.route('/customer-support', {
 FlowRouter.route('/productPage/:_id', {
     name: 'productPage',
     template: 'productPage',
+    trackPageView: true,
     action() {
         this.render('layouts','productPage');
     },
@@ -655,6 +658,7 @@ FlowRouter.route('/productPage/:_id', {
 FlowRouter.route('/cart', {
     name: 'cart',
     template: 'cart',
+    trackPageView: true,
     async action() {
         if(!Meteor.userId()){
             FlowRouter.go('login', {})
@@ -672,6 +676,7 @@ FlowRouter.route('/cart', {
 FlowRouter.route('/checkout', {
     name: 'checkout',
     template: 'checkout',
+    trackPageView: true,
     async action() {
         const isAdmin = await checkAdmin(Meteor.userId())
         console.log(Meteor.userId());
@@ -690,6 +695,7 @@ FlowRouter.route('/checkout', {
 FlowRouter.route('/checkout/pay/:token', {
     name: 'blankCheckout',
     template: 'blankCheckout',
+    trackPageView: true,
     async action() {
         const isAdmin = await checkAdmin(Meteor.userId())
         console.log(Meteor.userId());
@@ -708,6 +714,7 @@ FlowRouter.route('/checkout/pay/:token', {
 FlowRouter.route('/thank-you', {
     name: 'thankyou',
     template: 'thankyou',
+    trackPageView: true,
     async action() {
         const isAdmin = await checkAdmin(Meteor.userId())
         if(!Meteor.userId()){
@@ -776,6 +783,7 @@ FlowRouter.route('/support', {
 FlowRouter.route('/landingPage', {
     name: 'landingPage',
     template: 'landingPage',
+    trackPageView: true,
     async action() {
         const isAdmin = await checkAdmin(Meteor.userId())
         if(!isAdmin){
