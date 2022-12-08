@@ -21,7 +21,49 @@ import {
 moment.locale('id');
 const origin = "444" //surabaya
 const BASE_URL = 'https://api.sandbox.midtrans.com'
-
+function checkInvoice(invoices) {
+    // console.log(invoices);
+    if(Array.isArray(invoices)){
+        return invoices.map(function (x) {  
+            // console.log(moment(x.createdAt).diff(new Date(), 'days'));
+            // console.log(moment(new Date()).diff(x.createdAt, 'days'));
+            if(moment(new Date()).diff(x.createdAt, 'days') > 1 && x.status < 200){
+                x.log.push({
+                    id: 400,
+                    timestamp: moment(invoices.createdAt).add({days: 1})
+                })
+                x.status = 400
+                Invoices.update({_id: x._id}, {$set: x})
+                // return x
+            }
+            return x    
+        })
+    }
+    else{
+        if(moment(new Date()).diff(invoices.createdAt, 'days') > 1 && invoices.status < 200){
+            invoices.log.push({
+                id: 400,
+                timestamp: moment(invoices.createdAt).add({days: 1})
+            })
+            invoices.status = 400
+            Invoices.update({_id: invoices._id}, {$set: invoices})
+        }
+        return invoices
+    }
+}
+const checkIntervalInvoice = setInterval(async () => {
+    const now = moment().toDate()
+    const tendaysago = moment().add({days: -3}).toDate()
+    const invoice = Invoices.find({
+        createdAt: {
+            $gte:tendaysago,
+            $lte: now
+        }
+    }).fetch();
+    // console.log(invoice);
+    checkInvoice(invoice)
+    console.log("checktime");
+}, 3600000);
 const midtransClient = require('midtrans-client');
 const kurir = [{
     name: 'jne',
@@ -170,33 +212,7 @@ const kurir = [{
     }
 }]
 const settings = Meteor.settings.public
-function checkInvoice(invoices) {
-    if(Array.isArray(invoices)){
-        return invoices.map(function (x) {  
-            if(moment(x.createdAt).diff(new Date(), 'days') > 1 && x.status < 200){
-                x.log.push({
-                    id: 400,
-                    timestamp: moment(invoices.createdAt).add({days: 1})
-                })
-                x.status = 400
-                Invoices.update({_id: x._id}, {$set: x})
-                // return x
-            }
-            return x    
-        })
-    }
-    else{
-        if(moment(invoices.createdAt).diff(new Date(), 'days') > 1 && invoices.status < 200){
-            invoices.log.push({
-                id: 400,
-                timestamp: moment(invoices.createdAt).add({days: 1})
-            })
-            invoices.status = 400
-            Invoices.update({_id: invoices._id}, {$set: invoices})
-        }
-        return invoices
-    }
-}
+
 
 function getToken(parameter) {
     return new Promise(function (resolve, reject) {
@@ -550,7 +566,7 @@ Meteor.methods({
             }
         }).fetch()
         if (invoice) {
-            invoice = checkInvoice(invoice)
+            // invoice = checkInvoice(invoice)
             const newInvoice = invoice.map(async function (x) {
                 const items = x.items.map(async function (y) {
                     const itemId = y.id.split('-')
@@ -581,7 +597,7 @@ Meteor.methods({
             _id: _id
         }).fetch()
         if (invoice) {
-            invoice = checkInvoice(invoice)
+            // invoice = checkInvoice(invoice)
             // console.log(invoice);
             const newInvoice = invoice.map(async function (x) {
                 const items = x.items.map(async function (y) {
@@ -613,7 +629,7 @@ Meteor.methods({
             _id: _id
         })
         if (invoice) {
-            invoice = checkInvoice(invoice)
+            // invoice = checkInvoice(invoice)
             const item = invoice.items[index]
             if (item) {
                 const thisItem = Items.findOne({
@@ -660,7 +676,7 @@ Meteor.methods({
         let invoices = Invoices.find(thisFilter, {
             sort: sort
         }).fetch();
-        invoices = checkInvoice(invoices)
+        // invoices = checkInvoice(invoices)
         // console.log(invoices);
         let invoice = invoices.filter(function (x) {
             return x
@@ -711,7 +727,7 @@ Meteor.methods({
                 createdAt: 1
             }
         }).fetch()
-        trans = checkInvoice(trans)
+        // trans = checkInvoice(trans)
         const res = []
         for (const i of trans) {
             const thisDate = moment(i.createdAt).format("ll")
@@ -739,7 +755,7 @@ Meteor.methods({
                 createdAt: 1
             }
         }).fetch()
-        trans = checkInvoice(trans)
+        // trans = checkInvoice(trans)
         const res = []
         for (const i of trans) {
             const thisDate = moment(i.createdAt).format('dddd');
@@ -767,7 +783,7 @@ Meteor.methods({
                 createdAt: 1
             }
         }).fetch()
-        trans = checkInvoice(trans)
+        // trans = checkInvoice(trans)
         const res = []
         let ctr = 1
         for (const i of trans) {
@@ -829,7 +845,7 @@ Meteor.methods({
     'getInvoiceByToken'(token){
         const invoice = Invoices.findOne({paymentToken: token})
         if(invoice){
-            return checkInvoice(invoice)
+            return invoice
         }
     }
 })

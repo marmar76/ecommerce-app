@@ -62,8 +62,8 @@
                     {{#if equals i.status 203}}
                         <button class="changeStatus btn btn-success" value="{{i._id}}">Complete Order</button> 
                     {{/if}}
-                    {{#if equals i.status 269}}
-                        <button class="btn btn-success">Review</button> 
+                    {{#if equals i.status 1}}
+                        <a href="/checkout/pay/{{i.paymentToken }}"><button class="btn btn-success">Pay</button></a> 
                     {{/if}}
                     <!-- <button class="changeStatus btn btn-info ms-3" value="{{i._id}}">Change Stat</button>     -->
                 </div>

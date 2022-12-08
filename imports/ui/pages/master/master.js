@@ -36,6 +36,7 @@ import '../../assets/master/css/vertical-layout-light/style.css'
 
 import '../../assets/master/vendors/js/vendor.bundle.base.js'
 import '../../assets/master/vendors/chart.js/Chart.min.js'
+// import '../../assets/master/vendors/chart.js/Chart-funnel.min.js'
 import '../../assets/master/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js'
 import '../../assets/master/js/off-canvas.js'
 import '../../assets/master/js/hoverable-collapse.js'
@@ -445,6 +446,62 @@ Template.contentExample.onCreated(function () {
       self.mostActiveUser.set(res)
       console.log(res);
     }
+  })
+  Meteor.call('getPageUrl', function (err, res) {  
+    if(err){
+      failAlert(err)
+      console.log(err);
+    }else{
+      // self.mostActiveUser.set(res)
+      console.log(res);
+      var ctx = document.getElementById("funnelCanvas").getContext('2d')
+      var config = {
+        type: 'funnel',
+        data: {
+          datasets: [{
+            data: [res.funnel.visit, res.funnel.cart, res.funnel.checkout, res.funnel.purchased ],
+            backgroundColor: [
+              "#FF6384",
+              "#36A2EB",
+              "#FFCE56",
+              "#7BF79D",
+              // "#7B89FF"
+            ],
+            hoverBackgroundColor: [
+              "#FF6384",
+              "#36A2EB",
+              "#FFCE56",
+              "#7BF79D",
+              // "#7B89FF"
+            ]
+          }],
+          labels: [
+            "Visit",
+            "View Cart",
+            "Checkout",
+            // "Payment",
+            "Purchase Complete",
+          ]
+        },
+        options: {
+          responsive: true,
+          legend: {
+            position: 'top'
+          },
+          title: {
+            display: true,
+            text: 'Chart.js Funnel Chart'
+          },
+          animation: {
+            animateScale: true,
+            animateRotate: true
+          },
+          sort: 'desc'
+        }
+      };
+      var mychart = new Chart(ctx, config)
+    }
+    
   })
 })
 Template.contentExample.helpers({
