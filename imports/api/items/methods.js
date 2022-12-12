@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Items } from './items';
 import { Categories, SubCategories } from '../categories/categories';
+import { Reviews } from '../reviews/reviews';
 
 Meteor.methods({
     'createItem'(item, models){
@@ -75,6 +76,12 @@ Meteor.methods({
         let items = item.map(async function (y) {  
             const thisCategory = categories.find((x) => y.category == x._id)
             const thisSubcategory = subcategories.find((x) => y.subcategory == x._id)
+            const thisReview = Reviews.find({itemId : y._id }).fetch()
+            
+            y.star = thisReview.reduce(function (prev, next) { 
+                return (parseFloat(prev) + parseFloat(next.star)) * 1.0
+            }, 0.0) / parseFloat(thisReview.length * 1.0)
+            
             y.categoryName = thisCategory.name
             y.subcategoryName = thisSubcategory.name
             const lowestPrice = y.models.sort(function (a, b) {  
@@ -128,6 +135,11 @@ Meteor.methods({
         const thisItem = Items.findOne({_id: id});
         const thisCategory = Categories.findOne({_id: thisItem.category})
         const thisSubcategory = SubCategories.findOne({_id: thisItem.subcategory})
+        const thisReview = Reviews.find({itemId : id }).fetch()
+            
+        thisItem.star = thisReview.reduce(function (prev, next) { 
+            return (parseFloat(prev) + parseFloat(next.star)) * 1.0
+        }, 0.0) / parseFloat(thisReview.length * 1.0)
         if(thisItem.picture){
             try {
                 const profilePictureLink = await getFireImage('items/picture', thisItem.picture)
@@ -136,6 +148,7 @@ Meteor.methods({
                 console.log(error);
             }
         }
+        thisItem.reviewLength = thisReview.length
         thisItem.categoryName = thisCategory.name
         thisItem.subcategoryName = thisSubcategory.name
         let items = thisItem.models.filter((z) => z.status == true).map(function (x) {
@@ -145,7 +158,7 @@ Meteor.methods({
             return x
         })
         // items =  await Promise.all(items)
-        thisItem.models = items
+        thisItem.models = items 
         return thisItem
     }, 
     'getOneModel'(id, idmodel){

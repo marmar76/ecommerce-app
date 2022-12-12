@@ -30,6 +30,22 @@ Template.productList.onCreated(function () {
     });
     Meteor.call('getAllItem', self.filtering.get(), function (err, res) {
         self.item.set(res);
+        console.log(res);
+        // self.item.set(res.map(async function (x) {
+        //     let stars = 0   
+        //     await Meteor.call('getItemReview', x._id, function (err, res1) {   
+        //         let ctr = 0
+        //         res1.map(function (y) {
+        //             stars += +y.star
+        //             ctr++;
+        //         })
+        //         console.log(stars);
+        //     }) 
+        //     x.stars = stars/+ctr
+        //     return x 
+            
+        // }));
+        // console.log(res);
     })
     
 })

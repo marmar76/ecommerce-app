@@ -7,6 +7,7 @@ import './checkout.html';
 
 Template.checkout.onCreated(function () {
     const self = this
+    ga('send','pageview')
     // const paramId = FlowRouter.current().params._id
     this.cart = new ReactiveVar()
     this.discount = new ReactiveVar(0)

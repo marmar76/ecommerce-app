@@ -249,24 +249,51 @@ function syncStatus(_id) {
         _id: _id
     })
     const today = new Date()
+    const log = invoice.log
+    
     if (invoice.status == 202) {
         // console.log(today);
         // console.log(invoice.ongkir.jsDate);
         if (today >= invoice.ongkir.jsDate) {
             // console.log('yes');
             invoice.status = 203
+            log.push({
+                id: invoice.status,
+                timestamp: new Date()
+            })
+            return Invoices.update({
+                _id: _id
+            }, {
+                $set: {
+                    log: log,
+                    status: invoice.status,
+                    resi: '003104187293'
+                }
+            })
         }
     }
     if (invoice.status == 203) {
         const nextDay = moment(new Date()).add(1, 'days').toDate();
         // console.log(nextDay);
         // console.log(invoice.ongkir.jsDate);
-        if (nextDay >= invoice.ongkir.jsDate) {
-            // console.log('ehek');
+        if (nextDay >= invoice.ongkir.jsDate) { 
             invoice.status = 269
+            log.push({
+                id: invoice.status,
+                timestamp: new Date()
+            })
+            return Invoices.update({
+                _id: _id
+            }, {
+                $set: {
+                    log: log,
+                    status: invoice.status
+                }
+            })
         }
     }
     // console.log(invoice.status);
+    
     return invoice.status
 }
 Meteor.methods({

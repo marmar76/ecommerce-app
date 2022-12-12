@@ -102,8 +102,10 @@
             <div class="card-body">
               <p class="card-text text-dark lh-base fs-6">{{name}}</p>
               <p class="card-text text-dark fw-bolder fs-5">{{formatRp lowestPrice}}</p>
+              {{ #if star }}
               <p class="card-text mt-3"><span class="fs-5"><i class="fa fa-star text-warning"
-                    aria-hidden="true"></i></span><span class="fs-5 text-dark fw-bold ms-2">5.0</span></p>
+                aria-hidden="true"></i></span><span class="fs-5 text-dark fw-bold ms-2">{{ star }}</span></p>
+              {{ /if }}
             </div>
           </div>
         </a>

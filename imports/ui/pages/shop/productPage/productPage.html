@@ -105,6 +105,11 @@
                 <div class="card-body">
                     <p class="fs-1 fw-bolder text-dark">{{item.name}} - {{jenis.name}}</p>
                     <br>
+                    {{ #if item.star }}
+                    <p class="card-text mt-3"><span class="fs-5"><i class="fa fa-star text-warning"
+                        aria-hidden="true"></i></span><span class="fs-5 text-dark fw-bold ms-2">{{ item.star }} ({{ item.reviewLength }} rating)</span></p>
+                    {{ /if }}
+                    <br>
                     <p class="fw-bold fs-1" style="color :black">{{formatRp jenis.price}}</p><br>
                     <p class="fw-bold fs-3" style="color :black">Pilih Jenis</p><br>
                     <div class="d-flex flex-wrap align-content-around" style="gap: 10px 20px;">

@@ -89,7 +89,7 @@ Template.reviewPage.events({
                     failAlert(err)
                 }else{
                     console.log(res);
-                    successAlert('success review Item')
+                    successAlertBack('success review Item')
                 }
             })
             console.log(data);

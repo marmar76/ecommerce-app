@@ -6,6 +6,7 @@ import './thankyou.html';
 // import { Snap } from 'midtrans-client';
 
 Template.thankyou.onCreated(function () {
+    ga('send','pageview')
     const self = this
     self.seconds = new ReactiveVar(5)
     const thisInterval = setInterval(() => {

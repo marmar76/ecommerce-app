@@ -5,6 +5,7 @@ import moment from 'moment';
 import './cart.html'; 
 
 Template.cart.onCreated(function () {
+    ga('send','pageview')
     const self = this
     // const paramId = FlowRouter.current().params._id   
     this.cart = new ReactiveVar()
