@@ -67,6 +67,7 @@ Meteor.methods({
         for (const i of items) {
             for (const j of i.models) {
                 j.id = totalItems.length
+                j.name = i.name + ' - ' + j.name
                 totalItems.push(j)
             }
         }

@@ -88,13 +88,13 @@ Template.itemsHome.onCreated(function () {
       console.log(filtersubcategory);
       t.filtering.set({
         filter,
-        filtercategory,
-        filtersubcategory
+        category:filtercategory,
+        subcategory:filtersubcategory
       })
       Meteor.call('getAllItem', {
         filter,
-        filtercategory,
-        filtersubcategory
+        category:filtercategory,
+        subcategory:filtersubcategory
       }, function (err, res) {
         t.item.set(res);
       })

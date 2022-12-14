@@ -60,10 +60,11 @@ Meteor.methods({
             //     }
             // }
             if(filtering.category){
+                console.log(filtering.category);
                 thisFilter.category = filtering.category.toString()
             }
-            if(filtering.subcategory){
-                thisFilter.subcategory = filtering.subcategory.toString()
+            if(filtering.subcategory && filtering.subcategory != -1){
+                thisFilter.subcategory = filtering.subcategory.toString() 
             }
         }
         // console.log(thisFilter);
@@ -78,9 +79,9 @@ Meteor.methods({
             const thisSubcategory = subcategories.find((x) => y.subcategory == x._id)
             const thisReview = Reviews.find({itemId : y._id }).fetch()
             
-            y.star = thisReview.reduce(function (prev, next) { 
+            y.star = thisReview.length ? thisReview.reduce(function (prev, next) { 
                 return (parseFloat(prev) + parseFloat(next.star)) * 1.0
-            }, 0.0) / parseFloat(thisReview.length * 1.0)
+            }, 0.0) / parseFloat(thisReview.length * 1.0) : 0
             
             y.categoryName = thisCategory.name
             y.subcategoryName = thisSubcategory.name
@@ -232,21 +233,86 @@ Meteor.methods({
         }
         return item
     },
-    'getItemRecomendation'(itemId){
+    async 'getItemRecomendation'(itemId){
         const thisItem = Items.findOne({_id: itemId})
-        const itemRecomendation = Items.find({
+        const item = Items.find({
             category: thisItem.category,
-            subcategory: {$ne: thisItem.category}
-        }).fetch()
-        return itemRecomendation
+            subcategory: {$ne: thisItem.category},
+            _id: {$ne: itemId}
+        }, {limit: 9}).fetch()
+        const categories = Categories.find().fetch()
+        const subcategories = SubCategories.find().fetch()
+        // console.log(item);
+        let items = item.map(async function (y) {  
+            const thisCategory = categories.find((x) => y.category == x._id)
+            const thisSubcategory = subcategories.find((x) => y.subcategory == x._id)
+            const thisReview = Reviews.find({itemId : y._id }).fetch()
+            
+            y.star = thisReview.length ? thisReview.reduce(function (prev, next) { 
+                return (parseFloat(prev) + parseFloat(next.star)) * 1.0
+            }, 0.0) / parseFloat(thisReview.length * 1.0) : 0
+            
+            y.categoryName = thisCategory.name
+            y.subcategoryName = thisSubcategory.name
+            const lowestPrice = y.models.sort(function (a, b) {  
+                return a.price - b.price
+            })
+            y.lowestPrice = lowestPrice[0].price
+            y.price = lowestPrice[0].price
+            y.models= y.models.filter((z) => z.status == true)
+            if(y.picture){
+                try {
+                    const itemPicture = await getFireImage('items/picture', y.picture)
+                    y.link = itemPicture
+                } catch (error) {
+                    console.log(error);
+                    console.log(y.picture);
+                }
+            }
+            return y
+        })
+        items = await Promise.all(items)
+        return items
         
     },
-    'getSimiliarItem'(itemId){
+    async 'getSimiliarItem'(itemId){
         const thisItem = Items.findOne({_id: itemId})
-        const itemRecomendation = Items.find({
+        const item = Items.find({
             category: thisItem.category,
             subcategory: thisItem.category
         }).fetch()
-        return itemRecomendation
+        const categories = Categories.find().fetch()
+        const subcategories = SubCategories.find().fetch()
+        // console.log(item);
+        let items = item.map(async function (y) {  
+            const thisCategory = categories.find((x) => y.category == x._id)
+            const thisSubcategory = subcategories.find((x) => y.subcategory == x._id)
+            const thisReview = Reviews.find({itemId : y._id }).fetch()
+            
+            y.star = thisReview.length ? thisReview.reduce(function (prev, next) { 
+                return (parseFloat(prev) + parseFloat(next.star)) * 1.0
+            }, 0.0) / parseFloat(thisReview.length * 1.0) : 0
+            
+            y.categoryName = thisCategory.name
+            y.subcategoryName = thisSubcategory.name
+            const lowestPrice = y.models.sort(function (a, b) {  
+                return a.price - b.price
+            })
+            y.lowestPrice = lowestPrice[0].price
+            y.price = lowestPrice[0].price
+            y.models= y.models.filter((z) => z.status == true)
+            if(y.picture){
+                try {
+                    const itemPicture = await getFireImage('items/picture', y.picture)
+                    y.link = itemPicture
+                } catch (error) {
+                    console.log(error);
+                    console.log(y.picture);
+                }
+            }
+            return y
+        })
+        items = await Promise.all(items)
+        return items
     }
 })

@@ -21,6 +21,7 @@ Template.productPage.onCreated(function () {
     this.subcategoryItem = new ReactiveVar(null)
     this.quantity = new ReactiveVar(1)
     this.user = new ReactiveVar()
+    this.recommendation = new ReactiveVar()
     this.comparison = new ReactiveVar([
         {
             id: 1,
@@ -38,6 +39,14 @@ Template.productPage.onCreated(function () {
     ])
     this.review = new ReactiveVar()
     const paramId = FlowRouter.current().params._id
+    Meteor.call('getItemRecomendation', paramId, function(err, res){
+        if(err){
+            console.log(err)
+        }
+        else{
+            self.recommendation.set(res)
+        }
+    })
     Meteor.call('getOneItem', paramId, function (err, res) {
         if (err) {
             console.log(err);
@@ -55,6 +64,7 @@ Template.productPage.onCreated(function () {
             })
             Meteor.call('getItemOnSubCategory', res.subcategory, function (err, res) {  
                 self.subcategoryItem.set(res)
+                console.log(res);
                 setTimeout(() => {
                     for (const i of self.comparison.get()) {
                         const thisSelect = new TomSelect('#compare-'+i.id,{
@@ -105,9 +115,26 @@ Template.productPage.onCreated(function () {
 })
 Template.productPage.onRendered(function () {
     const self = this
-    
+    setTimeout(() => {
+        // window.scrollTo({top: 0, behavior: "auto"})
+        $("html, body").animate({ scrollTop: 0 }, "fast");
+        
+    }, 1000);
+    setTimeout(() => {
+        let splide = new Splide( '.splide'
+        , {
+            type   : 'loop',
+            perPage: 5,
+            perMove: 1,
+          } );
+          
+        splide.mount();
+    }, 2000);
 })
 Template.productPage.helpers({
+    recommendation(){
+        return Template.instance().recommendation.get()
+    },
     review(){
         return Template.instance().review.get()
     },
@@ -163,6 +190,11 @@ Template.productPage.helpers({
 })
 
 Template.productPage.events({
+    'click .recommend'(e, t){
+        const itemId = $(e.target).attr('value');
+        FlowRouter.go('productPage', {_id: itemId})
+        window.location.reload()
+    },
     'click .btn-plus'(e, t){
         const quantity = $("#quantity").val();
         if(quantity){
