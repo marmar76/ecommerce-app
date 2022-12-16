@@ -8,7 +8,12 @@ import Swal from 'sweetalert2';
 
 Template.navbarTop.onCreated(function () {
     const self = this;
-  
+    this.mySelf = new ReactiveVar()
+    Meteor.call('getMyself', function(err, res){
+      console.log(res);
+      res.email = res.emails[0].address
+      self.mySelf.set(res)
+    })
     function greetings() {
       var currentHour = +moment().format("HH");
       // console.log(currentHour);
@@ -40,6 +45,9 @@ Template.navbarTop.onCreated(function () {
     }, 500);
   })
   Template.navbarTop.helpers({
+    mySelf(){
+      return Template.instance().mySelf.get()
+    },
     greetings() {
       return Template.instance().greetings.get()
     },

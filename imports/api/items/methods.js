@@ -32,8 +32,13 @@ Meteor.methods({
     },
     async 'getAllItem'(filtering){
         const thisFilter = {}
+        const options = {}
         const sort = {}
+        options.sort = sort
         if (filtering) {
+            if(filtering.limit){
+                options.limit = filtering.limit
+            }
         // if ((+filtering.sort) === 1) {
         //     sort.price = 1
         // } else if ((+filtering.sort) === 2) {
@@ -68,9 +73,7 @@ Meteor.methods({
             }
         }
         // console.log(thisFilter);
-        const item = Items.find(thisFilter, {
-            sort: sort
-        }).fetch();
+        const item = Items.find(thisFilter, options).fetch();
         const categories = Categories.find().fetch()
         const subcategories = SubCategories.find().fetch()
         // console.log(item);

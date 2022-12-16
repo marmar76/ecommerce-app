@@ -61,6 +61,21 @@ Template.productPage.onCreated(function () {
             })
             Meteor.call('getOneSubCategory', res.subcategory, function (err, res) {  
                 self.subcategory.set(res)
+                setTimeout(() => {
+                    // window.scrollTo({top: 0, behavior: "auto"})
+                    $("html, body").animate({ scrollTop: 0 }, "fast");
+                    
+                }, 1000);
+                setTimeout(() => {
+                    let splide = new Splide( '.splide'
+                    , {
+                        type   : 'loop',
+                        perPage: 5,
+                        perMove: 1,
+                      } );
+                      
+                    splide.mount();
+                }, 2000);
             })
             Meteor.call('getItemOnSubCategory', res.subcategory, function (err, res) {  
                 self.subcategoryItem.set(res)
@@ -115,21 +130,7 @@ Template.productPage.onCreated(function () {
 })
 Template.productPage.onRendered(function () {
     const self = this
-    setTimeout(() => {
-        // window.scrollTo({top: 0, behavior: "auto"})
-        $("html, body").animate({ scrollTop: 0 }, "fast");
-        
-    }, 1000);
-    setTimeout(() => {
-        let splide = new Splide( '.splide'
-        , {
-            type   : 'loop',
-            perPage: 5,
-            perMove: 1,
-          } );
-          
-        splide.mount();
-    }, 2000);
+    
 })
 Template.productPage.helpers({
     recommendation(){

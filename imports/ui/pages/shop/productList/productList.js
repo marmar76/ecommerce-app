@@ -205,5 +205,28 @@ Template.productList.events({
             t.item.set(res)
         } 
         })
+    },
+    'click .btn-filter'(e, t){
+        const filter = $('#search').val()
+        const sort = $('#sort').val()
+        const hargaAwal = +$('#hargaAwal').val();
+        const hargaAkhir = +$('#hargaAkhir').val();
+        const active = true 
+        const filtering = t.filtering.get()
+        filtering.filter = filter 
+        filtering.sort = sort 
+        filtering.hargaAwal = hargaAwal 
+        filtering.hargaAkhir = hargaAkhir 
+        t.filtering.set(filtering)
+        FlowRouter.go('/search?q='+filter+'&data='+JSON.stringify(filtering))
+        console.log(sort);
+        Meteor.call('getAllItem', filtering, function (err, res) {
+        if(err){
+            failAlert(err)
+        }else{
+            console.log(res);
+            t.item.set(res)
+        } 
+        })
     }
 })

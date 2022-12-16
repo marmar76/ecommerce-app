@@ -490,7 +490,7 @@ Template.contentExample.onCreated(function () {
           },
           title: {
             display: true,
-            text: 'Chart.js Funnel Chart'
+            text: 'Last 30 day sales funneling result'
           },
           animation: {
             animateScale: true,

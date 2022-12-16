@@ -10,6 +10,7 @@ Template.cart.onCreated(function () {
     // const paramId = FlowRouter.current().params._id   
     this.cart = new ReactiveVar()
     this.allowUpdate = new ReactiveVar(false)
+    this.recommendation = new ReactiveVar()
     Meteor.call('getMyCart',function (err, res) {  
         if(err){
             console.log(err);
@@ -21,10 +22,36 @@ Template.cart.onCreated(function () {
             }, 2000);
         }
     })
+    Meteor.call('getAllItem', {limit: 10}, function (err, res) {
+        if(err){
+            failAlert(err)
+        }else{
+            // console.log(res);
+            self.recommendation.set(res)
+            // setTimeout(() => {
+            //     // window.scrollTo({top: 0, behavior: "auto"})
+            //     $("html, body").animate({ scrollTop: 0 }, "fast");
+                
+            // }, 1000);
+            setTimeout(() => {
+                let splide = new Splide( '.splide'
+                , {
+                    type   : 'loop',
+                    perPage: 5,
+                    perMove: 1,
+                  } );
+                  
+                splide.mount();
+            }, 2000);
+        } 
+    })
     // console.log(this.cart);
 })
   
 Template.cart.helpers({
+    recommendation(){
+        return Template.instance().recommendation.get()
+    },
     carts(){
         const cart = Template.instance().cart.get()
         if(cart)

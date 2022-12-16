@@ -12,7 +12,7 @@
                         <table class="table table-borderless table-hover">
                             <tbody>
                                 <tr>
-                                    <th scope="row" class="fs-4">Compare With</th>
+                                    <th scope="row" class="fs-5">Compare With</th>
                                     {{#each comparison}}
                                         <td>
                                             <select id="compare-{{id}}" type="text" class="form-control fs-4 compare-item" compare="{{id}}" placeholder="Product">
@@ -21,26 +21,26 @@
                                     {{/each}}
                                 </tr>
                                 <tr>
-                                    <th scope="row" class="fs-4">Name</th>
+                                    <th scope="row" class="fs-5">Name</th>
                                     {{#each comparison}}
-                                        <td class="fs-4">
+                                        <td class="fs-4 text-warp">
                                             {{product.name}}
                                         </td>
                                     {{/each}}
                                 </tr>
                                 <tr>
-                                    <th scope="row" class="fs-4">Price</th>
+                                    <th scope="row" class="fs-5">Price</th>
                                     {{#each comparison}}
-                                        <td class="fs-4">
+                                        <td class="fs-4 text-warp">
                                             {{formatRp product.price}}
                                         </td>
                                     {{/each}}
                                 </tr>
                                 {{#each i in subcategory}}
                                 <tr>
-                                    <th scope="row" class="fs-4">{{i.label}}</th>
+                                    <th scope="row" class="fs-5">{{i.label}}</th>
                                     {{#each j in comparison}}
-                                        <td class="fs-4">
+                                        <td class="fs-4 text-warp">
                                             {{getSpec j.product.specification i.slug}}
                                         </td>
                                     {{/each}}

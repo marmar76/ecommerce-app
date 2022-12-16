@@ -85,5 +85,39 @@
             </div>
         </div>
     </div> 
+    <div class="px-3 pt-2">
+        <hr>
+            <h1 class="">Products related to this item</h1>
+            <div class="p-2 mt-4">
+                <section class="splide" aria-label="Splide Basic HTML Example">
+                    <div class="splide__track">
+                            <ul class="splide__list">
+                            {{#each recommendation}}
+                                <li class="splide__slide">
+                                    <button class="recommend btn" value="{{_id}}">
+                                        <div class="card py-3 " style="width: 18rem;" value="{{_id}}">
+                                            <input type="hidden">
+                                            <img src="{{link}}" class="card-img-top rounded-top" style="height: 18rem; width: 18rem; object-fit: cover;" alt="" value="{{_id}}">
+                                            <div class="card-body" value="{{_id}}">
+                                            <p class="card-text text-dark lh-base fs-6" value="{{_id}}">{{name}}</p>
+                                            <p class="card-text text-dark fw-bolder fs-5" value="{{_id}}">{{formatRp lowestPrice}}</p>
+                                            {{ #if star }}
+                                            <p class="card-text mt-3"><span class="fs-5"><i class="fa fa-star text-warning"
+                                                aria-hidden="true" value="{{_id}}"></i></span><span class="fs-5 text-dark fw-bold ms-2">{{ star }}</span></p>
+                                            {{ /if }}
+                                            </div>
+                                        </div>
+                                    </button>
+                                </li>
+                            {{/each}}
+                                <!-- <li class="splide__slide">Slide 01</li>
+                                <li class="splide__slide">Slide 02</li>
+                                <li class="splide__slide">Slide 03</li> -->
+                            </ul>
+                    </div>
+                </section>
+                
+          </div>
+    </div>
     <!-- </center> -->
 </template>
