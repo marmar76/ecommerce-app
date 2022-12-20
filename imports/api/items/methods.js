@@ -4,6 +4,9 @@ import { Items } from './items';
 import { Categories, SubCategories } from '../categories/categories';
 import { Reviews } from '../reviews/reviews';
 
+function calculateStar(result){
+    return +(Math.round(result + "e+2")  + "e-2");
+}
 Meteor.methods({
     'createItem'(item, models){
         // check(item.name, String)
@@ -85,7 +88,7 @@ Meteor.methods({
             y.star = thisReview.length ? thisReview.reduce(function (prev, next) { 
                 return (parseFloat(prev) + parseFloat(next.star)) * 1.0
             }, 0.0) / parseFloat(thisReview.length * 1.0) : 0
-            
+            y.star = calculateStar(y.star)
             y.categoryName = thisCategory.name
             y.subcategoryName = thisSubcategory.name
             const lowestPrice = y.models.sort(function (a, b) {  
@@ -144,6 +147,7 @@ Meteor.methods({
         thisItem.star = thisReview.reduce(function (prev, next) { 
             return (parseFloat(prev) + parseFloat(next.star)) * 1.0
         }, 0.0) / parseFloat(thisReview.length * 1.0)
+        thisItem.star = calculateStar(thisItem.star)
         if(thisItem.picture){
             try {
                 const profilePictureLink = await getFireImage('items/picture', thisItem.picture)
@@ -254,7 +258,7 @@ Meteor.methods({
             y.star = thisReview.length ? thisReview.reduce(function (prev, next) { 
                 return (parseFloat(prev) + parseFloat(next.star)) * 1.0
             }, 0.0) / parseFloat(thisReview.length * 1.0) : 0
-            
+            y.star = calculateStar(y.star)
             y.categoryName = thisCategory.name
             y.subcategoryName = thisSubcategory.name
             const lowestPrice = y.models.sort(function (a, b) {  
@@ -295,7 +299,7 @@ Meteor.methods({
             y.star = thisReview.length ? thisReview.reduce(function (prev, next) { 
                 return (parseFloat(prev) + parseFloat(next.star)) * 1.0
             }, 0.0) / parseFloat(thisReview.length * 1.0) : 0
-            
+            y.star = calculateStar(y.star)
             y.categoryName = thisCategory.name
             y.subcategoryName = thisSubcategory.name
             const lowestPrice = y.models.sort(function (a, b) {  

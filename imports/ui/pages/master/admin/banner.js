@@ -150,7 +150,7 @@ Template.bannersHomePage.onCreated(function () {
                     const fileName = res + getExt
                     uploadImageFile(imageList, 'banners/picture', fileName).then((snapshot) => { 
                       console.log('Image Uploaded Successfully'); 
-                      successAlert() 
+                      successAlertBack('Success Add Banner') 
                     }).catch((error) => { 
                       console.error(error); 
                       failAlert(error) 
