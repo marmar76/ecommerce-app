@@ -293,7 +293,7 @@ function syncStatus(_id) {
         }
     }
     // console.log(invoice.status);
-    updateInvoiceStatus(_id.invoice.status)
+    
     return invoice.status
 }
 Meteor.methods({

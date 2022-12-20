@@ -31,7 +31,7 @@ Meteor.methods({
             });
         }
     },
-    async 'registerAdmin'(data, profile) { 
+    async 'registerAdmin'(data, profile) {
         check(data, Object)
         check(data.username, String)
         check(data.email, String)

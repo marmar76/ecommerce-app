@@ -436,7 +436,6 @@ Template.contentExample.onCreated(function () {
     }else{
       self.invoiceReport.set(res);
       self.totalMonthlyInvoice.set(res.length);
-      console.log(res);
       setMonthlyInvoice(res)
     }
   })
