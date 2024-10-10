@@ -1,0 +1,27 @@
+[
+  {
+    "_id": "CriKTHb3TTfamuvej",
+    "name": "Electronics",
+    "status": true
+  },
+  {
+    "_id": "JnSitdAYzqSdnDD6W",
+    "name": "Hobby",
+    "status": true
+  },
+  {
+    "_id": "2jMqorjaHrBGzvzWn",
+    "name": "Audio",
+    "status": true
+  },
+  {
+    "_id": "EL7HY9dJsGEjwm6t2",
+    "name": "Vape",
+    "status": true
+  },
+  {
+    "_id": "zk6Kfj8jsYbRjSknP",
+    "name": "Fashion",
+    "status": true
+  }
+]

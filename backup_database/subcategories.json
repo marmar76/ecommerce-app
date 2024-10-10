@@ -1,0 +1,90 @@
+[
+  {
+    "_id": "XF2sKTCkkhxs9ALRW",
+    "categoryId": "CriKTHb3TTfamuvej",
+    "categoryName": "Electronics",
+    "name": "VGA Card",
+    "specification": "[{label=memory, slug=memory}, {label=clock speed, slug=clockspeed}, {label=memory type, slug=memorytype}]",
+    "status": true
+  },
+  {
+    "_id": "o2Zn5z3ZJByfiYArf",
+    "categoryId": "CriKTHb3TTfamuvej",
+    "categoryName": "Electronics",
+    "name": "Monitor",
+    "specification": "[{label=display, slug=display}, {label=width, slug=width}, {label=panel, slug=panel}, {label=refresh rate, slug=refreshrate}]",
+    "status": true
+  },
+  {
+    "_id": "W8EkzGRCrMtkRBJRh",
+    "categoryId": "JnSitdAYzqSdnDD6W",
+    "categoryName": "Hobby",
+    "name": "Nendoroid",
+    "specification": "[{label=height, slug=height}, {label=material, slug=material}]",
+    "status": true
+  },
+  {
+    "_id": "NsrixMk88dvFvYiZL",
+    "categoryId": "JnSitdAYzqSdnDD6W",
+    "categoryName": "Hobby",
+    "name": "Gundam",
+    "specification": "[{label=grade, slug=grade}, {label=scale, slug=scale}]",
+    "status": true
+  },
+  {
+    "_id": "HsLYsupJm3sXaNeAj",
+    "categoryId": "2jMqorjaHrBGzvzWn",
+    "categoryName": "Audio",
+    "name": "Portable Speaker",
+    "specification": "[{label=Bluetooth, slug=Bluetooth}, {label=Battery, slug=Battery}, {label=Frequency, slug=Frequency}]",
+    "status": true
+  },
+  {
+    "_id": "kyho88ai33bK697KP",
+    "categoryId": "2jMqorjaHrBGzvzWn",
+    "categoryName": "Audio",
+    "name": "Headset",
+    "specification": "[{label=Frequency, slug=Frequency}, {label=Bluetooth, slug=Bluetooth}]",
+    "status": true
+  },
+  {
+    "_id": "6fJEyzrCGiYNFb9kT",
+    "categoryId": "EL7HY9dJsGEjwm6t2",
+    "categoryName": "Vape",
+    "name": "Device",
+    "specification": "[{label=Battery, slug=Battery}, {label=Power, slug=Power}, {label=Voltage, slug=Voltage}]",
+    "status": true
+  },
+  {
+    "_id": "TeYgwJSe8myXKNu2H",
+    "categoryId": "EL7HY9dJsGEjwm6t2",
+    "categoryName": "Vape",
+    "name": "Liquid",
+    "specification": "[{label=PG, slug=PG}, {label=VG, slug=VG}, {label=Nic, slug=Nic}, {label=Volume, slug=Volume}]",
+    "status": true
+  },
+  {
+    "_id": "8WDXuY63Y8JEXjs6M",
+    "categoryId": "JnSitdAYzqSdnDD6W",
+    "categoryName": "Hobby",
+    "name": "Figma",
+    "specification": "[{label=height, slug=height}]",
+    "status": true
+  },
+  {
+    "_id": "vweyWGdKZhPPKBZbR",
+    "categoryId": "zk6Kfj8jsYbRjSknP",
+    "categoryName": "Fashion",
+    "name": "Sneakers",
+    "specification": "[{label=Size, slug=Size}, {label=Brand, slug=Brand}]",
+    "status": true
+  },
+  {
+    "_id": "x3SJbEhQmCoPRCsZW",
+    "categoryId": "zk6Kfj8jsYbRjSknP",
+    "categoryName": "Fashion",
+    "name": "Slide",
+    "specification": "[{label=Size, slug=Size}, {label=Brand, slug=Brand}]",
+    "status": true
+  }
+]

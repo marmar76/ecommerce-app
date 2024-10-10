@@ -1,0 +1,338 @@
+[
+  {
+    "_id": "5xfwDX7qHRz5yTisr",
+    "createdAt": {"$date": "2022-11-23T09:25:44.030Z"},
+    "isAdmin": true,
+    "isBanned": false,
+    "services": {
+      "password": {
+        "bcrypt": "$2b$10$TGCWUd/8xdjENp0ONmyEF.COs9bbNw2bEn0sMCgUKmRvJwJCsErq6"
+      },
+      "resume": {
+        "loginTokens": []
+      }
+    },
+    "username": "admin"
+  },
+  {
+    "_id": "rEyAYA527xbgJ5xeH",
+    "createdAt": {"$date": "2022-11-23T11:54:09.444Z"},
+    "isAdmin": true,
+    "isBanned": false,
+    "services": {
+      "password": {
+        "bcrypt": "$2b$10$DAwyEDmJhvpG2QZLZFyd5OYjz9m7bmfBSJOQmMBfscr554tm4vPWq"
+      },
+      "resume": {
+        "loginTokens": [
+          {
+            "when": {"$date": "2022-11-23T11:57:26.846Z"},
+            "hashedToken": "b9ObUxkoQva4GfhpRvjw9lECp2CHKZdJqnsPs5yKjxw="
+          },
+          {
+            "when": {"$date": "2022-12-05T10:50:08.111Z"},
+            "hashedToken": "9QA1i8g3jNZQKKceRbuSWkqR0MkRUK5uxRpcU37IzGw="
+          },
+          {
+            "when": {"$date": "2022-12-12T08:20:25.056Z"},
+            "hashedToken": "LSQ7Qv5Y7iRJ7mlGU3D6wPWWPylwExBsyOKx44HtOCw="
+          },
+          {
+            "when": {"$date": "2022-12-12T13:14:03.834Z"},
+            "hashedToken": "K1dz/vkTUv9TGJfwza9G8vDoTRPOgMqycT8GVOzluZc="
+          },
+          {
+            "when": {"$date": "2022-12-15T08:58:06.582Z"},
+            "hashedToken": "QU0TJueTeTtRxUM+bGDqmI6SZ5IST3IwlXw617MVy7w="
+          },
+          {
+            "when": {"$date": "2022-12-15T15:48:33.393Z"},
+            "hashedToken": "kDWtOfZXD88j9HjXLtUqkr4LBMxCzr4jbCskrYvZDg0="
+          }
+        ]
+      }
+    },
+    "username": "botan",
+    "chats": [
+      {
+        "createdAt": {"$date": "2022-12-15T16:08:11.640Z"},
+        "message": "Test",
+        "admin": false
+      },
+      {
+        "createdAt": {"$date": "2022-12-15T16:08:24.107Z"},
+        "message": "Test",
+        "admin": {
+          "username": "botan",
+          "name": "Botan",
+          "userId": "rEyAYA527xbgJ5xeH"
+        }
+      }
+    ],
+    "dob": {"$date": "2022-11-16T00:00:00.000Z"},
+    "emails": [
+      {
+        "address": "botan@tan.com",
+        "verified": false
+      }
+    ],
+    "gender": "female",
+    "name": "Botan",
+    "phone": "1234",
+    "readStatus": {
+      "admin": {
+        "lastRead": {"$date": "2022-12-15T16:08:24.107Z"},
+        "lastIndex": 2
+      },
+      "user": {
+        "lastRead": {"$date": "2022-12-15T16:08:56.593Z"},
+        "lastIndex": 2
+      }
+    },
+    "status": true
+  },
+  {
+    "_id": "TxFAkoapRmvopyjMH",
+    "createdAt": {"$date": "2022-12-05T10:42:10.966Z"},
+    "isAdmin": false,
+    "isBanned": false,
+    "services": {
+      "password": {
+        "bcrypt": "$2b$10$R1ZiwyufRtcTrzb3hNnEzuK0NAMDnPLSKS2uTTNLyqTJfsajZ3yLO"
+      },
+      "resume": {
+        "loginTokens": [
+          {
+            "when": {"$date": "2022-12-05T10:44:30.127Z"},
+            "hashedToken": "EyDrOXoSTL07vRXy6cVi4H1G8NMrk0KeFxnok7JZtv0="
+          },
+          {
+            "when": {"$date": "2022-12-05T17:24:50.825Z"},
+            "hashedToken": "qTEbFPuEDFemfXP+Pq/qS7J8mY6rLjmqrKK+XA7trf8="
+          },
+          {
+            "when": {"$date": "2022-12-05T19:06:27.200Z"},
+            "hashedToken": "lfmTsNfXV/s9UxOZYzMlGezC05AQM3aX1y09b1gjo8E="
+          },
+          {
+            "when": {"$date": "2022-12-05T19:13:52.339Z"},
+            "hashedToken": "1vKXZMQkVZRHye4anjHst07EOVVhFW6HQK3w3r/7hV4="
+          },
+          {
+            "when": {"$date": "2022-12-06T14:34:44.261Z"},
+            "hashedToken": "Ipw5b4rkjEQkOCqEqE2HE17FZ/05F1OOLVO9keUqJ6A="
+          },
+          {
+            "when": {"$date": "2022-12-06T15:04:26.547Z"},
+            "hashedToken": "0PD3Jk5ZBYqqBm3I3ckpzP6rTCKKTpQkreCDMQhHRVw="
+          },
+          {
+            "when": {"$date": "2022-12-06T15:37:25.042Z"},
+            "hashedToken": "Ol61uxi4bHq0sOlp55aWqgHiYVG4P5mgnM4bG2FpH2E="
+          },
+          {
+            "when": {"$date": "2022-12-12T08:30:23.054Z"},
+            "hashedToken": "aFFFtthXoJuNOCkBMd5eelznXnPdHrpTX9erblJIaPw="
+          },
+          {
+            "when": {"$date": "2022-12-12T08:38:46.752Z"},
+            "hashedToken": "m0AP9ftv4+FpqLSXl/uD9uUFKu3SP0aPPihDD+75vMk="
+          },
+          {
+            "when": {"$date": "2022-12-12T12:58:48.158Z"},
+            "hashedToken": "7A0Txkc1jMsJ+/jpQobXbOyqrklIqtWqOwoTEXLjJoA="
+          },
+          {
+            "when": {"$date": "2022-12-14T18:04:54.143Z"},
+            "hashedToken": "ZXsdo8vFmobwqHpVmSvYVObTNi3ko4Qgir8UJFtLJfs="
+          },
+          {
+            "when": {"$date": "2022-12-15T08:48:13.129Z"},
+            "hashedToken": "p8GnV8pJqdEeWTEzhgSzZ89fuCAz9ZjHsEtDrQ9Oc60="
+          },
+          {
+            "when": {"$date": "2022-12-15T08:49:24.996Z"},
+            "hashedToken": "gX4TfY/ECfKfD1srH34K/P8IDkFUkcX73p0FXoGewdc="
+          },
+          {
+            "when": {"$date": "2022-12-15T17:01:00.189Z"},
+            "hashedToken": "68Z39hjhzeeeAjZsMVaSS1DZtqJjShTVlV6BgaKK4+4="
+          }
+        ]
+      }
+    },
+    "username": "pekora",
+    "chats": [
+      {
+        "createdAt": {"$date": "2022-12-05T19:21:37.149Z"},
+        "message": "halo",
+        "admin": false
+      },
+      {
+        "createdAt": {"$date": "2022-12-05T19:22:07.947Z"},
+        "message": "kak RTX 3060 ada ya ga?",
+        "admin": false
+      },
+      {
+        "createdAt": {"$date": "2022-12-05T19:37:42.018Z"},
+        "message": "MAS MAS",
+        "admin": false
+      },
+      {
+        "createdAt": {"$date": "2022-12-06T09:50:45.986Z"},
+        "message": "Masi",
+        "admin": false
+      },
+      {
+        "createdAt": {"$date": "2022-12-15T08:58:47.416Z"},
+        "message": "ada",
+        "admin": {
+          "username": "botan",
+          "name": "Botan",
+          "userId": "rEyAYA527xbgJ5xeH"
+        }
+      },
+      {
+        "createdAt": {"$date": "2022-12-15T08:59:04.655Z"},
+        "message": "silahkan di beli kak",
+        "admin": {
+          "username": "botan",
+          "name": "Botan",
+          "userId": "rEyAYA527xbgJ5xeH"
+        }
+      }
+    ],
+    "dob": {"$date": "2012-12-12T00:00:00.000Z"},
+    "emails": [
+      {
+        "address": "pekora@gmail.com",
+        "verified": false
+      }
+    ],
+    "gender": "female",
+    "name": "pekora usada",
+    "phone": "081113322240",
+    "readStatus": {
+      "admin": {
+        "lastRead": {"$date": "2022-12-15T08:59:04.655Z"},
+        "lastIndex": 6
+      },
+      "user": {
+        "lastRead": {"$date": "2022-12-06T09:50:45.986Z"},
+        "lastIndex": 4
+      }
+    },
+    "status": true,
+    "address": [
+      {
+        "name": "usada pekora",
+        "hp": "1231923",
+        "label": "peko's house",
+        "regency": {
+          "label": "Gubeng, Kota Surabaya, Jawa Timur",
+          "city_id": "444",
+          "province_id": "11"
+        },
+        "address": "jl gubeng no 1, Surabaya",
+        "isDefault": true
+      },
+      {
+        "name": "Bler",
+        "hp": "087750311522",
+        "label": "Keputih",
+        "regency": {
+          "label": "Sukolilo, Kota Surabaya, Jawa Timur",
+          "city_id": "444",
+          "province_id": "11"
+        },
+        "address": "Keputih Tegal Timur III A / C2",
+        "isDefault": false
+      }
+    ],
+    "cart": [
+      {
+        "itemId": "yoewK6CEP9rr6ssvj-0",
+        "qty": 1,
+        "status": false
+      }
+    ],
+    "profilePicture": "TxFAkoapRmvopyjMH.jpeg"
+  },
+  {
+    "_id": "GJXL33fRajmL2PEsA",
+    "createdAt": {"$date": "2022-12-07T16:37:41.525Z"},
+    "isAdmin": false,
+    "isBanned": false,
+    "services": {
+      "password": {
+        "bcrypt": "$2b$10$JeNUu8tdSs7u0S/z6qFrxO/ChirdoMLpm7Quj2jW1e0HzSQjZMvKy"
+      },
+      "resume": {
+        "loginTokens": [
+          {
+            "when": {"$date": "2022-12-12T12:51:12.026Z"},
+            "hashedToken": "TJ582q0LaNgb16KBOKsXV2hCZK7i0UIWwdQypQuulhE="
+          }
+        ]
+      }
+    },
+    "username": "aqua",
+    "dob": {"$date": "2018-12-01T00:00:00.000Z"},
+    "emails": [
+      {
+        "address": "minato@aqua.com",
+        "verified": false
+      }
+    ],
+    "gender": "female",
+    "name": "minato aqua",
+    "phone": "123",
+    "status": true,
+    "address": [
+      {
+        "name": "aqua",
+        "hp": "1123123",
+        "label": "aqua's house",
+        "regency": {
+          "label": "Kenjeran, Kota Surabaya, Jawa Timur",
+          "city_id": "444",
+          "province_id": "11"
+        },
+        "address": "jl kenjeran no 3",
+        "isDefault": true
+      }
+    ],
+    "cart": [],
+    "profilePicture": "GJXL33fRajmL2PEsA.png"
+  },
+  {
+    "_id": "RM6f3wFTHT2Yfw4iB",
+    "createdAt": {"$date": "2022-12-15T09:07:36.346Z"},
+    "isAdmin": true,
+    "isBanned": true,
+    "services": "{password={bcrypt=$2b$10$tecewY2hvREseqLXxhDFFu7PMo0Xr1Pppn2FZXlwmawLvHVu9Dg06}}",
+    "username": "admin1",
+    "dob": {"$date": "2001-12-30T00:00:00.000Z"},
+    "emails": "[{address=admin1@gmail.com, verified=false}]",
+    "gender": "female",
+    "name": "Houshou Marine",
+    "phone": "123000",
+    "status": true,
+    "createdBy": "rEyAYA527xbgJ5xeH"
+  },
+  {
+    "_id": "upWYXNF9fdiqixGGL",
+    "createdAt": {"$date": "2022-12-15T09:08:57.593Z"},
+    "isAdmin": true,
+    "isBanned": false,
+    "services": "{password={bcrypt=$2b$10$7zFd7R4W4wxgFGmDacAhW.xX5erVlVYBZMFfirYqHClJi0mGJidPW}}",
+    "username": "dummy1",
+    "dob": {"$date": "1200-12-05T00:00:00.000Z"},
+    "emails": "[{address=dummy1@gmail.com, verified=false}]",
+    "gender": "male",
+    "name": "dummy1",
+    "phone": "12312",
+    "status": false,
+    "createdBy": "rEyAYA527xbgJ5xeH"
+  }
+]
